@@ -1,0 +1,34 @@
+﻿{
+    "version": "0.2.1",
+    "configurations": [
+        {
+            "name": "ESP32-P4",
+            "type": "cppdbg",
+            "request": "launch",
+            "projectTarget": "nanoCLR.elf",
+            "project": "CMakeLists.txt",
+            "program": "${debugInfo.fullTargetPath}",
+            "cwd": "${workspaceRoot}",
+            "MIMode": "gdb",
+            "stopAtEntry": false,
+            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/16.3_20250913/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
+            "debugServerPath": "C:/nftools/openocd-esp32-P4/bin/openocd.exe",
+            "debugServerArgs": " -f board/esp32p4-builtin.cfg -c \"adapter_khz 3000\" -c \"gdb_port 3333\" -c \"init\" -c \"reset halt\"",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "postRemoteConnectCommands": [
+                { "text": "target extended-remote localhost:3333" },
+                { "text": "set remotetimeout 60" },
+            //    { "text": "monitor gdb_breakpoint_override hard" },
+                { "text": "monitor reset halt" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        }
+    ]
+}

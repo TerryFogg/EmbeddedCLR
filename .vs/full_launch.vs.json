@@ -1,0 +1,305 @@
+﻿{
+    "version": "0.2.1",
+    "configurations": [
+        {
+            "type": "cppdbg",
+            "project": "CMakeLists.txt",
+            "name": "ST_STM32F769I_DISCOVERY",
+            "program": "build/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "processName": "stm32F769I_Discovery",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/12.3.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "C:/nftools/openocd/bin/openocd.exe",
+            "debugServerArgs": "-s \"c:/nfTools/openocd/scripts/\" -f interface/stlink.cfg -f board/stm32f7discovery.cfg -c init -c \"reset init\"",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": false,
+            "postRemoteConnectCommands": [
+                {
+                    "text": "monitor halt",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "monitor reset init",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "monitor arm semihosting enable"
+                },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "type": "cppdbg",
+            "name": "STM32H735G_DISCOVERY",
+            "program": "build/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "project": "CMakeLists.txt",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "processName": "STM32H735G_DISCOVERY",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/12.3.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "C:/nftools/openocd/bin/openocd.exe",
+            "debugServerArgs": "-c \"debug_level 3\" -s \"c:/nfTools/openocd/scripts/\" -f interface/stlink.cfg -f board/stm32h735g-disco.cfg",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": true,
+            "postRemoteConnectCommands": [
+                { "text": "monitor halt" },
+                { "text": "monitor reset init" },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "type": "cppdbg",
+            "name": "STM32H7B3I_DK",
+            "program": "build/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "project": "CMakeLists.txt",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "processName": "STM32H7B3I_DK",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/12.3.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "C:/nftools/openocd/bin/openocd.exe",
+            "debugServerArgs": "-s \"c:/nfTools/openocd/scripts/\" -f interface/stlink.cfg -f target/stm32h7x_dual_bank.cfg  -c init -c \"reset init\"",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": true,
+            "postRemoteConnectCommands": [
+                {
+                    "text": "monitor halt",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "monitor reset init",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "monitor arm semihosting enable"
+                },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "type": "cppdbg",
+            "name": "STM32U5A9J-DK",
+            "program": "build/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "project": "CMakeLists.txt",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "processName": "STM32U5A9J_DK",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/12.3.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "C:/nftools/openocd_stm32/bin/openocd",
+            "debugServerArgs": "-s \"c:/nfTools/openocd/scripts/\"  -f interface/stlink-dap.cfg -f target/stm32u5x.cfg   -c\"adapter speed 3300\" -c init -c \"reset init\"",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": false,
+            "postRemoteConnectCommands": [
+                {
+                    "text": "monitor halt",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "monitor reset init",
+                    "ignoreFailures": true
+                },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "type": "cppdbg",
+            "name": "NUCLEO-H743ZI2",
+            "program": "build/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "project": "CMakeLists.txt",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "processName": "NUCLEO-H743ZI2",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/12.3.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "C:/nftools/openocd/bin/openocd.exe",
+            "debugServerArgs": "-s \"c:/nfTools/openocd/scripts/\" -f interface/stlink.cfg -f target/stm32h7x_dual_bank.cfg  -c init -c \"reset init\"",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": true,
+            "postRemoteConnectCommands": [
+                {
+                    "text": "monitor halt",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "monitor reset init",
+                    "ignoreFailures": true
+                },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "name": "ESP_WROVER_KIT",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "build/nanoCLR.elf",
+            "project": "CMakeLists.txt",
+            "projectTarget": "nanoCLR",
+            "cwd": "${workspaceRoot}",
+            "MIMode": "gdb",
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "miDebuggerPath": "c:/nftools/espressif/tools/xtensa-esp32-elf/esp-2021r2-patch5-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "c:/nftools/Espressif/tools/openocd-esp32/v0.12.0-esp32-20230419/openocd-esp32/bin/openocd.exe",
+            "debugServerArgs": "-s \"c:/nftools/Espressif/tools/openocd-esp32/v0.12.0-esp32-20251215/openocd-esp32/share/openocd/scripts\" -f interface/ftdi/esp32_devkitj_v1.cfg -f target/esp32.cfg ",
+            "serverStarted": "Info : .*Tensilica.*0x1.",
+            "postRemoteConnectCommands": [
+                { "text": "monitor reset halt" },
+                { "text": "flushregs" },
+                { "text": "thb app_main" },
+                { "text": "x $a1=0" }
+            ],
+            "launchCompleteCommand": "exec-continue",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "type": "cppdbg",
+            "name": "RP2350_Pimoroni2W_ER_TFTM028",
+            "program": "build/MyTargets/ThreadX/CMake/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "project": "CMakeLists.txt",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "svdPath": "C:/nf-interpreter/MyTargets/ThreadX/AdvancedNativeDebugging/rp2350.svd",
+            "processName": "RP2350_Pimoroni2W_ER_TFTM028",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/13.2.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "c:/nftools/openocd-raspberrypi/bin/openocd-rp2350.exe",
+            "debugServerArgs": "-s c:/nfTools/openocd-raspberrypi/share/openocd/scripts/ -f c:/nfTools/openocd-raspberrypi/share/openocd/scripts/interface/cmsis-dap.cfg -c \"adapter speed 1500\" -f target/rp2350.cfg",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": true,
+            "postRemoteConnectCommands": [
+                { "text": "monitor halt" },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "type": "cppdbg",
+            "name": "RP2040",
+            "program": "build/MyTargets/ThreadX/CMake/nanoCLR.elf",
+            "projectTarget": "nanoCLR",
+            "project": "CMakeLists.txt",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "processName": "RP2040",
+            "MIMode": "gdb",
+            "miDebuggerPath": "c:/nfTools/GNU_Tools_ARM_Embedded/12.3.rel1/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "c:/nftools/openocd-for-rp2040/bin/openocd.exe",
+            "debugServerArgs": "-s c:/nfTools/openocd-for-rp2040/scripts/ -f c:/nfTools/openocd-for-rp2040/scripts/interface/cmsis-dap.cfg -c \"adapter speed 5000\" -f target/rp2040.cfg -c init -c \"reset init\"",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "stopOnEntry": true,
+            "postRemoteConnectCommands": [
+                { "text": "monitor halt" },
+                { "text": "monitor reset" },
+                { "text": "load" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        },
+        {
+            "name": "ESP32_P4_UART",
+            "type": "cppdbg",
+            "request": "launch",
+            "project": "CMakeLists.txt",
+            "cwd": "${workspaceRoot}",
+            "MIMode": "gdb",
+            "stopAtEntry": true,
+            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/16.3_20250913/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerPath": "C:/nftools/openocd-esp32-P4/bin/openocd.exe",
+            "debugServerArgs": " -f board/esp32p4-builtin.cfg",
+            "serverStarted": "Listening on port 3333 for gdb connections",
+            "postRemoteConnectCommands": [
+                { "text": "monitor program_esp C:/nf_interpreter/build/bootloader/bootloader.bin 0x2000 verify" },
+                { "text": "monitor program_esp C:/nf_interpreter/build/partition_table/partition-table.bin  0x8000 verify" },
+                { "text": "monitor program_esp C:/nf_interpreter/build/nanoCLR.bin 0x10000 verify" },
+                { "text": "monitor reset halt" },
+                { "text": "flushregs" }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "filterStderr": true,
+            "filterStdout": true,
+            "logging": {
+                "engineLogging": true,
+                "trace": true,
+                "traceResponse": true
+            }
+        }
+    ]
+}

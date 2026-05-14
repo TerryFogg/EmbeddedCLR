@@ -1,0 +1,233 @@
+﻿{
+    "version": "0.2.1",
+    "tasks": [
+        {
+            "taskLabel": "Flash nanoBooter on STM32F769_Discovery",
+            "appliesTo": "*.*",
+            "type": "default",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "openocd -f interface/stlink.cfg  -f target/stm32f7x.cfg -c \"program build/nanoBooter.elf verify\" -c \"reset halt\" -c shutdown"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Flash nanoCLR on STM32F769_Discovery",
+            "default": null,
+            "appliesTo": "*.*",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "openocd -f interface/stlink.cfg  -f target/stm32f7x.cfg -c \"program build/nanoCLR.elf verify\" -c \"reset halt\" -c shutdown"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Flash nanoCLR on STM32H7",
+            "default": null,
+            "appliesTo": "*.*",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "openocd -f interface/stlink.cfg  -f target/stm32h7x.cfg -c \"program build/nanoCLR.elf verify\" -c \"reset halt\" -c shutdown"
+            ],
+            "postRemoteConnectCommands": [
+                {
+                    "text": "reset_config srst_only srst_nogate connect_assert_srst"
+                }
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Flash nanoCLR on STM32U5",
+            "default": null,
+            "appliesTo": "*.*",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "C:/nftools/openocd_stm32/bin/openocd -f interface/stlink-dap.cfg  -f target/stm32u5x.cfg -c \"program build/nanoCLR.elf verify\" -c \"reset halt\" -c shutdown"
+            ],
+            "postRemoteConnectCommands": [
+                {
+                    "text": "reset_config srst_only srst_nogate connect_assert_srst"
+                }
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Flash nanoCLR on RP2040",
+            "default": null,
+            "appliesTo": "*.*",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "c:/nftools/openocd-for-rp2040/bin/openocd.exe -s c:/nfTools/openocd-for-rp2040/scripts/ -f c:/nfTools/openocd-for-rp2040/scripts/interface/cmsis-dap.cfg -c \"adapter speed 5000\" -f target/rp2040.cfg -c \"program build/MyTargets/ThreadX/CMake/nanoCLR.elf verify\" -c \"reset halt\" -c shutdown"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Flash nanoCLR on RP2350",
+            "default": null,
+            "appliesTo": "*.*",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "c:/nftools/openocd-raspberrypi/bin/openocd-rp2350.exe -s c:/nfTools/openocd-raspberrypi/share/open/scripts/ -f c:/nfTools/openocd-raspberrypi/share/openocd/scripts/interface/cmsis-dap.cfg -c \"adapter speed 3000\" -f target/rp2350.cfg -c \"program build/MyTargets/ThreadX/CMake/nanoCLR.elf verify\" -c \"reset halt\" -c shutdown"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Erase ESP32 flash",
+            "appliesTo": "*.*",
+            "type": "default",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "python c:/nfTools/Espressif/frameworks/esp-idf-v4.4.5/components/esptool_py/esptool/esptool.py --chip auto --port com11 --baud 1500000 --before default_reset --after hard_reset erase_flash"
+            ]
+        },
+        {
+            "taskLabel": "Erase ESP32-P4 flash",
+            "appliesTo": "*.*",
+            "type": "default",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "python c:/nfTools/espressif/v5.5.4/esp-idf/components/esptool_py/esptool/esptool.py --chip auto --port com9 --baud 150000 --before default_reset --after hard_reset erase_flash"
+            ]
+        },
+        {
+            "taskLabel": "Flash ESP32",
+            "appliesTo": "*.*",
+            "type": "default",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "python c:/nfTools/Espressif/frameworks/esp-idf-v4.4.6/components/esptool_py/esptool/esptool.py --chip auto --port com11 --baud 1500000 --before default_reset --after hard_reset write_flash -z --flash_size detect 0x1000 ${workspaceRoot}/build/bootloader/bootloader.bin 0x10000 ${workspaceRoot}/build/nanoCLR.bin 0x8000 ${workspaceRoot}/build/partitions_4mb.bin"
+            ]
+        },
+        {
+            "taskLabel": "VERIFY ESP32-P4",
+            "appliesTo": "*.*",
+            "type": "default",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "cd build && dir && python -m esptool --chip esp32p4 -p COM9 flash_id"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "Flash ESP32-P4",
+            "appliesTo": "*.*",
+            "type": "default",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "cd build && python -m esptool --chip esp32p4 -p COM9 -b 460800 --before default_reset --after hard_reset write_flash @flash_args"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "task-OpenOCDRp2350",
+            "appliesTo": "MyTargets/ThreadX/RP2350/OpenOCDRp2350.bat",
+            "type": "launch"
+        },
+        {
+            "taskLabel": "ERASE flash on RP2350",
+            "default": null,
+            "appliesTo": "*.*",
+            "command": "${env.COMSPEC}",
+            "args": [
+                "c:/nftools/openocd-raspberrypi/bin/openocd-rp2350.exe -s c:/nfTools/openocd-raspberrypi/share/open/scripts/ -f c:/nfTools/openocd-raspberrypi/share/openocd/scripts/interface/cmsis-dap.cfg -c \"adapter speed 3000\" -f target/rp2350.cfg  -c \"flash erase_sector 0x10000000 100\""
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "taskLabel": "task-nanoCLR",
+            "appliesTo": "build/nanoCLR.elf",
+            "type": "launch"
+        },
+        {
+            "taskLabel": "task-DeviceWirelessIO",
+            "appliesTo": "MyTargets/ThreadX/RaspberryPi/RP2XXX/Common/DeviceWirelessIO.cpp",
+            "type": "launch"
+        },
+        {
+            "taskLabel": "task-System.Device.Network.WirelessAPConfiguration",
+            "appliesTo": "MyTargets/ThreadX/Common/System.Device.Network/System.Device.Network.WirelessAPConfiguration.cpp",
+            "type": "launch"
+        }
+    ]
+}

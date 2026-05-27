@@ -18,8 +18,11 @@
             "postRemoteConnectCommands": [
                 { "text": "target extended-remote localhost:3333" },
                 { "text": "set remotetimeout 60" },
-            //    { "text": "monitor gdb_breakpoint_override hard" },
-                { "text": "monitor reset halt" }
+                { "text": "monitor gdb_breakpoint_override hard" },
+                { "text": "monitor reset halt" },
+                { "text": "thb app_main" },
+                // { "text": "thb call_start_cpu0" },
+          //      { "text": "continue" }
             ],
             "launchCompleteCommand": "exec-run",
             "filterStderr": true,

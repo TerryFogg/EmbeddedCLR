@@ -692,6 +692,7 @@ macro(nf_add_idf_as_library)
         esp_psram
         esp_adc
         littlefs
+        esp_lcd
     )
 
     # set list with the libraries for IDF components added
@@ -708,7 +709,8 @@ macro(nf_add_idf_as_library)
         idf::esp_psram
         idf::esp_adc
         idf::littlefs
-    )
+        idf::esp_lcd
+ )
 
     # Needed for remote Wifi module on P4 boards
     if(${TARGET_SERIES_SHORT} STREQUAL "esp32p4")

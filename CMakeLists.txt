@@ -5,6 +5,9 @@
 
 cmake_minimum_required(VERSION 3.30)
 
+set(MY_PATH "$ENV{PATH}")
+message(STATUS "PATH is: $ENV{PATH}")
+
 include(CMakeToolsHelpers OPTIONAL)
 include(ExternalProject)
 

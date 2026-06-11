@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -13,6 +13,15 @@
 #include <nanoHAL_ConfigurationManager.h>
 #include <nanoHAL_StorageOperation.h>
 #include <nanoHAL_Graphics.h>
+
+#if (TOUCH_DISPLAY_SUPPORT == TRUE)
+#include "TouchPanel.h"
+#include "TouchInterface.h"
+extern TouchPanel g_TouchPanel;
+extern TouchInterface g_TouchInterface;
+extern TouchDevice g_TouchDevice;
+#endif
+
 #if (HAL_USE_UART == TRUE)
 #include <sys_io_ser_native_target.h>
 #endif
@@ -129,6 +138,24 @@ void nanoHAL_Initialize()
     // blehr_start();  // Heart rate monitor device test
     // ibeacon_start();  // Ibeacon test code
 #endif
+
+#if (NANOCLR_GRAPHICS == TRUE)
+    DisplayInterfaceConfig displayConfig;
+    g_GraphicsMemoryHeap.Initialize(6000000);
+    g_DisplayInterface.Initialize(displayConfig);
+    g_DisplayDriver.Initialize();
+#endif
+
+#if (TOUCH_DISPLAY_SUPPORT == TRUE)
+    g_TouchInterface.Initialize(TOUCH_INTERFACE_BUS, TOUCH_INTERFACE_SLAVE_ADDRESS);
+    g_TouchDevice.Initialize(
+        TOUCH_INTERFACE_INTERRUPT,
+        TOUCH_INTERFACE_WIDTH,
+        TOUCH_INTERFACE_HEIGHT,
+        TOUCH_INVERT_X,
+        TOUCH_INVERT_Y);
+    g_TouchPanel.Initialize();
+#endif
 }
 
 void nanoHAL_Uninitialize(bool isPoweringDown)
@@ -174,5 +201,6 @@ void nanoHAL_Uninitialize(bool isPoweringDown)
 }
 
 // Just in case storage is not configured
-__nfweak void Storage_Initialize(){};
-__nfweak void Storage_Uninitialize(){};
+__nfweak void Storage_Initialize() {};
+__nfweak void Storage_Uninitialize() {};
+

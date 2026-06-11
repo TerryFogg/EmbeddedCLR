@@ -11,10 +11,11 @@ list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFra
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Gif")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Jpeg")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/Graphics/Displays")
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/Graphics/Interfaces")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/Graphics/Native")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Core")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Devices")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Interface")
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Interfaces")
 
  set (  nanoFramework.Graphics_SRCS
         nanoPAL_Events_functions.cpp
@@ -89,10 +90,9 @@ list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Inter
         Graphics_Memory.cpp    
 
 # Display and interface
-        jd9365.cpp
+        DisplayControllerJD9365.cpp
+        DisplayInterfaceMipiDsi.cpp
         I2c_To_TouchPanel.cpp
-        mipi_dsi.cpp
-
 )
 
 foreach(SRC_FILE ${nanoFramework.Graphics_SRCS})
@@ -114,7 +114,7 @@ foreach(SRC_FILE ${nanoFramework.Graphics_SRCS})
         ${MY_GRAPHICS}/Graphics/Native
         ${MY_GRAPHICS}/TouchPanel/Core
         ${MY_GRAPHICS}/TouchPanel/Devices
-        ${MY_GRAPHICS}/TouchPanel/Interface
+        ${MY_GRAPHICS}/TouchPanel/Interfaces
         ${MY_GRAPHICS}
         ${TARGET_BASE_LOCATION}/nanoCLR/nanoFramework.Graphics
 
@@ -132,20 +132,3 @@ endforeach()
 
 include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(nanoFramework.Graphics DEFAULT_MSG nanoFramework.Graphics_INCLUDE_DIRS nanoFramework.Graphics_SOURCES)
-
-
-#        list(APPEND nanoFramework.Graphics_SOURCES
-#                   "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/Display_jd9365.cpp"
-#                   "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/Mipi_Dsi_Interface.cpp"
-#                   "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/other/esp_lcd_jd9365_10_1.c"
-#                   "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/other/esp32_p4_wifi6_touch_lcd_x.c"
-#                   "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/other/test_esp_lcd.c"
-#                   "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/i2c_bus/i2c_bus_v2.c"
-#        )
-
-
-
-   #     list(APPEND nanoFramework.Graphics_INCLUDE_DIRS
-   #                "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/include"
-   #                "C:/nf-interpreter/targets/ESP32/ESP32_P4/esp32_p4_wifi6_touch_lcd_x/priv_include"
-   #     )

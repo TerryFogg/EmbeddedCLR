@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -130,8 +130,11 @@ void HeapLocation(unsigned char *&baseAddress, unsigned int &sizeInBytes)
             // store max allocation size
             largestFreeBlock = spiramMaxSize;
 
+            const int FrameBufferSize = 3* 2048000; // 1280*800 (RGB565) - enough for 3 frame buffers
+            const int GraphicsMemoryReserve = 3*2048000; // 1280*800 (RGB565) - enough for 3 frame buffer
             // get heap size to allocate
-            managedHeapSize = spiramMaxSize - ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES;
+            managedHeapSize =
+                spiramMaxSize - ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES - (FrameBufferSize + GraphicsMemoryReserve);
 
             ESP_LOGI(TAG, "Allocating managed heap from SPIRAM");
         }

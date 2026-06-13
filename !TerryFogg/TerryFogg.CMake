@@ -43,10 +43,11 @@ list(REMOVE_ITEM SRCS_GRAPHICS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/G
 list(REMOVE_ITEM SRCS_GRAPHICS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_TouchEventProcessor.cpp")
 list(REMOVE_ITEM SRCS_GRAPHICS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_TouchPanel.cpp")
 
-list(APPEND SRCS_GRAPHICS "C:/nf-interpreter/targets/ESP32/ESP32_P4/!nanoFramework.Graphics/Memory.cpp")
-list(APPEND SRCS_GRAPHICS "C:/nf-interpreter/targets/ESP32/ESP32_P4/!nanoFramework.Graphics/Graphics/Displays/DisplayControllerJD9365.cpp")
-list(APPEND SRCS_GRAPHICS "C:/nf-interpreter/targets/ESP32/ESP32_P4/!nanoFramework.Graphics/Graphics/Interfaces/DisplayInterfaceMipiDsi.cpp")
-list(APPEND SRCS_GRAPHICS "C:/nf-interpreter/targets/ESP32/ESP32_P4/!nanoFramework.Graphics/TouchPanel/Interfaces/I2c_To_TouchPanel.cpp")
+list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/Memory.cpp")
+list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/Graphics/Displays/DisplayControllerJD9365.cpp")
+list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/Graphics/Interfaces/DisplayInterfaceMipiDsi.cpp")
+list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/TouchPanel/Core/TouchPanel.cpp")
+list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/TouchPanel/Interfaces/I2c_To_TouchPanel.cpp")
 
 list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/Graphics/Native/nanoFramework_Graphics.cpp")
 list(APPEND SRCS_GRAPHICS "${MY_GRAPHICS}/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_Bitmap.cpp")

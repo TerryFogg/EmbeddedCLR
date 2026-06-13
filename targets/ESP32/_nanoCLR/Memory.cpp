@@ -130,11 +130,8 @@ void HeapLocation(unsigned char *&baseAddress, unsigned int &sizeInBytes)
             // store max allocation size
             largestFreeBlock = spiramMaxSize;
 
-            const int FrameBufferSize = 3* 2048000; // 1280*800 (RGB565) - enough for 3 frame buffers
-            const int GraphicsMemoryReserve = 3*2048000; // 1280*800 (RGB565) - enough for 3 frame buffer
             // get heap size to allocate
-            managedHeapSize =
-                spiramMaxSize - ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES - (FrameBufferSize + GraphicsMemoryReserve);
+            managedHeapSize = spiramMaxSize - ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES;
 
             ESP_LOGI(TAG, "Allocating managed heap from SPIRAM");
         }

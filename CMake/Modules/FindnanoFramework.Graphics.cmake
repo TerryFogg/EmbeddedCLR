@@ -2,20 +2,16 @@
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
-Set(MY_GRAPHICS "${TARGET_BASE_LOCATION}/!nanoFramework.Graphics")
- 
+
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/PAL/include")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Gif")
 list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Jpeg")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/Graphics/Displays")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/Graphics/Interfaces")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/Graphics/Native")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Core")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Devices")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Interfaces")
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native")
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Core")
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Displays")
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Devices")
 
  set (  nanoFramework.Graphics_SRCS
         nanoPAL_Events_functions.cpp
@@ -82,17 +78,26 @@ list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${MY_GRAPHICS}/TouchPanel/Inter
         GraphicsMemoryHeap.cpp
         
         nanoFramework_Graphics.cpp
+        nanoFramework_Graphics_nanoFramework_UI_Ink.cpp
+        nanoFramework_Graphics_nanoFramework_UI_TouchCollectorConfiguration.cpp
         nanoFramework_Graphics_nanoFramework_UI_TouchEventProcessor.cpp
+        nanoFramework_Graphics_nanoFramework_UI_TouchPanel.cpp
         nanoFramework_Graphics_nanoFramework_UI_Bitmap.cpp
         nanoFramework_Graphics_nanoFramework_UI_DisplayControl.cpp
         nanoFramework_Graphics_nanoFramework_UI_Font.cpp
-        TouchPanel.cpp
-        Graphics_Memory.cpp    
 
-# Display and interface
-        DisplayControllerJD9365.cpp
-        DisplayInterfaceMipiDsi.cpp
-        I2c_To_TouchPanel.cpp
+        TouchPanel.cpp
+        Gestures.cpp
+        Ink.cpp
+
+        #Common Display/Touch Code
+        "${GRAPHICS_DISPLAY}"
+        "${TOUCHPANEL_DEVICE}"
+        
+        #Target board Display/Touch Code
+        Graphics_Memory.cpp
+        "${GRAPHICS_DISPLAY_INTERFACE}"
+        "${TOUCHPANEL_INTERFACE}"
 )
 
 foreach(SRC_FILE ${nanoFramework.Graphics_SRCS})
@@ -109,17 +114,14 @@ foreach(SRC_FILE ${nanoFramework.Graphics_SRCS})
         ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Fonts
         ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Gif
         ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Jpeg
-        ${MY_GRAPHICS}/Graphics/Displays
-        ${MY_GRAPHICS}/Graphics/Interfaces
-        ${MY_GRAPHICS}/Graphics/Native
-        ${MY_GRAPHICS}/TouchPanel/Core
-        ${MY_GRAPHICS}/TouchPanel/Devices
-        ${MY_GRAPHICS}/TouchPanel/Interfaces
-        ${MY_GRAPHICS}
+        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Displays
+        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native
+        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Core
+        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Devices
+
         ${TARGET_BASE_LOCATION}/nanoCLR/nanoFramework.Graphics
 
-
-      CMAKE_FIND_ROOT_PATH_BOTH     
+        CMAKE_FIND_ROOT_PATH_BOTH     
     )
 
     if (BUILD_VERBOSE)

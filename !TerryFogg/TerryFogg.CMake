@@ -19,8 +19,13 @@ get_target_property(INCLUDES_GRAPHICS NF_NativeAssemblies INCLUDE_DIRECTORIES)
 list(REMOVE_DUPLICATES SRCS)
 list(REMOVE_ITEM SRCS C:/nf-interpreter/targets/ESP32/_nanoCLR/Memory.cpp)
 
+list(REMOVE_ITEM SRCS_GRAPHICS C:/nf-interpreter/src/nanoFramework.Graphics/Graphics/Displays/ILI9341_240x320_SPI.cpp)
+list(REMOVE_ITEM SRCS_GRAPHICS C:/nf-interpreter/src/nanoFramework.Graphics/TouchPanel/Devices/XPT2046.cpp)
+list(REMOVE_ITEM SRCS_GRAPHICS C:/nf-interpreter/src/nanoFramework.Graphics/Graphics/Displays/Spi_To_Display.cpp)
 
+list(REMOVE_ITEM SRCS_GRAPHICS C:/nf-interpreter/targets/ESP32/ESP32_P4/nanoCLR/nanoFramework.Graphics/Spi_To_TouchPanel.cpp)
 list(REMOVE_ITEM SRCS_GRAPHICS C:/nf-interpreter/targets/ESP32/ESP32_P4/nanoCLR/nanoFramework.Graphics/Graphics_Memory.cpp)
+
 set_target_properties(nanoCLR.elf PROPERTIES SOURCES "${SRCS}")
 
 

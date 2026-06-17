@@ -35,6 +35,8 @@ extern "C" void FixUpBlockRegionInfo();
 extern void blehr_start();
 extern void ibeacon_start();
 
+
+static bool rebootinprogress = false;
 //
 //  Reboot handlers clean up on reboot
 //
@@ -140,10 +142,14 @@ void nanoHAL_Initialize()
 #endif
 
 #if (NANOCLR_GRAPHICS == TRUE)
-    DisplayInterfaceConfig displayConfig;
-    g_GraphicsMemoryHeap.Initialize(6000000);
-    g_DisplayInterface.Initialize(displayConfig);
-    g_DisplayDriver.Initialize();
+    if (!rebootinprogress)
+    {
+        DisplayInterfaceConfig displayConfig;
+        g_GraphicsMemoryHeap.Initialize(6000000);
+        g_DisplayInterface.Initialize(displayConfig);
+        g_DisplayDriver.Initialize();
+        rebootinprogress = true;
+    }
 #endif
 
 #if (TOUCH_DISPLAY_SUPPORT == TRUE)

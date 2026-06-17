@@ -103,7 +103,6 @@ list(APPEND ESP32_IDF_INCLUDE_DIRS ${IDF_PATH_CMAKED}/components/esp_driver_i2c/
 
 # Required for Mipi DSI and LCD panels with power control via LDO
 list(APPEND ESP32_IDF_INCLUDE_DIRS ${IDF_PATH_CMAKED}/components/esp_hw_support/ldo/include)
-list(APPEND ESP32_IDF_INCLUDE_DIRS ${IDF_PATH_CMAKED}/components/esp_lcd_jd9365/include)
 list(APPEND ESP32_IDF_INCLUDE_DIRS ${IDF_PATH_CMAKED}/components/esp_driver_parlio/include)
 
 # includes specific to ESP32S2 and ESP32S3

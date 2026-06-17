@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "esp_lcd_types.h"
 #include "esp_lcd_mipi_dsi.h"
-#include "sdkconfig.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -16,14 +15,7 @@ extern "C"
         esp_lcd_panel_handle_t control;        /*!< ESP LCD panel (control) handle */
     } bsp_lcd_handles_t;
 
-    //void targetHAL_init();
-    //void DisplayControllerInitialize();
-    bool bsp_display_brightness_init(void);
-    bool bsp_display_brightness_set(int brightness_percent);
-    int bsp_display_brightness_get(void);
-    bool bsp_display_backlight_on(void);
-    bool bsp_display_backlight_off(void);
-    bool bsp_enable_dsi_phy_power(void);
+    //bool bsp_display_brightness_init(void);
 
 #ifdef __cplusplus
 }

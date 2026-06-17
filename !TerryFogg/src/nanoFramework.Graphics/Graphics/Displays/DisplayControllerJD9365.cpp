@@ -25,32 +25,281 @@
 #include "DisplayControllerJD9365.h"
 #include "DisplayInterfaceMipiDsi.h"
 #include "esp_err.h"
-#include "esp_log.h"
-#include "esp_check.h"
 #include "esp_lcd_mipi_dsi.h"
 #include "esp_lcd_panel_commands.h"
 #include "esp_lcd_panel_interface.h"
 #include "esp_lcd_panel_io.h"
 #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_panel_vendor.h"
-#include "esp_ldo_regulator.h"
 #include "esp_lcd_types.h"
 #include "driver/gpio.h"
 #include "driver/ledc.h"
-#include "sd_pwr_ctrl_by_on_chip_ldo.h"
-#include "sdkconfig.h"
 
-#include "JD9365_data_waveshare_10_1.inc"
+// #include "JD9365_data_waveshare_10_1.inc"
 
-#define JD9365_DSI_2_LANE   (0x01)
-#define JD9365_CMD_PAGE     (0xE0)
-#define JD9365_PAGE_USER    (0x00)
+static const jd9365_lcd_init_cmd_t jd9365_vendor_specific_init_default[] = {
+    //  {cmd, { data }, data_size, delay_ms}
+
+    {0xE0, (uint8_t[]){0x00}, 1, 0},
+    {0xE1, (uint8_t[]){0x93}, 1, 0},
+    {0xE2, (uint8_t[]){0x65}, 1, 0},
+    {0xE3, (uint8_t[]){0xF8}, 1, 0},
+    {0x80, (uint8_t[]){0x01}, 1, 0},
+
+    {0xE0, (uint8_t[]){0x01}, 1, 0},
+    {0x00, (uint8_t[]){0x00}, 1, 0},
+    {0x01, (uint8_t[]){0x38}, 1, 0},
+    {0x03, (uint8_t[]){0x10}, 1, 0},
+    {0x04, (uint8_t[]){0x38}, 1, 0},
+
+    {0x0C, (uint8_t[]){0x74}, 1, 0},
+
+    {0x17, (uint8_t[]){0x00}, 1, 0},
+    {0x18, (uint8_t[]){0xAF}, 1, 0},
+    {0x19, (uint8_t[]){0x00}, 1, 0},
+    {0x1A, (uint8_t[]){0x00}, 1, 0},
+    {0x1B, (uint8_t[]){0xAF}, 1, 0},
+    {0x1C, (uint8_t[]){0x00}, 1, 0},
+
+    {0x35, (uint8_t[]){0x26}, 1, 0},
+
+    {0x37, (uint8_t[]){0x09}, 1, 0},
+
+    {0x38, (uint8_t[]){0x04}, 1, 0},
+    {0x39, (uint8_t[]){0x00}, 1, 0},
+    {0x3A, (uint8_t[]){0x01}, 1, 0},
+    {0x3C, (uint8_t[]){0x78}, 1, 0},
+    {0x3D, (uint8_t[]){0xFF}, 1, 0},
+    {0x3E, (uint8_t[]){0xFF}, 1, 0},
+    {0x3F, (uint8_t[]){0x7F}, 1, 0},
+
+    {0x40, (uint8_t[]){0x06}, 1, 0},
+    {0x41, (uint8_t[]){0xA0}, 1, 0},
+    {0x42, (uint8_t[]){0x81}, 1, 0},
+    {0x43, (uint8_t[]){0x1E}, 1, 0},
+    {0x44, (uint8_t[]){0x0D}, 1, 0},
+    {0x45, (uint8_t[]){0x28}, 1, 0},
+    //{0x4A, (uint8_t[]){0x35}, 1, 0},//bist
+
+    {0x55, (uint8_t[]){0x02}, 1, 0},
+    {0x57, (uint8_t[]){0x69}, 1, 0},
+    {0x59, (uint8_t[]){0x0A}, 1, 0},
+    {0x5A, (uint8_t[]){0x2A}, 1, 0},
+    {0x5B, (uint8_t[]){0x17}, 1, 0},
+
+    {0x5D, (uint8_t[]){0x7F}, 1, 0},
+    {0x5E, (uint8_t[]){0x6A}, 1, 0},
+    {0x5F, (uint8_t[]){0x5B}, 1, 0},
+    {0x60, (uint8_t[]){0x4F}, 1, 0},
+    {0x61, (uint8_t[]){0x4A}, 1, 0},
+    {0x62, (uint8_t[]){0x3D}, 1, 0},
+    {0x63, (uint8_t[]){0x41}, 1, 0},
+    {0x64, (uint8_t[]){0x2A}, 1, 0},
+    {0x65, (uint8_t[]){0x44}, 1, 0},
+    {0x66, (uint8_t[]){0x43}, 1, 0},
+    {0x67, (uint8_t[]){0x44}, 1, 0},
+    {0x68, (uint8_t[]){0x62}, 1, 0},
+    {0x69, (uint8_t[]){0x52}, 1, 0},
+    {0x6A, (uint8_t[]){0x59}, 1, 0},
+    {0x6B, (uint8_t[]){0x4C}, 1, 0},
+    {0x6C, (uint8_t[]){0x48}, 1, 0},
+    {0x6D, (uint8_t[]){0x3A}, 1, 0},
+    {0x6E, (uint8_t[]){0x26}, 1, 0},
+    {0x6F, (uint8_t[]){0x00}, 1, 0},
+    {0x70, (uint8_t[]){0x7F}, 1, 0},
+    {0x71, (uint8_t[]){0x6A}, 1, 0},
+    {0x72, (uint8_t[]){0x5B}, 1, 0},
+    {0x73, (uint8_t[]){0x4F}, 1, 0},
+    {0x74, (uint8_t[]){0x4A}, 1, 0},
+    {0x75, (uint8_t[]){0x3D}, 1, 0},
+    {0x76, (uint8_t[]){0x41}, 1, 0},
+    {0x77, (uint8_t[]){0x2A}, 1, 0},
+    {0x78, (uint8_t[]){0x44}, 1, 0},
+    {0x79, (uint8_t[]){0x43}, 1, 0},
+    {0x7A, (uint8_t[]){0x44}, 1, 0},
+    {0x7B, (uint8_t[]){0x62}, 1, 0},
+    {0x7C, (uint8_t[]){0x52}, 1, 0},
+    {0x7D, (uint8_t[]){0x59}, 1, 0},
+    {0x7E, (uint8_t[]){0x4C}, 1, 0},
+    {0x7F, (uint8_t[]){0x48}, 1, 0},
+    {0x80, (uint8_t[]){0x3A}, 1, 0},
+    {0x81, (uint8_t[]){0x26}, 1, 0},
+    {0x82, (uint8_t[]){0x00}, 1, 0},
+
+    {0xE0, (uint8_t[]){0x02}, 1, 0},
+    {0x00, (uint8_t[]){0x42}, 1, 0},
+    {0x01, (uint8_t[]){0x42}, 1, 0},
+    {0x02, (uint8_t[]){0x40}, 1, 0},
+    {0x03, (uint8_t[]){0x40}, 1, 0},
+    {0x04, (uint8_t[]){0x5E}, 1, 0},
+    {0x05, (uint8_t[]){0x5E}, 1, 0},
+    {0x06, (uint8_t[]){0x5F}, 1, 0},
+    {0x07, (uint8_t[]){0x5F}, 1, 0},
+    {0x08, (uint8_t[]){0x5F}, 1, 0},
+    {0x09, (uint8_t[]){0x57}, 1, 0},
+    {0x0A, (uint8_t[]){0x57}, 1, 0},
+    {0x0B, (uint8_t[]){0x77}, 1, 0},
+    {0x0C, (uint8_t[]){0x77}, 1, 0},
+    {0x0D, (uint8_t[]){0x47}, 1, 0},
+    {0x0E, (uint8_t[]){0x47}, 1, 0},
+    {0x0F, (uint8_t[]){0x45}, 1, 0},
+    {0x10, (uint8_t[]){0x45}, 1, 0},
+    {0x11, (uint8_t[]){0x4B}, 1, 0},
+    {0x12, (uint8_t[]){0x4B}, 1, 0},
+    {0x13, (uint8_t[]){0x49}, 1, 0},
+    {0x14, (uint8_t[]){0x49}, 1, 0},
+    {0x15, (uint8_t[]){0x5F}, 1, 0},
+
+    {0x16, (uint8_t[]){0x41}, 1, 0},
+    {0x17, (uint8_t[]){0x41}, 1, 0},
+    {0x18, (uint8_t[]){0x40}, 1, 0},
+    {0x19, (uint8_t[]){0x40}, 1, 0},
+    {0x1A, (uint8_t[]){0x5E}, 1, 0},
+    {0x1B, (uint8_t[]){0x5E}, 1, 0},
+    {0x1C, (uint8_t[]){0x5F}, 1, 0},
+    {0x1D, (uint8_t[]){0x5F}, 1, 0},
+    {0x1E, (uint8_t[]){0x5F}, 1, 0},
+    {0x1F, (uint8_t[]){0x57}, 1, 0},
+    {0x20, (uint8_t[]){0x57}, 1, 0},
+    {0x21, (uint8_t[]){0x77}, 1, 0},
+    {0x22, (uint8_t[]){0x77}, 1, 0},
+    {0x23, (uint8_t[]){0x46}, 1, 0},
+    {0x24, (uint8_t[]){0x46}, 1, 0},
+    {0x25, (uint8_t[]){0x44}, 1, 0},
+    {0x26, (uint8_t[]){0x44}, 1, 0},
+    {0x27, (uint8_t[]){0x4A}, 1, 0},
+    {0x28, (uint8_t[]){0x4A}, 1, 0},
+    {0x29, (uint8_t[]){0x48}, 1, 0},
+    {0x2A, (uint8_t[]){0x48}, 1, 0},
+    {0x2B, (uint8_t[]){0x5F}, 1, 0},
+
+    {0x2C, (uint8_t[]){0x01}, 1, 0},
+    {0x2D, (uint8_t[]){0x01}, 1, 0},
+    {0x2E, (uint8_t[]){0x00}, 1, 0},
+    {0x2F, (uint8_t[]){0x00}, 1, 0},
+    {0x30, (uint8_t[]){0x1F}, 1, 0},
+    {0x31, (uint8_t[]){0x1F}, 1, 0},
+    {0x32, (uint8_t[]){0x1E}, 1, 0},
+    {0x33, (uint8_t[]){0x1E}, 1, 0},
+    {0x34, (uint8_t[]){0x1F}, 1, 0},
+    {0x35, (uint8_t[]){0x17}, 1, 0},
+    {0x36, (uint8_t[]){0x17}, 1, 0},
+    {0x37, (uint8_t[]){0x37}, 1, 0},
+    {0x38, (uint8_t[]){0x37}, 1, 0},
+    {0x39, (uint8_t[]){0x08}, 1, 0},
+    {0x3A, (uint8_t[]){0x08}, 1, 0},
+    {0x3B, (uint8_t[]){0x0A}, 1, 0},
+    {0x3C, (uint8_t[]){0x0A}, 1, 0},
+    {0x3D, (uint8_t[]){0x04}, 1, 0},
+    {0x3E, (uint8_t[]){0x04}, 1, 0},
+    {0x3F, (uint8_t[]){0x06}, 1, 0},
+    {0x40, (uint8_t[]){0x06}, 1, 0},
+    {0x41, (uint8_t[]){0x1F}, 1, 0},
+
+    {0x42, (uint8_t[]){0x02}, 1, 0},
+    {0x43, (uint8_t[]){0x02}, 1, 0},
+    {0x44, (uint8_t[]){0x00}, 1, 0},
+    {0x45, (uint8_t[]){0x00}, 1, 0},
+    {0x46, (uint8_t[]){0x1F}, 1, 0},
+    {0x47, (uint8_t[]){0x1F}, 1, 0},
+    {0x48, (uint8_t[]){0x1E}, 1, 0},
+    {0x49, (uint8_t[]){0x1E}, 1, 0},
+    {0x4A, (uint8_t[]){0x1F}, 1, 0},
+    {0x4B, (uint8_t[]){0x17}, 1, 0},
+    {0x4C, (uint8_t[]){0x17}, 1, 0},
+    {0x4D, (uint8_t[]){0x37}, 1, 0},
+    {0x4E, (uint8_t[]){0x37}, 1, 0},
+    {0x4F, (uint8_t[]){0x09}, 1, 0},
+    {0x50, (uint8_t[]){0x09}, 1, 0},
+    {0x51, (uint8_t[]){0x0B}, 1, 0},
+    {0x52, (uint8_t[]){0x0B}, 1, 0},
+    {0x53, (uint8_t[]){0x05}, 1, 0},
+    {0x54, (uint8_t[]){0x05}, 1, 0},
+    {0x55, (uint8_t[]){0x07}, 1, 0},
+    {0x56, (uint8_t[]){0x07}, 1, 0},
+    {0x57, (uint8_t[]){0x1F}, 1, 0},
+
+    {0x58, (uint8_t[]){0x40}, 1, 0},
+    {0x5B, (uint8_t[]){0x30}, 1, 0},
+    {0x5C, (uint8_t[]){0x00}, 1, 0},
+    {0x5D, (uint8_t[]){0x34}, 1, 0},
+    {0x5E, (uint8_t[]){0x05}, 1, 0},
+    {0x5F, (uint8_t[]){0x02}, 1, 0},
+    {0x63, (uint8_t[]){0x00}, 1, 0},
+    {0x64, (uint8_t[]){0x6A}, 1, 0},
+    {0x67, (uint8_t[]){0x73}, 1, 0},
+    {0x68, (uint8_t[]){0x07}, 1, 0},
+    {0x69, (uint8_t[]){0x08}, 1, 0},
+    {0x6A, (uint8_t[]){0x6A}, 1, 0},
+    {0x6B, (uint8_t[]){0x08}, 1, 0},
+
+    {0x6C, (uint8_t[]){0x00}, 1, 0},
+    {0x6D, (uint8_t[]){0x00}, 1, 0},
+    {0x6E, (uint8_t[]){0x00}, 1, 0},
+    {0x6F, (uint8_t[]){0x88}, 1, 0},
+
+    {0x75, (uint8_t[]){0xFF}, 1, 0},
+    {0x77, (uint8_t[]){0xDD}, 1, 0},
+    {0x78, (uint8_t[]){0x2C}, 1, 0},
+    {0x79, (uint8_t[]){0x15}, 1, 0},
+    {0x7A, (uint8_t[]){0x17}, 1, 0},
+    {0x7D, (uint8_t[]){0x14}, 1, 0},
+    {0x7E, (uint8_t[]){0x82}, 1, 0},
+
+    {0xE0, (uint8_t[]){0x04}, 1, 0},
+    {0x00, (uint8_t[]){0x0E}, 1, 0},
+    {0x02, (uint8_t[]){0xB3}, 1, 0},
+    {0x09, (uint8_t[]){0x61}, 1, 0},
+    {0x0E, (uint8_t[]){0x48}, 1, 0},
+    {0x37, (uint8_t[]){0x58}, 1, 0}, // 全志
+    {0x2B, (uint8_t[]){0x0F}, 1, 0}, // 全志
+
+    {0xE0, (uint8_t[]){0x00}, 1, 0},
+
+    {0xE6, (uint8_t[]){0x02}, 1, 0},
+    {0xE7, (uint8_t[]){0x0C}, 1, 0},
+
+    {0x11, (uint8_t[]){0x00}, 1, 120},
+
+    {0x29, (uint8_t[]){0x00}, 1, 20}
+
+};
+
+#define JD9365_CMD_PAGE  (0xE0)
+#define JD9365_PAGE_USER (0x00)
+
 #define JD9365_CMD_DSI_INT0 (0x80)
+#define JD9365_DSI_2_LANE   (0x01)
+
+#define JD9365_CMD_GS_BIT (1 << 0)
+#define JD9365_CMD_SS_BIT (1 << 1)
 
 #define BSP_LCD_BACKLIGHT              (GPIO_NUM_26)
 #define BSP_LCD_RST                    (GPIO_NUM_27)
 #define LCD_LEDC_CH                    (1)
-#define CONFIG_BSP_LCD_DPI_BUFFER_NUMS (3)
+#define CONFIG_BSP_LCD_DPI_BUFFER_NUMS (1)
+
+#define LCD_X_SIZE       (800)
+#define LCD_Y_SIZE       (1280)
+#define PANEL_SIZE_BYTES (LCD_X_SIZE * LCD_Y_SIZE * 2)
+
+typedef struct
+{
+    esp_lcd_panel_io_handle_t io;
+    gpio_num_t reset_gpio_num;
+    uint8_t madctl_val;
+    uint8_t colmod_val;
+    const jd9365_lcd_init_cmd_t *init_cmds;
+    uint16_t init_cmds_size;
+    uint8_t lane_num;
+    struct
+    {
+        unsigned int reset_level : 1;
+    } flags;
+    // To save the original functions of MIPI DPI panel
+    esp_err_t (*del)(esp_lcd_panel_t *panel);
+    esp_err_t (*init)(esp_lcd_panel_t *panel);
+} jd9365_panel_t;
 
 static esp_err_t panel_jd9365_del(esp_lcd_panel_t *panel);
 static esp_err_t panel_jd9365_init(esp_lcd_panel_t *panel);
@@ -61,6 +310,9 @@ static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off);
 
 bsp_lcd_handles_t handles;
 esp_lcd_panel_handle_t disp_panel = NULL;
+
+bool DisplayOrientationInSoftware = true;
+DisplayOrientation CurrentOrientation = DisplayOrientation::DisplayOrientation_Portrait;
 
 struct DisplayDriver g_DisplayDriver;
 extern DisplayInterface g_DisplayInterface;
@@ -83,46 +335,39 @@ IRAM_ATTR static bool test_notify_refresh_ready(
     return (need_yield == pdTRUE);
 }
 
-static void test_draw_color_bar(esp_lcd_panel_handle_t panel_handle, uint16_t h_res, uint16_t v_res)
-{
-    refresh_finish = xSemaphoreCreateBinary();
-    esp_lcd_dpi_panel_event_callbacks_t cbs = {
-        .on_color_trans_done = test_notify_refresh_ready,
-        .on_refresh_done = NULL};
-    esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
-
-    uint8_t byte_per_pixel = (16 + 7) / 8;
-    uint16_t row_line = v_res / byte_per_pixel / 8;
-    uint8_t *color = (uint8_t *)heap_caps_calloc(1, row_line * h_res * byte_per_pixel, MALLOC_CAP_DMA);
-
-    for (int j = 0; j < byte_per_pixel * 8; j++)
-    {
-        for (int i = 0; i < row_line * h_res; i++)
-        {
-            for (int k = 0; k < byte_per_pixel; k++)
-            {
-                color[i * byte_per_pixel + k] = (BIT(j) >> (k * 8)) & 0xff;
-            }
-        }
-        esp_lcd_panel_draw_bitmap(panel_handle, 0, j * row_line, h_res, (j + 1) * row_line, color);
-        xSemaphoreTake(refresh_finish, portMAX_DELAY);
-    }
-
-    uint16_t color_line = row_line * byte_per_pixel * 8;
-    uint16_t res_line = v_res - color_line;
-    if (res_line)
-    {
-        for (int i = 0; i < res_line * h_res; i++)
-        {
-            for (int k = 0; k < byte_per_pixel; k++)
-            {
-                color[i * byte_per_pixel + k] = 0xff;
-            }
-        }
-        esp_lcd_panel_draw_bitmap(panel_handle, 0, color_line, h_res, v_res, color);
-        xSemaphoreTake(refresh_finish, portMAX_DELAY);
-    }
-}
+// static void test_draw_color_bar(esp_lcd_panel_handle_t panel_handle, uint16_t h_res, uint16_t v_res)
+//{
+//     refresh_finish = xSemaphoreCreateBinary();
+//     esp_lcd_dpi_panel_event_callbacks_t cbs = {
+//         .on_color_trans_done = test_notify_refresh_ready,
+//         .on_refresh_done = NULL};
+//     esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
+//
+//     uint16_t *color = (uint16_t *)heap_caps_calloc(1, v_res * h_res * 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_DMA);
+//
+//     for (int j = 0; j < (h_res * v_res); j++)
+//     {
+//         (color)[j] = 0b1111100000000000; // Red color in RGB565 format
+//     }
+//     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, h_res, v_res, color);
+//     vTaskDelay(pdMS_TO_TICKS(1500));
+//
+//     for (int j = 0; j < (h_res * v_res); j++)
+//     {
+//         (color)[j] = 0b0000011111100000; // Green color in RGB565 format
+//     }
+//     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, h_res, v_res, color);
+//     vTaskDelay(pdMS_TO_TICKS(1500));
+//
+//     for (int j = 0; j < (h_res * v_res); j++)
+//     {
+//         (color)[j] = 0b0000000000011111; // Blue color in RGB565 format
+//     }
+//     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, h_res, v_res, color);
+//     vTaskDelay(pdMS_TO_TICKS(1500));
+//
+//     xSemaphoreTake(refresh_finish, portMAX_DELAY);
+// }
 
 bool DisplayDriver::Initialize()
 {
@@ -155,54 +400,49 @@ bool DisplayDriver::Initialize()
     DisplayBrightness(100);
 
     // Create the Panel
-    {
-        esp_lcd_dpi_panel_config_t dpi_config = {
-            .virtual_channel = 0,
-            .dpi_clk_src = MIPI_DSI_DPI_CLK_SRC_DEFAULT,
-            .dpi_clock_freq_mhz = 80,
-            .pixel_format = LCD_COLOR_PIXEL_FORMAT_RGB565,
-            .in_color_format = LCD_COLOR_FMT_RGB565,
-            .out_color_format = LCD_COLOR_FMT_RGB565,
-            .num_fbs = 1,
-            .video_timing =
-                {
-                    .h_size = 800,
-                    .v_size = 1280,
-                    .hsync_pulse_width = 20,
-                    .hsync_back_porch = 20,
-                    .hsync_front_porch = 40,
-                    .vsync_pulse_width = 4,
-                    .vsync_back_porch = 12,
-                    .vsync_front_porch = 30,
-                },
-            .flags =
-                {
-                    .use_dma2d = false,
-                    .disable_lp = false,
-                },
-        };
+    esp_lcd_dpi_panel_config_t dpi_config = {
+        .virtual_channel = 0,
+        .dpi_clk_src = MIPI_DSI_DPI_CLK_SRC_DEFAULT,
+        .dpi_clock_freq_mhz = 80,
+        .pixel_format = LCD_COLOR_PIXEL_FORMAT_RGB565,
+        .in_color_format = LCD_COLOR_FMT_RGB565,
+        .out_color_format = LCD_COLOR_FMT_RGB565,
+        .num_fbs = CONFIG_BSP_LCD_DPI_BUFFER_NUMS,
+        .video_timing =
+            {
+                .h_size = 800,
+                .v_size = 1280,
+                .hsync_pulse_width = 20,
+                .hsync_back_porch = 20,
+                .hsync_front_porch = 40,
+                .vsync_pulse_width = 4,
+                .vsync_back_porch = 12,  // or 10?
+                .vsync_front_porch = 30, // 30,
+            },
+        .flags =
+            {
+                .use_dma2d = true,
+                .disable_lp = false,
+            },
+    };
 
-        dpi_config.num_fbs = CONFIG_BSP_LCD_DPI_BUFFER_NUMS;
-
-        jd9365_vendor_config_t vendor_config = {
-            .init_cmds = jd9365_vendor_specific_init_default,
-            .init_cmds_size =
-                sizeof(jd9365_vendor_specific_init_default) / sizeof(jd9365_vendor_specific_init_default[0]),
-            .mipi_config = {
-                .dsi_bus = mipi_dsi_bus,
-                .dpi_config = &dpi_config,
-                .lane_num = 2,
-            }};
-        esp_lcd_panel_dev_config_t lcd_dev_config = {
-            .reset_gpio_num = BSP_LCD_RST,
-            .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
-            .data_endian = LCD_RGB_DATA_ENDIAN_BIG,
-            .bits_per_pixel = 16,
-            .flags = {.reset_active_high = 0},
-            .vendor_config = &vendor_config,
-        };
-        esp_lcd_new_panel_jd9365(io_handle, &lcd_dev_config, &disp_panel);
-    }
+    jd9365_vendor_config_t vendor_config = {
+        .init_cmds = jd9365_vendor_specific_init_default,
+        .init_cmds_size = sizeof(jd9365_vendor_specific_init_default) / sizeof(jd9365_vendor_specific_init_default[0]),
+        .mipi_config = {
+            .dsi_bus = mipi_dsi_bus,
+            .dpi_config = &dpi_config,
+            .lane_num = 2,
+        }};
+    esp_lcd_panel_dev_config_t lcd_dev_config = {
+        .reset_gpio_num = BSP_LCD_RST,
+        .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
+        .data_endian = LCD_RGB_DATA_ENDIAN_BIG,
+        .bits_per_pixel = 16,
+        .flags = {.reset_active_high = 0},
+        .vendor_config = &vendor_config,
+    };
+    esp_lcd_new_panel_jd9365(io_handle, &lcd_dev_config, &disp_panel);
 
     esp_lcd_panel_reset(disp_panel);
     esp_lcd_panel_init(disp_panel);
@@ -214,10 +454,14 @@ bool DisplayDriver::Initialize()
     handles.panel = disp_panel;
     handles.control = NULL;
 
-    esp_lcd_dpi_panel_set_pattern(disp_panel, MIPI_DSI_PATTERN_BAR_VERTICAL);
+    // vTaskDelay(pdMS_TO_TICKS(3000));
+    // test_draw_color_bar(disp_panel, 800, 1280);
 
-    vTaskDelay(pdMS_TO_TICKS(3000));
-    test_draw_color_bar(disp_panel, 800, 1200);
+    refresh_finish = xSemaphoreCreateBinary();
+    esp_lcd_dpi_panel_event_callbacks_t cbs = {
+        .on_color_trans_done = test_notify_refresh_ready,
+        .on_refresh_done = NULL};
+    esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
 
     return true;
 }
@@ -225,8 +469,8 @@ bool DisplayDriver::Initialize()
 void DisplayDriver::SetupDisplayAttributes()
 {
     // Define the LCD/TFT resolution
-    Attributes.LongerSide = g_DisplayInterfaceConfig.Screen.width;
-    Attributes.ShorterSide = g_DisplayInterfaceConfig.Screen.height;
+    Attributes.LongerSide = LCD_Y_SIZE;
+    Attributes.ShorterSide = LCD_X_SIZE;
     Attributes.PowerSave = PowerSaveState::NORMAL;
     Attributes.BitsPerPixel = 16;
     g_DisplayInterface.GetTransferBuffer(Attributes.TransferBuffer, Attributes.TransferBufferSize);
@@ -238,21 +482,24 @@ bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
     switch (orientation)
     {
         case DisplayOrientation::DisplayOrientation_Portrait:
+            CurrentOrientation = DisplayOrientation::DisplayOrientation_Portrait;
+            Attributes.Height = Attributes.LongerSide;
+            Attributes.Width = Attributes.ShorterSide;
+            break;
+
+        case DisplayOrientation::DisplayOrientation_Landscape:
+            CurrentOrientation = DisplayOrientation::DisplayOrientation_Landscape;
             Attributes.Height = Attributes.ShorterSide;
             Attributes.Width = Attributes.LongerSide;
             break;
 
         case DisplayOrientation::DisplayOrientation_Portrait180:
-            Attributes.Height = Attributes.ShorterSide;
-            Attributes.Width = Attributes.LongerSide;
+            CurrentOrientation = DisplayOrientation::DisplayOrientation_Portrait180;
+            Attributes.Height = Attributes.LongerSide;
+            Attributes.Width = Attributes.ShorterSide;
             break;
-
-        case DisplayOrientation::DisplayOrientation_Landscape:
-            Attributes.Height = Attributes.ShorterSide;
-            Attributes.Width = Attributes.LongerSide;
-            break;
-
         case DisplayOrientation::DisplayOrientation_Landscape180:
+            CurrentOrientation = DisplayOrientation::DisplayOrientation_Landscape180;
             Attributes.Height = Attributes.ShorterSide;
             Attributes.Width = Attributes.LongerSide;
             break;
@@ -318,6 +565,8 @@ void DisplayDriver::BitBlt(
     int screenY,
     CLR_UINT32 data[])
 {
+    esp_lcd_panel_draw_bitmap(disp_panel, srcX, srcY, srcX + width, srcY + height, data);
+    xSemaphoreTake(refresh_finish, portMAX_DELAY);
 }
 
 CLR_UINT32 DisplayDriver::PixelsPerWord()
@@ -339,49 +588,6 @@ CLR_UINT32 DisplayDriver::SizeInBytes()
 {
     return (SizeInWords() * sizeof(CLR_UINT32));
 }
-
-bool bsp_display_brightness_init(void)
-{
-    const ledc_channel_config_t LCD_backlight_channel = {
-        .gpio_num = BSP_LCD_BACKLIGHT,
-        .speed_mode = LEDC_LOW_SPEED_MODE,
-        .channel = LEDC_CHANNEL_1,
-        .intr_type = LEDC_INTR_DISABLE,
-        .timer_sel = LEDC_TIMER_1,
-        .duty = 0,
-        .hpoint = 0,
-        .sleep_mode = LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
-        .flags = {.output_invert = 0}};
-    const ledc_timer_config_t LCD_backlight_timer = {
-        .speed_mode = LEDC_LOW_SPEED_MODE,
-        .duty_resolution = LEDC_TIMER_10_BIT,
-        .timer_num = LEDC_TIMER_1,
-        .freq_hz = 5000,
-        .clk_cfg = LEDC_AUTO_CLK,
-        .deconfigure = false};
-
-    ledc_timer_config(&LCD_backlight_timer);
-    ledc_channel_config(&LCD_backlight_channel);
-    return true;
-}
-
-typedef struct
-{
-    esp_lcd_panel_io_handle_t io;
-    gpio_num_t reset_gpio_num;
-    uint8_t madctl_val;
-    uint8_t colmod_val;
-    const jd9365_lcd_init_cmd_t *init_cmds;
-    uint16_t init_cmds_size;
-    uint8_t lane_num;
-    struct
-    {
-        unsigned int reset_level : 1;
-    } flags;
-    // To save the original functions of MIPI DPI panel
-    esp_err_t (*del)(esp_lcd_panel_t *panel);
-    esp_err_t (*init)(esp_lcd_panel_t *panel);
-} jd9365_panel_t;
 
 esp_err_t esp_lcd_new_panel_jd9365(
     const esp_lcd_panel_io_handle_t io,
@@ -437,6 +643,7 @@ static esp_err_t panel_jd9365_del(esp_lcd_panel_t *panel)
 {
     return ESP_OK;
 }
+
 static esp_err_t panel_jd9365_init(esp_lcd_panel_t *panel)
 {
     jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
@@ -540,11 +747,50 @@ static esp_err_t panel_jd9365_reset(esp_lcd_panel_t *panel)
 
 static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data)
 {
+    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
+    esp_lcd_panel_io_handle_t io = jd9365->io;
+    uint8_t command = 0;
+
+    if (invert_color_data)
+    {
+        command = LCD_CMD_INVON;
+    }
+    else
+    {
+        command = LCD_CMD_INVOFF;
+    }
+    esp_lcd_panel_io_tx_param(io, command, NULL, 0);
+
     return ESP_OK;
 }
 
 static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y)
 {
+    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
+    esp_lcd_panel_io_handle_t io = jd9365->io;
+    uint8_t madctl_val = jd9365->madctl_val;
+
+    // Control mirror through LCD command
+    if (mirror_x)
+    {
+        madctl_val |= JD9365_CMD_GS_BIT;
+    }
+    else
+    {
+        madctl_val &= ~JD9365_CMD_GS_BIT;
+    }
+    if (mirror_y)
+    {
+        madctl_val |= JD9365_CMD_SS_BIT;
+    }
+    else
+    {
+        madctl_val &= ~JD9365_CMD_SS_BIT;
+    }
+
+    esp_lcd_panel_io_tx_param(io, LCD_CMD_MADCTL, (uint8_t[]){madctl_val}, 1);
+    jd9365->madctl_val = madctl_val;
+
     return ESP_OK;
 }
 
@@ -562,3 +808,4 @@ static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off)
     }
     return ESP_OK;
 }
+

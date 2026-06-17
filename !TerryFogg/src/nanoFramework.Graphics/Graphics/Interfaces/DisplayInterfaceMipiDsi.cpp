@@ -4,19 +4,12 @@
 //
 #include "DisplayInterface.h"
 #include "DisplayInterfaceMipiDsi.h"
-// #include "sys_dev_spi_native.h"
 #include <nanoPAL.h>
-// #include <target_platform.h>
-// #include "sdkconfig.h"
-// #include "driver/gpio.h"
-// #include "driver/ledc.h"
-// #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_types.h"
 #include "esp_lcd_mipi_dsi.h"
 #include <esp_ldo_regulator.h>
-// #include "sd_pwr_ctrl_by_on_chip_ldo.h"
 
-#define BSP_MIPI_DSI_PHY_PWR_LDO_CHAN        (3) // LDO_VO3 is connected to VDD_MIPI_DPHY
+#define BSP_MIPI_DSI_PHY_PWR_LDO_CHAN       (3) // LDO_VO3 is connected to VDD_MIPI_DPHY
 #define BSP_MIPI_DSI_PHY_PWR_LDO_VOLTAGE_MV (2500)
 #define BSP_LCD_MIPI_DSI_LANE_NUM           (2) // 2 data lanes
 #define BSP_LCD_MIPI_DSI_LANE_BITRATE_MBPS  (1500)
@@ -31,6 +24,12 @@ DisplayInterfaceConfig g_DisplayInterfaceConfig;
 // Display Interface
 void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
 {
+    // Ignore the input config for now, as the MIPI DSI configuration is mostly fixed for a specific panel, and we can
+    // define the configuration in code directly, or we can read some parameters from the config if needed in the future
+    g_DisplayInterfaceConfig.Screen.width = 800;
+    g_DisplayInterfaceConfig.Screen.height = 1280;
+
+
     // Turn on the power for MIPI DSI PHY, so it can go from "No Power" state to "Shutdown" state
     esp_ldo_channel_handle_t phy_pwr_chan = NULL;
     esp_ldo_channel_config_t ldo_cfg = {
@@ -54,6 +53,7 @@ void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
     };
     esp_lcd_new_dsi_bus(&bus_config, &mipi_dsi_bus);
 
+    // Install MIPI DSI LCD control panel
     // We use DBI interface to send LCD commands and parameters esp_lcd_panel_io_handle_t io;
     esp_lcd_dbi_io_config_t dbi_config = {
         .virtual_channel = 0,
@@ -61,7 +61,9 @@ void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
         .lcd_param_bits = 8,
     };
     esp_lcd_new_panel_io_dbi(mipi_dsi_bus, &dbi_config, &io_handle);
-    // DisplayControllerInitialize();
+
+    DisplayBacklight(true);
+
     return;
 }
 void DisplayInterface::GetTransferBuffer(CLR_UINT8 *&TransferBuffer, CLR_UINT32 &TransferBufferSize)

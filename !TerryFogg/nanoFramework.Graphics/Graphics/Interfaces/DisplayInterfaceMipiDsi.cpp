@@ -26,8 +26,8 @@ void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
 {
     // Ignore the input config for now, as the MIPI DSI configuration is mostly fixed for a specific panel, and we can
     // define the configuration in code directly, or we can read some parameters from the config if needed in the future
-    g_DisplayInterfaceConfig.Screen.width = 800;
-    g_DisplayInterfaceConfig.Screen.height = 1280;
+    //g_DisplayInterfaceConfig.Screen.width = 800;
+    //g_DisplayInterfaceConfig.Screen.height = 1280;
 
 
     // Turn on the power for MIPI DSI PHY, so it can go from "No Power" state to "Shutdown" state

@@ -34,6 +34,9 @@
 #include "esp_lcd_types.h"
 #include "driver/gpio.h"
 #include "driver/ledc.h"
+#include "hal/ppa_types.h"
+#include "driver/ppa.h"
+#include "hal/assert.h"
 
 // #include "JD9365_data_waveshare_10_1.inc"
 
@@ -304,70 +307,39 @@ typedef struct
 static esp_err_t panel_jd9365_del(esp_lcd_panel_t *panel);
 static esp_err_t panel_jd9365_init(esp_lcd_panel_t *panel);
 static esp_err_t panel_jd9365_reset(esp_lcd_panel_t *panel);
-static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data);
-static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y);
+//static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data);
+//static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y);
 static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off);
-
 bsp_lcd_handles_t handles;
 esp_lcd_panel_handle_t disp_panel = NULL;
+static void *framebuffer[CONFIG_BSP_LCD_DPI_BUFFER_NUMS];
 
-bool DisplayOrientationInSoftware = true;
+// Default Portrait (Natural) orientation for the ESP32WIFI6
 DisplayOrientation CurrentOrientation = DisplayOrientation::DisplayOrientation_Portrait;
+static ppa_srm_rotation_angle_t currentRotation = PPA_SRM_ROTATION_ANGLE_0;
+static bool swap_xy = false;
 
 struct DisplayDriver g_DisplayDriver;
 extern DisplayInterface g_DisplayInterface;
 extern DisplayInterfaceConfig g_DisplayInterfaceConfig;
 extern esp_lcd_dsi_bus_handle_t mipi_dsi_bus;
 extern esp_lcd_panel_io_handle_t io_handle;
+extern uint16_t *graphicsRotationBuffer;
 
-SemaphoreHandle_t refresh_finish;
+ SemaphoreHandle_t refresh_finish;
 
-IRAM_ATTR static bool test_notify_refresh_ready(
-    esp_lcd_panel_handle_t panel,
-    esp_lcd_dpi_panel_event_data_t *edata,
-    void *user_ctx)
+ppa_client_handle_t ppa_srm_client_handle = NULL;
+
+ IRAM_ATTR static bool test_notify_refresh_ready(
+     esp_lcd_panel_handle_t panel,
+     esp_lcd_dpi_panel_event_data_t *edata,
+     void *user_ctx)
 {
-    refresh_finish = (SemaphoreHandle_t)user_ctx;
-    BaseType_t need_yield = pdFALSE;
-
-    xSemaphoreGiveFromISR(refresh_finish, &need_yield);
-
-    return (need_yield == pdTRUE);
-}
-
-// static void test_draw_color_bar(esp_lcd_panel_handle_t panel_handle, uint16_t h_res, uint16_t v_res)
-//{
-//     refresh_finish = xSemaphoreCreateBinary();
-//     esp_lcd_dpi_panel_event_callbacks_t cbs = {
-//         .on_color_trans_done = test_notify_refresh_ready,
-//         .on_refresh_done = NULL};
-//     esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
-//
-//     uint16_t *color = (uint16_t *)heap_caps_calloc(1, v_res * h_res * 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_DMA);
-//
-//     for (int j = 0; j < (h_res * v_res); j++)
-//     {
-//         (color)[j] = 0b1111100000000000; // Red color in RGB565 format
-//     }
-//     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, h_res, v_res, color);
-//     vTaskDelay(pdMS_TO_TICKS(1500));
-//
-//     for (int j = 0; j < (h_res * v_res); j++)
-//     {
-//         (color)[j] = 0b0000011111100000; // Green color in RGB565 format
-//     }
-//     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, h_res, v_res, color);
-//     vTaskDelay(pdMS_TO_TICKS(1500));
-//
-//     for (int j = 0; j < (h_res * v_res); j++)
-//     {
-//         (color)[j] = 0b0000000000011111; // Blue color in RGB565 format
-//     }
-//     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, h_res, v_res, color);
-//     vTaskDelay(pdMS_TO_TICKS(1500));
-//
-//     xSemaphoreTake(refresh_finish, portMAX_DELAY);
-// }
+     refresh_finish = (SemaphoreHandle_t)user_ctx;
+     BaseType_t need_yield = pdFALSE;
+     xSemaphoreGiveFromISR(refresh_finish, &need_yield);
+     return (need_yield == pdTRUE);
+ }
 
 bool DisplayDriver::Initialize()
 {
@@ -454,14 +426,22 @@ bool DisplayDriver::Initialize()
     handles.panel = disp_panel;
     handles.control = NULL;
 
-    // vTaskDelay(pdMS_TO_TICKS(3000));
-    // test_draw_color_bar(disp_panel, 800, 1280);
+    // Save the framebuffer address for later use in BitBlt
+    esp_lcd_dpi_panel_get_frame_buffer(disp_panel, 1, &framebuffer[0]);
+    Attributes.TransferBuffer = (CLR_UINT8 *)framebuffer[0];
 
-    refresh_finish = xSemaphoreCreateBinary();
-    esp_lcd_dpi_panel_event_callbacks_t cbs = {
-        .on_color_trans_done = test_notify_refresh_ready,
-        .on_refresh_done = NULL};
-    esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
+     refresh_finish = xSemaphoreCreateBinary();
+     esp_lcd_dpi_panel_event_callbacks_t cbs = {
+         .on_color_trans_done = NULL,
+         .on_refresh_done = test_notify_refresh_ready};
+     esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
+
+    // Setup for pixel processor for 90/180/270 degree rotation
+    ppa_client_config_t ppa_srm_client_config = {
+        .oper_type = PPA_OPERATION_SRM,
+        .max_pending_trans_num = 1,
+        .data_burst_length = PPA_DATA_BURST_LENGTH_128};
+    ppa_register_client(&ppa_srm_client_config, &ppa_srm_client_handle);
 
     return true;
 }
@@ -473,7 +453,6 @@ void DisplayDriver::SetupDisplayAttributes()
     Attributes.ShorterSide = LCD_X_SIZE;
     Attributes.PowerSave = PowerSaveState::NORMAL;
     Attributes.BitsPerPixel = 16;
-    g_DisplayInterface.GetTransferBuffer(Attributes.TransferBuffer, Attributes.TransferBufferSize);
     return;
 }
 
@@ -485,23 +464,31 @@ bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
             CurrentOrientation = DisplayOrientation::DisplayOrientation_Portrait;
             Attributes.Height = Attributes.LongerSide;
             Attributes.Width = Attributes.ShorterSide;
+            currentRotation = PPA_SRM_ROTATION_ANGLE_0;
+            swap_xy = false;
             break;
 
         case DisplayOrientation::DisplayOrientation_Landscape:
             CurrentOrientation = DisplayOrientation::DisplayOrientation_Landscape;
             Attributes.Height = Attributes.ShorterSide;
             Attributes.Width = Attributes.LongerSide;
+            currentRotation = PPA_SRM_ROTATION_ANGLE_90;
+            swap_xy = true;
             break;
 
         case DisplayOrientation::DisplayOrientation_Portrait180:
             CurrentOrientation = DisplayOrientation::DisplayOrientation_Portrait180;
             Attributes.Height = Attributes.LongerSide;
             Attributes.Width = Attributes.ShorterSide;
+            currentRotation = PPA_SRM_ROTATION_ANGLE_180;
+            swap_xy = false;
             break;
         case DisplayOrientation::DisplayOrientation_Landscape180:
             CurrentOrientation = DisplayOrientation::DisplayOrientation_Landscape180;
             Attributes.Height = Attributes.ShorterSide;
             Attributes.Width = Attributes.LongerSide;
+            currentRotation = PPA_SRM_ROTATION_ANGLE_270;
+            swap_xy = true;
             break;
     }
     return true;
@@ -565,8 +552,67 @@ void DisplayDriver::BitBlt(
     int screenY,
     CLR_UINT32 data[])
 {
-    esp_lcd_panel_draw_bitmap(disp_panel, srcX, srcY, srcX + width, srcY + height, data);
-    xSemaphoreTake(refresh_finish, portMAX_DELAY);
+
+    // NOTE: Rotation is to align the image to the panel.
+    // The natural panel rotation of the Waveshare ESP32-P4-WIFI6-Touch-LCD-10.1
+    // is portrait180
+    //
+    switch (CurrentOrientation)
+    {
+        case DisplayOrientation::DisplayOrientation_Portrait:
+            // Natural panel rotation, send data directly
+            esp_lcd_panel_draw_bitmap(disp_panel, srcX, srcY, srcX + width, srcY + height, data);
+            break;
+
+        case DisplayOrientation::DisplayOrientation_Landscape:
+        case DisplayOrientation::DisplayOrientation_Portrait180:
+        case DisplayOrientation::DisplayOrientation_Landscape180:
+
+            // Use pixel processor for rotation
+            // Note:
+            // The call returns when the transaction is logically complete
+            // But hardware DMA/cache may still be finishing writes invalidating cache lines releasing internal
+            // resources
+            //
+            ppa_srm_oper_config_t srm_config1 = {
+                .in =
+                    {.buffer = data,
+                     .pic_w = (uint32_t)width,
+                     .pic_h = (uint32_t)height,
+                     .block_w = (uint32_t)width,
+                     .block_h = (uint32_t)height,
+                     .block_offset_x = 0,
+                     .block_offset_y = 0,
+                     .srm_cm = PPA_SRM_COLOR_MODE_RGB565,
+                     .yuv_range = PPA_COLOR_RANGE_FULL,
+                     .yuv_std = PPA_COLOR_CONV_STD_RGB_YUV_BT601},
+                .out =
+                    {.buffer = framebuffer[0],
+                     .buffer_size = 800 * 1280 * 2,
+                     .pic_w = (swap_xy ? (uint32_t)height : (uint32_t)width),
+                     .pic_h = (swap_xy ? (uint32_t)width : (uint32_t)height),
+                     .block_offset_x = 0,
+                     .block_offset_y = 0,
+                     .srm_cm = PPA_SRM_COLOR_MODE_RGB565,
+                     .yuv_range = PPA_COLOR_RANGE_FULL,
+                     .yuv_std = PPA_COLOR_CONV_STD_RGB_YUV_BT601},
+                .rotation_angle = currentRotation,
+                .scale_x = 1,
+                .scale_y = 1,
+                .mirror_x = false,
+                .mirror_y = false,
+                .rgb_swap = 0,
+                .byte_swap = 0,
+                .alpha_update_mode = PPA_ALPHA_NO_CHANGE,
+                .alpha_scale_ratio = 0,
+                .mode = PPA_TRANS_MODE_BLOCKING,
+                .user_data = NULL};
+
+            ppa_do_scale_rotate_mirror(ppa_srm_client_handle, &srm_config1);
+            break;
+    }
+
+     xSemaphoreTake(refresh_finish, portMAX_DELAY);
 }
 
 CLR_UINT32 DisplayDriver::PixelsPerWord()
@@ -630,8 +676,8 @@ esp_err_t esp_lcd_new_panel_jd9365(
     panel_handle->del = panel_jd9365_del;
     panel_handle->init = panel_jd9365_init;
     panel_handle->reset = panel_jd9365_reset;
-    panel_handle->mirror = panel_jd9365_mirror;
-    panel_handle->invert_color = panel_jd9365_invert_color;
+    //panel_handle->mirror = panel_jd9365_mirror;
+    //panel_handle->invert_color = panel_jd9365_invert_color;
     panel_handle->disp_on_off = panel_jd9365_disp_on_off;
     panel_handle->user_data = jd9365;
     *ret_panel = panel_handle;
@@ -745,54 +791,54 @@ static esp_err_t panel_jd9365_reset(esp_lcd_panel_t *panel)
     return ESP_OK;
 }
 
-static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data)
-{
-    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
-    esp_lcd_panel_io_handle_t io = jd9365->io;
-    uint8_t command = 0;
-
-    if (invert_color_data)
-    {
-        command = LCD_CMD_INVON;
-    }
-    else
-    {
-        command = LCD_CMD_INVOFF;
-    }
-    esp_lcd_panel_io_tx_param(io, command, NULL, 0);
-
-    return ESP_OK;
-}
-
-static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y)
-{
-    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
-    esp_lcd_panel_io_handle_t io = jd9365->io;
-    uint8_t madctl_val = jd9365->madctl_val;
-
-    // Control mirror through LCD command
-    if (mirror_x)
-    {
-        madctl_val |= JD9365_CMD_GS_BIT;
-    }
-    else
-    {
-        madctl_val &= ~JD9365_CMD_GS_BIT;
-    }
-    if (mirror_y)
-    {
-        madctl_val |= JD9365_CMD_SS_BIT;
-    }
-    else
-    {
-        madctl_val &= ~JD9365_CMD_SS_BIT;
-    }
-
-    esp_lcd_panel_io_tx_param(io, LCD_CMD_MADCTL, (uint8_t[]){madctl_val}, 1);
-    jd9365->madctl_val = madctl_val;
-
-    return ESP_OK;
-}
+//static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data)
+//{
+//    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
+//    esp_lcd_panel_io_handle_t io = jd9365->io;
+//    uint8_t command = 0;
+//
+//    if (invert_color_data)
+//    {
+//        command = LCD_CMD_INVON;
+//    }
+//    else
+//    {
+//        command = LCD_CMD_INVOFF;
+//    }
+//    esp_lcd_panel_io_tx_param(io, command, NULL, 0);
+//
+//    return ESP_OK;
+//}
+//
+//static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y)
+//{
+//    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
+//    esp_lcd_panel_io_handle_t io = jd9365->io;
+//    uint8_t madctl_val = jd9365->madctl_val;
+//
+//    // Control mirror through LCD command
+//    if (mirror_x)
+//    {
+//        madctl_val |= JD9365_CMD_GS_BIT;
+//    }
+//    else
+//    {
+//        madctl_val &= ~JD9365_CMD_GS_BIT;
+//    }
+//    if (mirror_y)
+//    {
+//        madctl_val |= JD9365_CMD_SS_BIT;
+//    }
+//    else
+//    {
+//        madctl_val &= ~JD9365_CMD_SS_BIT;
+//    }
+//
+//    esp_lcd_panel_io_tx_param(io, LCD_CMD_MADCTL, (uint8_t[]){madctl_val}, 1);
+//    jd9365->madctl_val = madctl_val;
+//
+//    return ESP_OK;
+//}
 
 static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off)
 {

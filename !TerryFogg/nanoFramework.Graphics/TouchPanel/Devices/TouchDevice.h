@@ -4,8 +4,6 @@
 // See LICENSE file in the project root for full license information.
 
 #include "nanoCLR_Types.h"
-#include "nanoPAL_AsyncProcCalls_decl.h"
-#include "TouchPanel.h"
 
 struct TouchPointDevice
 {

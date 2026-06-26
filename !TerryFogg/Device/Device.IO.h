@@ -1,0 +1,249 @@
+﻿#pragma once
+//
+// Copyright (c) .NET Foundation and Contributors
+// See LICENSE file in the project root for full license information.
+//
+#include "nanoCLR_Types.h"
+#include "target_board.h"
+#include "DevicePin.h"
+#include "sys_dev_adc_native.h"
+#include "sys_dev_dac_native.h"
+#include "sys_dev_gpio_native.h"
+#include "sys_dev_i2c_native.h"
+#include "sys_dev_i2c_slave_native.h"
+#include "sys_dev_i2s_native.h"
+#include "sys_dev_pwm_native.h"
+#include "sys_io_ser_native.h"
+#include "sys_dev_spi_native.h"
+
+#define CLEAR_FLAG(FLAG, BIT) ((FLAG) &= ~(BIT))
+
+typedef enum
+{
+    REQUEST_I2C = 1,
+    REQUEST_NETWORK = 2,
+    REQUEST_USB = 4,
+    REQUEST_FILEX = 8,
+
+    I2C_REQUEST_COMPLETED = 32,
+    NETWORK_REQUEST_COMPLETED = 64,
+    USB_REQUEST_COMPLETED = 128,
+    FILEX_REQUEST_COMPLETED = 128
+} RequestType;
+
+enum I2C_CONTROL_TYPE
+{
+    MASTER,
+    SLAVE
+};
+
+struct ADC_Properties
+{
+    bool ADC_Initialized;
+    int channel;
+    PinNameValue adc;
+};
+struct I2C_Properties
+{
+    bool I2C_Initialized;
+    void *i2c_instance;
+    PinNameValue sda;
+    PinNameValue scl;
+    uint32_t ByteTime;
+};
+struct I2c_Transaction
+{
+    uint8_t busId;
+    int slaveAddress;
+    int writeOffset;
+    int writeSize;
+    int readOffset;
+    int readSize;
+    bool IsWrite;
+    bool IsRead;
+    uint8_t *writeBuffer;
+    uint8_t *readBuffer;
+    uint32_t bytesTransferred;
+    uint32_t status;
+};
+struct PWM_Properties
+{
+    bool PWM_Initialized;
+    CLR_INT32 sliceNumber;
+    PinNameValue channelA;
+    PinNameValue channelB;
+};
+struct SPI_Properties
+{
+    bool SPI_Initialized;
+    void *SPI_instance;
+    PinNameValue tx;
+    PinNameValue rx;
+    PinNameValue sck;
+    PinNameValue csn;
+};
+struct USART_Properties
+{
+    bool USART_Initialized;
+    void *USART_instance;
+    PinNameValue tx;
+    PinNameValue rx;
+};
+
+inline void Callback_EVENT_GPIO(GPIO_PIN pinNumber, bool pinValue)
+{
+    PostManagedEvent(EVENT_GPIO, 0, (uint16_t)pinNumber, pinValue);
+}
+
+class GpioIO
+{
+  private:
+  public:
+    GpioIO();
+    static bool InitializePin(PinNameValue pinNumber);
+    static bool Dispose(PinNameValue pinNumber);
+    static bool Read(PinNameValue pinNumber);
+    static bool Write(PinNameValue pinNumber, bool pinState);
+    static bool Toggle(PinNameValue pinNumber);
+    static bool SetLowPower(PinNameValue pinNumber);
+    static bool SetMode(PinNameValue pinNumber, PinMode pinMode);
+    static bool InterruptEnable(PinNameValue pinNumber, GPIO_INT_EDGE events, void *interruptRoutine = NULL);
+    static bool InterruptDisable(PinNameValue pinNumber);
+    static bool InterruptRemove(PinNameValue pinNumber);
+
+};
+
+class AdcIO
+{
+  private:
+  public:
+    static int MaximumValue();
+    static int MinimumValue();
+    static int Resolution();
+    static int ChannelCount();
+
+    static bool Initialize();
+    static bool Open(CLR_INT32 adc_channel_number);
+    static bool Dispose(CLR_INT32 adc_channel_number);
+    static CLR_UINT16 Read(CLR_INT32 adc_channel_number);
+    static CLR_UINT16 IsModeSupported(AdcChannelMode requestedMode);
+    static void SetupAdcList(ADC_Properties *mcuAdc);
+};
+
+class DacIO
+{
+  private:
+  public:
+    static int Resolution();
+    static int ChannelCount();
+    static bool Initialize(CLR_INT32 dac_channel_number);
+    static bool Open(CLR_INT32 dac_channel_number);
+    static char *DeviceSelector(int controllerId);
+    static void Write(CLR_INT32 dac_channel_number, CLR_INT32 value);
+    static PinNameValue ChannelToPin(CLR_INT32 dac_channel_number);
+    static bool Dispose(CLR_INT32 dac_channel_number);
+};
+
+class I2cIO
+{
+  private:
+  public:
+    static const CLR_INT32 TimeoutMaximum = 10000;
+    static const CLR_INT32 Timeout = 100;
+
+    static bool Initialize(
+        CLR_INT32 I2C_deviceId,
+        I2cBusSpeed I2C_speed,
+        I2C_CONTROL_TYPE I2C_control_type,
+        CLR_INT32 deviceAddress = 0);
+
+    static bool Dispose(CLR_INT32 I2C_deviceId);
+    static I2cTransferStatus Write(
+        CLR_INT32 I2C_deviceId,
+        CLR_INT32 slaveAddress,
+        CLR_UINT8 *writeBuffer,
+        CLR_INT32 writeSize,
+        I2C_CONTROL_TYPE busType);
+
+    static I2cTransferStatus Read(
+        CLR_INT32 I2C_deviceId,
+        CLR_INT32 slaveAddress,
+        CLR_UINT8 *readBuffer,
+        CLR_INT32 readSize);
+    //static void Execute(I2c_Transaction *pI2CTransaction);
+
+    static void SetupI2CList(I2C_Properties *mcuI2C, int NumberI2CDevices);
+    static uint32_t GetByteTime(uint32_t I2C_deviceId);
+};
+
+class PwmIO
+{
+  private:
+  public:
+    static bool Initialize(
+        CLR_INT32 channelId,
+        CLR_INT32 timerId,
+        CLR_INT32 pinNumber,
+        CLR_INT32 polarity,
+        CLR_INT32 desiredFrequency,
+        CLR_INT32 dutyCycle);
+
+    static bool Dispose(CLR_INT32 I2C_deviceId);
+    static CLR_UINT32 SetDutyCycle(CLR_INT32 pinNumber, CLR_INT32 desiredFrequency);
+    static CLR_UINT32 Start(CLR_INT32 pinNumber, CLR_INT32 timerId);
+    static CLR_UINT32 Stop(CLR_INT32 pinNumber, CLR_INT32 timerId);
+    static CLR_UINT32 DesiredFrequency(CLR_INT32 timerId, CLR_INT32 desiredFrequency);
+    static CLR_UINT32 GetChannel(CLR_INT32 timerId, CLR_INT32 pin_number);
+    static void SetupPwmList(PWM_Properties *boardPWMDefinitions);
+};
+
+class SerialIO
+{
+  private:
+  public:
+    static bool Initialize(CLR_INT32 usartDeviceNumber, CLR_INT32 baudrate);
+    static void SetupUsartList(USART_Properties *mcuUSART);
+    static bool Dispose(CLR_INT32 usartDeviceNumber);
+    static CLR_INT32 BytesAvailable(CLR_INT32 usartDeviceNumber);
+    static bool ReadBytes(CLR_INT32 usartDeviceNumber, CLR_UINT8 *data, CLR_INT32 length);
+    static bool ReadLine(CLR_INT32 usartDeviceNumber, char *newLine, CLR_UINT8 length, char *line);
+    static bool SetSignalLevels(CLR_INT32 usartDeviceNumber, bool inversion);
+    static bool GetSignalLevels(CLR_INT32 usartDeviceNumber);
+    static bool WriteBytes(CLR_INT32 usartDeviceNumber, CLR_UINT8 *data, CLR_INT32 count);
+    static bool SetWatchCharacter(CLR_INT32 usartDeviceNumber, CLR_UINT8 watch_character);
+    static bool SetReceiveThreshold(CLR_INT32 usartDeviceNumber, CLR_INT32 threshold);
+    static char *GetDevice(CLR_INT32 usartDeviceNumber);
+    static bool InvertSignalLevels(CLR_INT32 usartDeviceNumber, bool InvertSignal);
+    static bool SetBaudRate(CLR_INT32 usartDeviceNumber, CLR_INT32 baudRate);
+    static bool SetConfig(
+        CLR_INT32 usartDeviceNumber,
+        SerialMode serialMode,
+        CLR_INT32 stopBits,
+        CLR_INT32 dataBits,
+        CLR_INT32 RequestedParity);
+    static bool SetHandshake(CLR_INT32 usartDeviceNumber, Handshake handshake);
+    static bool SetMode(CLR_INT32 UsartDeviceNumber, CLR_INT32 mode);
+    static HRESULT SetupWriteLine(CLR_RT_StackFrame &stack, char **buffer, uint32_t *length, bool *isNewAllocation);
+};
+
+class SpiIO
+{
+  private:
+  public:
+    static CLR_INT32 MaximumClockFrequencyHz(CLR_INT32 requestClockFrequence);
+    static CLR_INT32 MinimumClockFrequencyHz(CLR_INT32 controllerID);
+
+    static bool Initialize();
+    static void SetupSpiList(SPI_Properties *mcuSPI);
+    static bool Dispose(CLR_INT32 deviceId);
+    static bool WriteRead(
+        CLR_INT32 deviceId,
+        SPI_WRITE_READ_SETTINGS rws,
+        CLR_UINT8 *writeData,
+        CLR_UINT16 writeSize,
+        CLR_UINT8 *readData,
+        CLR_UINT16 readSize);
+    static bool Open(SPI_DEVICE_CONFIGURATION spiConfig, CLR_UINT32 handle);
+    static CLR_INT32 ByteTime();
+    static SPI_OP_STATUS Completed(CLR_INT32 deviceId);
+};

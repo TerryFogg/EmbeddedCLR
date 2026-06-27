@@ -14,8 +14,10 @@
 #include "esp_check.h"
 #include "driver/gpio.h"
 #include "esp_lcd_panel_io.h"
-#include "esp_lcd_touch.h"
 #include "esp_lcd_touch_gt911.h"
+
+#include "esp_lcd_touch.h"
+
 
 static const char *TAG = "GT911";
 
@@ -162,7 +164,9 @@ esp_err_t esp_lcd_touch_new_i2c_gt911(const esp_lcd_panel_io_handle_t io, const 
 
         /* Register interrupt callback */
         if (esp_lcd_touch_gt911->config.interrupt_callback) {
-            esp_lcd_touch_register_interrupt_callback(esp_lcd_touch_gt911, esp_lcd_touch_gt911->config.interrupt_callback);
+            esp_lcd_touch_register_interrupt_callback_with_data(
+                esp_lcd_touch_gt911,
+                esp_lcd_touch_gt911->config.interrupt_callback,NULL);
         }
     }
 

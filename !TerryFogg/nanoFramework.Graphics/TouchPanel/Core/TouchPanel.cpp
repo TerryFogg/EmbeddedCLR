@@ -7,6 +7,8 @@
 
 #include "TouchPanel.h"
 #include "TouchDevice.h"
+
+#include "TouchDevice.h"
 #include "TouchInterface.h"
 #include <nanoPAL_Events.h>
 

@@ -12,8 +12,11 @@
 #include <nanoPAL_BlockStorage.h>
 #include <nanoHAL_ConfigurationManager.h>
 #include <nanoHAL_StorageOperation.h>
-#include "<nanoHAL_Graphics.h"
+#include "nanoHAL_Graphics.h"
+#include "GraphicsMemoryHeap.h"
 #include "TouchPanel.h"
+#include "TouchDevice.h"
+#include "TouchInterface.h"
 
 extern TouchInterface g_TouchInterface;
 extern TouchDevice g_TouchDevice;
@@ -144,14 +147,19 @@ void nanoHAL_Initialize()
         g_GraphicsMemoryHeap.Initialize(6000000);
         g_DisplayInterface.Initialize(displayConfig);
         g_DisplayDriver.Initialize();
-        g_TouchInterface.Initialize();
-        g_TouchDevice.Initialize();
-        g_TouchPanel.Initialize();
+        //g_TouchInterface.Initialize();
+
+        //int TouchInterruptPin=0;
+        //int TouchWidth = 0;
+        //int TouchHeight = 0;
+        //int TouchInvertX = 0;
+        //int TouchInvertY = 0;
+        //g_TouchDevice.Initialize( TouchInterruptPin,  TouchWidth,  TouchHeight,  TouchInvertX,  TouchInvertY);
+        //g_TouchPanel.Initialize();
 
         rebootinprogress = true;
     }
 #endif
-
 }
 
 void nanoHAL_Uninitialize(bool isPoweringDown)

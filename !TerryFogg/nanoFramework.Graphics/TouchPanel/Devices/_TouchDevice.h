@@ -17,3 +17,5 @@ struct TouchDevice
     bool Enable(GPIO_INTERRUPT_SERVICE_ROUTINE touchIsrProc);
     bool Disable();
 };
+
+

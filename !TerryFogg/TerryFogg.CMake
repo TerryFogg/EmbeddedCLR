@@ -50,16 +50,9 @@ list(REMOVE_ITEM NativeAssemblySources C:/nf-interpreter/targets/ESP32/ESP32_P4/
 list(REMOVE_ITEM SRCS_INCLUDES          ${ORIGINAL_NATIVE_SOURCE}/Graphics/Displays)
 list(REMOVE_ITEM SRCS_INCLUDES          ${ORIGINAL_NATIVE_SOURCE}/Graphics/Interfaces)
 list(REMOVE_ITEM SRCS_INCLUDES          ${ORIGINAL_NATIVE_SOURCE}/Graphics/Native)
-list(REMOVE_ITEM SRCS_INCLUDES          ${ORIGINAL_NATIVE_SOURCE}/TouchPanel/Core)
-list(REMOVE_ITEM SRCS_INCLUDES          ${ORIGINAL_NATIVE_SOURCE}/TouchPanel/Devices)
-list(REMOVE_ITEM SRCS_INCLUDES          ${ORIGINAL_NATIVE_SOURCE}/TouchPanel/Interfaces)
-
 list(REMOVE_ITEM NativeAssemblyIncludes ${ORIGINAL_NATIVE_SOURCE}/Graphics/Displays)
 list(REMOVE_ITEM NativeAssemblyIncludes ${ORIGINAL_NATIVE_SOURCE}/Graphics/Interfaces)
 list(REMOVE_ITEM NativeAssemblyIncludes ${ORIGINAL_NATIVE_SOURCE}/Graphics/Native)
-list(REMOVE_ITEM NativeAssemblyIncludes ${ORIGINAL_NATIVE_SOURCE}/TouchPanel/Core)
-list(REMOVE_ITEM NativeAssemblyIncludes ${ORIGINAL_NATIVE_SOURCE}/TouchPanel/Devices)
-list(REMOVE_ITEM NativeAssemblyIncludes ${ORIGINAL_NATIVE_SOURCE}/TouchPanel/Interfaces)
 
 # Use development versions
 list(APPEND SRCS C:/nf-interpreter/!TerryFogg/ESP32/targetHAL.cpp)
@@ -84,9 +77,6 @@ list(APPEND SRCS_INCLUDES C:/nf-interpreter/!TerryFogg/ESP32/ESP32_P4)
 list(APPEND NativeAssemblyIncludes ${INDEVELOPMENT_SOURCE}/Graphics/Displays)
 list(APPEND NativeAssemblyIncludes ${INDEVELOPMENT_SOURCE}/Graphics/Interfaces)
 list(APPEND NativeAssemblyIncludes ${INDEVELOPMENT_SOURCE}/Graphics/Native)
-list(APPEND NativeAssemblyIncludes ${INDEVELOPMENT_SOURCE}/TouchPanel/Core)
-list(APPEND NativeAssemblyIncludes ${INDEVELOPMENT_SOURCE}/TouchPanel/Devices)
-list(APPEND NativeAssemblyIncludes ${INDEVELOPMENT_SOURCE}/TouchPanel/Interfaces)
 
 list(APPEND NativeAssemblyIncludes C:/nf-interpreter/!TerryFogg/Device)
 list(APPEND NativeAssemblyIncludes C:/nf-interpreter/!TerryFogg/ESP32)

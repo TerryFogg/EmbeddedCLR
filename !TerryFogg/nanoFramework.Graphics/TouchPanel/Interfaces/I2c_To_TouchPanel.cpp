@@ -6,7 +6,9 @@
 #include "TouchInterface.h"
 #include "Device.IO.h"
 #include <driver/i2c_master.h>
+
 #include <esp_lcd_touch.h>
+#include "esp_lcd_touch_gt911.h"
 
 TouchInterface g_TouchInterface;
 
@@ -32,58 +34,11 @@ typedef struct
     } touch_flags;
 } bsp_display_cfg_t;
 
-esp_err_t esp_lcd_touch_new_i2c_gt911(
-    const esp_lcd_panel_io_handle_t io,
-    const esp_lcd_touch_config_t *config,
-    esp_lcd_touch_handle_t *out_touch);
+
 
 static bool i2c_initialized = false;
 static i2c_master_bus_handle_t i2c_handle = NULL; // I2C Handle
 static esp_lcd_touch_handle_t tp = NULL;
-
-esp_err_t bsp_touch_new(esp_lcd_touch_handle_t *ret_touch);
-
-
-// static CLR_UINT8 I2C_READ_BUFFER[32];
-// static int m_TouchI2cBus;
-// static int m_TouchI2cSlaveAddress;
-//
-bsp_display_cfg_t *cfg;
-
- 
-bool TouchInterface::Initialize(int TouchI2cBus, int TouchI2cSlaveAddress)
-{
-    // m_TouchI2cBus = TouchI2cBus;
-    // m_TouchI2cSlaveAddress = TouchI2cSlaveAddress;
-    // I2cIO::Initialize(TouchI2cBus, I2cBusSpeed_StandardMode, I2C_CONTROL_TYPE::MASTER, TouchI2cSlaveAddress);
-
-    bsp_touch_new(&tp);
-
-    return true;
-}
-CLR_UINT8 *TouchInterface::Write_Read(CLR_UINT8 *writeBuffer, CLR_UINT16 writeSize, CLR_UINT16 readSize)
-{
-    // I2cTransferStatus writeStatus = I2cTransferStatus_UnknownError;
-    // I2cTransferStatus readStatus = I2cTransferStatus_UnknownError;
-
-    // writeStatus = I2cIO::Write(m_TouchI2cBus, m_TouchI2cSlaveAddress, writeBuffer, writeSize,
-    // I2C_CONTROL_TYPE::MASTER); if (writeStatus != I2cTransferStatus_FullTransfer)
-    //{
-    //     return NULL;
-    // }
-    // if (readSize > 0)
-    //{
-    //     I2cIO::Read(m_TouchI2cBus, m_TouchI2cSlaveAddress, I2C_READ_BUFFER, readSize);
-    // }
-    // if (readStatus != I2cTransferStatus_FullTransfer)
-    //{
-    //     return I2C_READ_BUFFER;
-    // }
-    // else
-    //{
-    return NULL;
-    //}
-}
 
 static esp_err_t bsp_i2c_device_probe(uint8_t addr)
 {
@@ -113,8 +68,7 @@ esp_err_t bsp_i2c_init(void)
 
     return result;
 }
-
-esp_err_t bsp_touch_new( esp_lcd_touch_handle_t *ret_touch)
+esp_err_t bsp_touch_new(esp_lcd_touch_handle_t *ret_touch)
 {
 
     /* Initilize I2C */
@@ -179,8 +133,55 @@ esp_err_t bsp_touch_new( esp_lcd_touch_handle_t *ret_touch)
         return ESP_ERR_NOT_FOUND;
     }
     tp_io_config.scl_speed_hz = CONFIG_BSP_I2C_CLK_SPEED_HZ;
-    result = esp_lcd_new_panel_io_i2c(i2c_handle, &tp_io_config, &tp_io_handle);
-    result = esp_lcd_touch_new_i2c_gt911(tp_io_handle, &tp_cfg, ret_touch);
 
+    // Replace
+//    {
+//        result = esp_lcd_new_panel_io_i2c(i2c_handle, &tp_io_config, &tp_io_handle);
+        result = esp_lcd_touch_new_i2c_gt911(tp_io_handle, &tp_cfg, ret_touch);
+//    }
     return ESP_OK;
 }
+
+
+// static CLR_UINT8 I2C_READ_BUFFER[32];
+// static int m_TouchI2cBus;
+// static int m_TouchI2cSlaveAddress;
+//
+bsp_display_cfg_t *cfg;
+
+ 
+bool TouchInterface::Initialize()
+{
+    // m_TouchI2cBus = TouchI2cBus;
+    // m_TouchI2cSlaveAddress = TouchI2cSlaveAddress;
+    // I2cIO::Initialize(TouchI2cBus, I2cBusSpeed_StandardMode, I2C_CONTROL_TYPE::MASTER, TouchI2cSlaveAddress);
+
+    bsp_touch_new(&tp);
+
+    return true;
+}
+CLR_UINT8 *TouchInterface::Write_Read(CLR_UINT8 *writeBuffer, CLR_UINT16 writeSize, CLR_UINT16 readSize)
+{
+    // I2cTransferStatus writeStatus = I2cTransferStatus_UnknownError;
+    // I2cTransferStatus readStatus = I2cTransferStatus_UnknownError;
+
+    // writeStatus = I2cIO::Write(m_TouchI2cBus, m_TouchI2cSlaveAddress, writeBuffer, writeSize,
+    // I2C_CONTROL_TYPE::MASTER); if (writeStatus != I2cTransferStatus_FullTransfer)
+    //{
+    //     return NULL;
+    // }
+    // if (readSize > 0)
+    //{
+    //     I2cIO::Read(m_TouchI2cBus, m_TouchI2cSlaveAddress, I2C_READ_BUFFER, readSize);
+    // }
+    // if (readStatus != I2cTransferStatus_FullTransfer)
+    //{
+    //     return I2C_READ_BUFFER;
+    // }
+    // else
+    //{
+    return NULL;
+    //}
+}
+
+

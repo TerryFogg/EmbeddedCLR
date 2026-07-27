@@ -84,10 +84,10 @@ list(APPEND NativeAssemblyIncludes C:/nf-interpreter/!TerryFogg/ESP32/ESP32_P4)
 list(APPEND NativeAssemblyIncludes C:/nf-interpreter/src/System.Device.Dac)
 
 # Development reworking on I/O
-#list(APPEND NativeAssemblySources C:/nf-interpreter/!TerryFogg/Device/DevicePin.cpp)
-#list(APPEND NativeAssemblySources C:/nf-interpreter/!TerryFogg/Esp32/Device/Gpio.cpp)
-#list(APPEND NativeAssemblySources C:/nf-interpreter/!TerryFogg/Esp32/Device/I2c.cpp)
-#list(APPEND SRCS C:/nf-interpreter/!TerryFogg/ESP32/ESP32_P4/board.cpp)
+list(APPEND NativeAssemblySources C:/nf-interpreter/!TerryFogg/Device/DevicePin.cpp)
+list(APPEND NativeAssemblySources C:/nf-interpreter/!TerryFogg/Esp32/Device/Gpio.cpp)
+list(APPEND NativeAssemblySources C:/nf-interpreter/!TerryFogg/Esp32/Device/I2c.cpp)
+list(APPEND SRCS C:/nf-interpreter/!TerryFogg/ESP32/ESP32_P4/board.cpp)
 
 set_target_properties(nanoCLR.elf PROPERTIES SOURCES "${SRCS}")
 set_target_properties(nanoCLR.elf PROPERTIES INCLUDE_DIRECTORIES "${SRCS_INCLUDES}")

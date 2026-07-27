@@ -47,6 +47,7 @@ struct I2C_Properties
 {
     bool I2C_Initialized;
     void *i2c_instance;
+    void *device_handle;
     PinNameValue sda;
     PinNameValue scl;
     uint32_t ByteTime;

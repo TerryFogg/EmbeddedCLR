@@ -87,7 +87,7 @@ void DevicePin::ReleasePin(PinNameValue pinNameValue)
     if (IsPinReserved(pinNameValue))
     {
         GPIOPins[pinIndex].Reserved = false;
-        GPIOPins[pinIndex].Function = DevicePinFunction::LOW_POWER;
+        GPIOPins[pinIndex].Function = DevicePinFunction::dpLOW_POWER;
     }
 }
 bool DevicePin::IsValidOutputPin(PinNameValue pinNameValue)

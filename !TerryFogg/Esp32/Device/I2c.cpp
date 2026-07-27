@@ -3,6 +3,7 @@
 // See LICENSE file in the project root for full license information.
 //
 #include "Device.IO.h"
+#include "driver/i2c_master.h"
 
 
 #pragma region System.Device.I2c
@@ -19,6 +20,7 @@ static struct
 
 static I2C_Properties *mcuI2C;
 static int gNumberI2CDevices;
+
 void I2cIO::SetupI2CList(I2C_Properties *boardMcuI2C, int NumberI2CDevices)
 {
     mcuI2C = boardMcuI2C;
@@ -80,22 +82,27 @@ bool I2cIO::Initialize(
                 mcuI2C[I2C_deviceId].ByteTime = 0.009;
                 break;
         }
-
-        gpio_set_function(mcuI2C[I2C_deviceId].sda, GPIO_FUNC_I2C);
-        gpio_pull_up(mcuI2C[I2C_deviceId].sda);
-        gpio_set_function(mcuI2C[I2C_deviceId].scl, GPIO_FUNC_I2C);
-        gpio_pull_up(mcuI2C[I2C_deviceId].scl);
-
         switch (I2C_control_type)
         {
             case I2C_CONTROL_TYPE::MASTER:
                 i2c_master_bus_config_t i2c_bus_conf = {
-                    .clk_source = I2C_CLK_SRC_DEFAULT,
+                    .i2c_port = BSP_I2C_NUM,
                     .sda_io_num = BSP_I2C_SDA,
                     .scl_io_num = BSP_I2C_SCL,
-                    .i2c_port = BSP_I2C_NUM,
+                    .clk_source = I2C_CLK_SRC_DEFAULT,
+                    .glitch_ignore_cnt = 7,
+                    .flags.enable_internal_pullup = true,
                 };
                 esp_err_t result = i2c_new_master_bus(&i2c_bus_conf, &i2c_handle);
+
+                i2c_device_config_t dev_cfg = {
+                    .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+                    .device_address = deviceAddress,
+                    .scl_speed_hz = baud,
+                };
+
+                i2c_master_bus_add_device(bus_handle, &dev_cfg, &mcuI2C[I2C_deviceId].device_handle);
+
                 break;
             case I2C_CONTROL_TYPE::SLAVE:
                 i2c_slave_init((i2c_inst *)(mcuI2C[I2C_deviceId].i2c_instance), deviceAddress, &i2c_slave_handler);
@@ -103,6 +110,7 @@ bool I2cIO::Initialize(
         }
         mcuI2C[I2C_deviceId].I2C_Initialized = true;
     }
+
     return true;
 }
 bool I2cIO::Dispose(CLR_INT32 I2C_deviceId)

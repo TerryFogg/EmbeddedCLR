@@ -17,7 +17,8 @@ bool GpioIO::InitializePin(PinNameValue pinNameValue)
         .mode = GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_DISABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_DISABLE};
+        .intr_type = GPIO_INTR_DISABLE,
+        .hys_ctrl_mode = GPIO_HYS_SOFT_DISABLE};
     gpio_config(&io_conf);
     return true;
 }
@@ -54,7 +55,7 @@ bool GpioIO::SetMode(PinNameValue pinNameValue, PinMode pinMode)
 {
     bool status = false;
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
-    gpio_config_t io_conf = {.pin_bit_mask = pinNumber, .intr_type = GPIO_INTR_DISABLE};
+    gpio_config_t io_conf = {.pin_bit_mask = (uint64_t)pinNumber, .intr_type = GPIO_INTR_DISABLE};
     switch (pinMode)
     {
         case PinMode_Input:
@@ -110,11 +111,9 @@ bool GpioIO::SetMode(PinNameValue pinNameValue, PinMode pinMode)
 bool GpioIO::InterruptEnable(PinNameValue pinNameValue, GPIO_INT_EDGE events, void *interruptRoutine)
 {
     bool enable = true;
-    bool expectedState = false;
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
 
     gpio_int_type_t edge_events;
-    // Translate events from nanoFramework to ESP32
     switch (events)
     {
         case GPIO_INT_NONE:
@@ -138,9 +137,9 @@ bool GpioIO::InterruptEnable(PinNameValue pinNameValue, GPIO_INT_EDGE events, vo
     gpio_set_intr_type(pinNumber, edge_events);
     if (interruptRoutine != NULL)
     {
-        gpio_isr_handler_add(pinNumber, (void *)interruptRoutine, NULL);
+        gpio_isr_handler_add(pinNumber, (gpio_isr_t)interruptRoutine, NULL);
     }
-    return true;
+    return enable;
 }
 bool GpioIO::InterruptDisable(PinNameValue pinNameValue)
 {

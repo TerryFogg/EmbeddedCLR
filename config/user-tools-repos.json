@@ -1,0 +1,32 @@
+﻿{
+    "version": 4,
+    "configurePresets": [
+        {
+            "name": "user-tools-repos",
+            "description": "Cache variables with paths to local tools. Please replace with your own paths. Set to null to use build defaults or completly remove if your not building the concerned target.",
+            "hidden": true,
+            "cacheVariables": {
+                "TOOL_HEX2DFU_PREFIX": "C:/nftools/hex2dfu",
+                "TOOL_SRECORD_PREFIX": "C:/nftools/srecord/bin",
+                "CHIBIOS_SOURCE_FOLDER": "C:/nftools/ChibiOS",
+                "FREERTOS_SOURCE_FOLDER": "C:/nftools/FreeRTOS",
+                "CHIBIOS_CONTRIB_SOURCE": "C:/nftools/ChibiOS-Contrib",
+                "CHIBIOS_HAL_SOURCE": "C:/nftools/ChibiOS",
+                "STM32_HAL_DRIVER_SOURCE": "C:/nftools/stm32f7xx_hal_driver",
+                "STM32_CMSIS_DEVICE_SOURCE": "C:/nftools/cmsis_device_f7",
+                "STM32_CMSIS_CORE_SOURCE": "C:/nftools/cmsis_core",
+                "LWIP_SOURCE": "C:/nftools/lwip",
+                "MBEDTLS_SOURCE": "C:/nftools/mbedtls",
+                "FATFS_SOURCE": "C:/nftools/fatfs",
+                "LITTLEFS_SOURCE": "C:/nftools/littlefs",
+                "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
+                "TI_SL_CC32xx_SDK_SOURCE": "C:/nftools/TI_SimpleLink-CC32xx-SDK",
+                "TI_SL_CC13xx_26xx_SDK_SOURCE": "C:/nftools/TI_SimpleLink-CC13xx_26xx-SDK",
+                "TI_XDCTOOLS_SOURCE": "C:/nftools/TI-XDC-Tools",
+                "TI_SYSCONFIG_SOURCE": "C:/nftools/TI-SYSCONFIG-Tool",
+                "THREADX_SOURCE_FOLDER": "C:/nftools/ThreadX",
+                "NETXDUO_SOURCE_FOLDER": "C:/nftools/NetxDuo"
+            }
+        }
+    ]
+}

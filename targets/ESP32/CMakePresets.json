@@ -249,8 +249,8 @@
         {
             "name": "ESP32_P4_UART_REV_LESS3",
             "environment": {
-                "PATH": "$penv{PATH};C:/Espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
-                "IDF_PATH": "C:/nftools/esp/.espressif/v5.5.5/esp-idf"
+                "PATH": "$penv{PATH};C:/users/terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
+                "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf"
             },
 
             "inherits": [

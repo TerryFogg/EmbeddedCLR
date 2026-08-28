@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -316,7 +316,6 @@ esp_err_t NF_ESP32_Wireless_Disconnect()
 int NF_ESP32_Wireless_Open(HAL_Configuration_NetworkInterface *config)
 {
     esp_err_t ec;
-    bool okToStartSmartConnect = false;
 
     ec = NF_ESP32_InitaliseWifi();
     if (ec != ESP_OK)
@@ -449,7 +448,7 @@ esp_err_t NF_ESP32_WirelessAP_Configure(HAL_Configuration_NetworkInterface *conf
         return ESP_FAIL;
     }
 
-    wifi_config_t ap_config = {0};
+    wifi_config_t ap_config;
 
     hal_strncpy_s(
         (char *)ap_config.ap.ssid,

@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -23,10 +23,10 @@ esp_netif_t *NF_ESP32_GetEspNetif(struct netif *netif)
 // Wait for the network interface to become available
 int NF_ESP32_Wait_NetNumber(int num)
 {
-    int number = 0;
+    //int number = 0;
     int timeoutMs = 30000; // 30 seconds timeout
     int elapsedMs = 0;
-    esp_netif_t *espNetif;
+    esp_netif_t *espNetif = NULL;
 
     while (elapsedMs < timeoutMs)
     {

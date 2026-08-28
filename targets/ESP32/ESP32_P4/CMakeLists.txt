@@ -9,4 +9,4 @@ include(binutils.ESP32)
 
 nf_setup_target_build()
 
-include(${CMAKE_SOURCE_DIR}/!TerryFogg/TerryFogg.CMake)
+#include(${CMAKE_SOURCE_DIR}/!TerryFogg/TerryFogg.CMake)

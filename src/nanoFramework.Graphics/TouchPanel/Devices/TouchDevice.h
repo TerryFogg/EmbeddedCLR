@@ -12,7 +12,7 @@ struct TouchPointDevice
 };
 struct TouchDevice
 {
-    bool Initialize(int TouchInterruptPin, int TouchWidth, int TouchHeight, int TouchInvertX, int TouchInvertY);
+    bool Initialize();
     TouchPointDevice GetPoint();
     bool Enable(GPIO_INTERRUPT_SERVICE_ROUTINE touchIsrProc);
     bool Disable();

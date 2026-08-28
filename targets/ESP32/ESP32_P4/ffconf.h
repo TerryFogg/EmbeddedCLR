@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) 2018, ChaN, all right reserved.
 // See LICENSE file in the project root for full license information.
@@ -10,10 +10,10 @@
 #include <sdkconfig.h>
 #include <target_platform.h>
 
-#if (HAL_USE_SDC != TRUE)
-// need this include here when not using SDCARD so it can load the one from IDF
-#include <ffconf.h>
-#endif
+//#if (HAL_USE_SDC != TRUE)
+//// need this include here when not using SDCARD so it can load the one from IDF
+//#include <ffconf.h>
+//#endif
 
 /*---------------------------------------------------------------------------/
 /  Configurations of FatFs Module

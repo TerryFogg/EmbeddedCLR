@@ -16,9 +16,16 @@ include(binutils.common)
 include(binutils.ESP32)
 include(NF_Kconfig)
 
-add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>"
+                    "-Wno-error=cast-user-defined")
 
 nf_load_kconfig()
+############################
+#set(TARGET_SERIES_SHORT "esp32p4")
+#set(TARGET_SERIES "ESP32_P4")
+#set(RTOS_ESP32_CHECK TRUE)  # switch for different network
+
+
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 

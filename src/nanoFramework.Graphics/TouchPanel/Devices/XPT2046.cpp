@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -15,9 +15,6 @@ extern TouchInterface g_TouchInterface;
 
 bool TouchDevice::Initialize()
 {
-    ReadsToIgnore = 1;
-    ReadsPerSample = 1;
-    MaxFilterDistance = 1; // This is actually squared value of the max distance allowed between two points.
     return true;
 }
 

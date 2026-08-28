@@ -45,6 +45,10 @@ int Network_Interface_Open(int index)
 
     switch (networkConfiguration.InterfaceType)
     {
+        case NetworkInterfaceType_Unknown:
+        {
+            break;
+        }
 #if defined(CONFIG_SOC_WIFI_SUPPORTED) || defined(CONFIG_SOC_WIRELESS_HOST_SUPPORTED)
         // Wi-Fi (STA)
         case NetworkInterfaceType_Wireless80211:
@@ -90,6 +94,10 @@ bool Network_Interface_Close(int index)
 
     switch (networkConfiguration.InterfaceType)
     {
+        case NetworkInterfaceType_Thread:
+        {
+            break;
+        }
 #if defined(CONFIG_SOC_WIFI_SUPPORTED) || defined(CONFIG_SOC_WIRELESS_HOST_SUPPORTED)
         // Wireless
         case NetworkInterfaceType_Wireless80211:

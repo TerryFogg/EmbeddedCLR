@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<WorkspaceStateCache xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FileTree>
+    <IsExpanded xsi:nil="true" />
+    <Children>
+      <FileTreeStateEntry>
+        <Name>nf-interpreter</Name>
+        <IsExpanded xsi:nil="true" />
+        <Children>
+          <FileTreeStateEntry>
+            <Name>CMake Files</Name>
+            <IsExpanded>true</IsExpanded>
+          </FileTreeStateEntry>
+        </Children>
+      </FileTreeStateEntry>
+      <FileTreeStateEntry>
+        <Name>EmbeddedCLR</Name>
+        <IsExpanded xsi:nil="true" />
+        <Children>
+          <FileTreeStateEntry>
+            <Name>CMake Files</Name>
+            <IsExpanded>true</IsExpanded>
+            <Children>
+              <FileTreeStateEntry>
+                <Name>targets</Name>
+                <IsExpanded>true</IsExpanded>
+                <Children>
+                  <FileTreeStateEntry>
+                    <Name>ESP32</Name>
+                    <IsExpanded>true</IsExpanded>
+                  </FileTreeStateEntry>
+                </Children>
+              </FileTreeStateEntry>
+            </Children>
+          </FileTreeStateEntry>
+        </Children>
+      </FileTreeStateEntry>
+    </Children>
+  </FileTree>
+  <DocumentStates>
+    <PersistentDocumentState>
+      <Path>
+        <FullPath>C:\nf-interpreter\CMakeLists.txt</FullPath>
+        <IsCaseSensitive>false</IsCaseSensitive>
+      </Path>
+      <FirstVisibleLine>165</FirstVisibleLine>
+      <CaretLine>0</CaretLine>
+      <CaretOffset>0</CaretOffset>
+    </PersistentDocumentState>
+    <PersistentDocumentState>
+      <Path>
+        <FullPath>C:\Users\Terry\esp\v5.4.4\esp-idf\tools\cmake\kconfig.cmake</FullPath>
+        <IsCaseSensitive>false</IsCaseSensitive>
+      </Path>
+      <FirstVisibleLine>196</FirstVisibleLine>
+      <CaretLine>211</CaretLine>
+      <CaretOffset>11</CaretOffset>
+    </PersistentDocumentState>
+    <PersistentDocumentState>
+      <Path>
+        <FullPath>C:\repos\TerryFogg\EmbeddedCLR\CMakeLists.txt</FullPath>
+        <IsCaseSensitive>false</IsCaseSensitive>
+      </Path>
+      <FirstVisibleLine>0</FirstVisibleLine>
+      <CaretLine>0</CaretLine>
+      <CaretOffset>0</CaretOffset>
+    </PersistentDocumentState>
+  </DocumentStates>
+  <Breakpoints />
+  <ExpressionSheets />
+  <Projects />
+</WorkspaceStateCache>

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<DockLayout xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RootElement xsi:type="AutoHideHost">
+    <TopSize>200</TopSize>
+    <LeftSize>200</LeftSize>
+    <RightSize>200</RightSize>
+    <BottomSize>200</BottomSize>
+    <TopDock xsi:type="TabGroup">
+      <Tabs />
+      <ActiveTabIndex>-1</ActiveTabIndex>
+      <IsGloballyActive>false</IsGloballyActive>
+    </TopDock>
+    <LeftDock xsi:type="TabGroup">
+      <Tabs />
+      <ActiveTabIndex>-1</ActiveTabIndex>
+      <IsGloballyActive>false</IsGloballyActive>
+    </LeftDock>
+    <RightDock xsi:type="TabGroup">
+      <Tabs />
+      <ActiveTabIndex>-1</ActiveTabIndex>
+      <IsGloballyActive>false</IsGloballyActive>
+    </RightDock>
+    <BottomDock xsi:type="TabGroup">
+      <Tabs />
+      <ActiveTabIndex>-1</ActiveTabIndex>
+      <IsGloballyActive>false</IsGloballyActive>
+    </BottomDock>
+    <MainContents xsi:type="Split">
+      <Mode>DockSecond</Mode>
+      <Orientation>Horizontal</Orientation>
+      <Size>300</Size>
+      <FirstContents xsi:type="Split">
+        <Mode>DockSecond</Mode>
+        <Orientation>Vertical</Orientation>
+        <Size>373</Size>
+        <FirstContents xsi:type="Split">
+          <Mode>DockFirst</Mode>
+          <Orientation>Horizontal</Orientation>
+          <Size>616</Size>
+          <FirstContents xsi:type="TabGroup">
+            <Tabs>
+              <Tab>
+                <Definition>
+                  <ToolWindow Kind="CommonToolWindowType" Type="Outline" />
+                </Definition>
+                <TabText>Outline</TabText>
+              </Tab>
+              <Tab>
+                <Definition>
+                  <ToolWindow Kind="CommonToolWindowType" Type="Files" />
+                </Definition>
+                <TabText>Files</TabText>
+              </Tab>
+              <Tab>
+                <Definition>
+                  <ToolWindow Kind="CommonToolWindowType" Type="Symbols" />
+                </Definition>
+                <TabText>Symbols</TabText>
+              </Tab>
+            </Tabs>
+            <ActiveTabIndex>1</ActiveTabIndex>
+            <IsGloballyActive>true</IsGloballyActive>
+          </FirstContents>
+          <SecondContents xsi:type="TabGroup">
+            <Tabs />
+            <ActiveTabIndex>-1</ActiveTabIndex>
+            <IsGloballyActive>false</IsGloballyActive>
+          </SecondContents>
+        </FirstContents>
+        <SecondContents xsi:type="TabGroup">
+          <Tabs>
+            <Tab>
+              <Definition>
+                <ToolWindow Kind="CommonToolWindowType" Type="Errors" />
+              </Definition>
+              <TabText>Errors</TabText>
+            </Tab>
+            <Tab>
+              <Definition>
+                <ToolWindow Kind="CommonToolWindowType" Type="Output" />
+              </Definition>
+              <TabText>Output</TabText>
+            </Tab>
+          </Tabs>
+          <ActiveTabIndex>1</ActiveTabIndex>
+          <IsGloballyActive>false</IsGloballyActive>
+        </SecondContents>
+      </FirstContents>
+      <SecondContents xsi:type="TabGroup">
+        <Tabs>
+          <Tab>
+            <Definition>
+              <ToolWindow Kind="CommonToolWindowType" Type="QuickProperties" />
+            </Definition>
+            <TabText>Quick Properties</TabText>
+          </Tab>
+        </Tabs>
+        <ActiveTabIndex>0</ActiveTabIndex>
+        <IsGloballyActive>false</IsGloballyActive>
+      </SecondContents>
+    </MainContents>
+    <WindowState>
+      <Top>131</Top>
+      <Left>508</Left>
+      <Width>2580</Width>
+      <Height>1023</Height>
+      <IsMaximized>false</IsMaximized>
+    </WindowState>
+  </RootElement>
+  <ExtraWindows />
+</DockLayout>

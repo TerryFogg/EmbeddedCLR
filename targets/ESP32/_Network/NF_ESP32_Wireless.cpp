@@ -12,7 +12,7 @@
 
 static const char *TAG = "wifi";
 
-static wifi_mode_t wifiMode;
+// not used ==>static wifi_mode_t wifiMode;
 
 // flag to store if Wi-Fi has been initialized
 static bool IsWifiInitialised = false;
@@ -316,6 +316,7 @@ esp_err_t NF_ESP32_Wireless_Disconnect()
 int NF_ESP32_Wireless_Open(HAL_Configuration_NetworkInterface *config)
 {
     esp_err_t ec;
+    bool okToStartSmartConnect = false;
 
     ec = NF_ESP32_InitaliseWifi();
     if (ec != ESP_OK)

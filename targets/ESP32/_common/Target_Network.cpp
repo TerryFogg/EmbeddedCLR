@@ -45,6 +45,10 @@ int Network_Interface_Open(int index)
 
     switch (networkConfiguration.InterfaceType)
     {
+        case NetworkInterfaceType_Thread:
+        {
+            break;
+        }
         case NetworkInterfaceType_Unknown:
         {
             break;
@@ -94,6 +98,10 @@ bool Network_Interface_Close(int index)
 
     switch (networkConfiguration.InterfaceType)
     {
+        case NetworkInterfaceType_Unknown:
+        {
+            break;
+        }
         case NetworkInterfaceType_Thread:
         {
             break;

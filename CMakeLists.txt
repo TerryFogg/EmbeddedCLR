@@ -17,9 +17,14 @@ include(binutils.ESP32)
 include(NF_Kconfig)
 
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>"
-                    "-Wno-error=cast-user-defined")
+                    "-Wno-error=cast-user-defined"
+                    "-Wno-error=missing-field-initializers")
 
 nf_load_kconfig()
+
+#${CMAKE_BINARY_DIRECTORY}/targets/ESP32/ESP32_P4
+
+
 ############################
 #set(TARGET_SERIES_SHORT "esp32p4")
 #set(TARGET_SERIES "ESP32_P4")

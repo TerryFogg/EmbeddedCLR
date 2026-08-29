@@ -22,9 +22,9 @@ extern TouchInterface g_TouchInterface;
 extern TouchDevice g_TouchDevice;
 #endif
 
-#if (HAL_USE_UART == TRUE)
-#include <sys_io_ser_native_target.h>
-#endif
+//#if (HAL_USE_UART == TRUE)
+//#include <sys_io_ser_native_target.h>
+//#endif
 void Storage_Initialize();
 void Storage_Uninitialize();
 
@@ -116,15 +116,15 @@ void nanoHAL_Initialize()
     nanoSPI_Initialize();
 #endif
 
-#if (HAL_USE_UART == TRUE)
-
-    memset(&Uart0_PAL, 0, sizeof(Uart0_PAL));
-    memset(&Uart1_PAL, 0, sizeof(Uart1_PAL));
-#if defined(UART_NUM_2)
-    memset(&Uart2_PAL, 0, sizeof(Uart2_PAL));
-#endif
-
-#endif
+//#if (HAL_USE_UART == TRUE)
+//
+//    memset(&Uart0_PAL, 0, sizeof(Uart0_PAL));
+//    memset(&Uart1_PAL, 0, sizeof(Uart1_PAL));
+//#if defined(UART_NUM_2)
+//    memset(&Uart2_PAL, 0, sizeof(Uart2_PAL));
+//#endif
+//
+//#endif
 
     // no PAL events required until now
     // PalEvent_Initialize();

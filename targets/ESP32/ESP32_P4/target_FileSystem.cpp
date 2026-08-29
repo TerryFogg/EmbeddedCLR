@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -7,7 +7,7 @@
 #include <nanoHAL_v2.h>
 #include <nanoHAL_Types.h>
 #include <nanoPAL_FileSystem.h>
-#include <littlefs_FS_Driver.h>
+//#include <littlefs_FS_Driver.h>
 
 #if (HAL_USE_SDC == TRUE)
 #include <fatfs_FS_Driver.h>

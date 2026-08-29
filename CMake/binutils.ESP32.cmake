@@ -981,7 +981,8 @@ macro(nf_add_idf_as_library)
     )
 
     # add nano libraries to the link dependencies of IDF build
-    idf_build_set_property(__LINK_DEPENDS "NF_CoreCLR;NF_NativeAssemblies;NF_Debugger;WireProtocol;NF_Network" APPEND)
+    idf_build_set_property(__LINK_DEPENDS "NF_CoreCLR;NF_NativeAssemblies;NF_Debugger;WireProtocol" APPEND)
+#TERRY    idf_build_set_property(__LINK_DEPENDS "NF_CoreCLR;NF_NativeAssemblies;NF_Debugger;WireProtocol;NF_Network" APPEND)
 
     nf_setup_partition_tables_generator()
 

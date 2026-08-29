@@ -2,135 +2,144 @@
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
+#
+# Copyright (c) .NET Foundation and Contributors
+# See LICENSE file in the project root for full license information.
+#
 
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/PAL/include")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Gif")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Jpeg")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Core")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Displays")
-list(APPEND nanoFramework.Graphics_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Devices")
+# Use modified official source code or official source code
+  # Use official source 
 
- set (  nanoFramework.Graphics_SRCS
-        nanoPAL_Events_functions.cpp
-        nanoPAL_Events_driver.cpp
-        Bitmap_Decoder.cpp
-        Font.cpp
-        Gif.cpp
-        GifDecoder.cpp
-        lzwread.cpp
-        jbytearraydatasrc.c
-        jcapimin.c
-        jcapistd.c
-        jccoefct.c
-        jccolor.c
-        jcdctmgr.c
-        jchuff.c
-        jcinit.c
-        jcmainct.c
-        jcmarker.c
-        jcmaster.c
-        jcomapi.c
-        jcparam.c
-        jcphuff.c
-        jcprepct.c
-        jcsample.c
-        jctrans.c
-        jdapimin.c
-        jdapistd.c
-        jdcoefct.c
-        jdcolor.c
-        jddctmgr.c
-        jdhuff.c
-        jdinput.c
-        jdmainct.c
-        jdmarker.c
-        jdmaster.c
-        jdmerge.c
-        jdphuff.c
-        jdpostct.c
-        jdsample.c
-        jdtrans.c
-        jerror.c
-        jfdctflt.c
-        jfdctfst.c
-        jfdctint.c
-        jidctflt.c
-        jidctfst.c
-        jidctint.c
-        jidctred.c
-        jmemmgr.c
-        jmemnanoclr.cpp
-        Jpeg.cpp
-        jquant1.c
-        jquant2.c
-        jutils.c
-        mcbcr.c
-        mfint.c
-        miint.c
-        pfint.c
-        piint.c
-        transupp.c
-        Graphics.cpp
-        GraphicsDriver.cpp
-        GraphicsMemoryHeap.cpp
-        
-        nanoFramework_Graphics.cpp
- #       nanoFramework_Graphics_nanoFramework_UI_Ink.cpp
- #       nanoFramework_Graphics_nanoFramework_UI_TouchCollectorConfiguration.cpp
- #       nanoFramework_Graphics_nanoFramework_UI_TouchEventProcessor.cpp
- #       nanoFramework_Graphics_nanoFramework_UI_TouchPanel.cpp
-        nanoFramework_Graphics_nanoFramework_UI_Bitmap.cpp
-        nanoFramework_Graphics_nanoFramework_UI_DisplayControl.cpp
-        nanoFramework_Graphics_nanoFramework_UI_Font.cpp
+          #Common Display/Touch Code
+SET(GRAPHICS_SUPPORT TRUE)
+SET(TOUCH_DISPLAY_SUPPORT TRUE)
+SET(DISPLAY_DRIVER  "DisplayControllerJD9365.cpp")
+SET(DISPLAY_INTERFACE  "DisplayInterfaceMipiDsi.cpp")
+SET(TOUCH_INTERFACE_CONTROLLER  "GT911.cpp")
+SET(TOUCH_INTERFACE_DRIVER  "I2c_To_TouchPanel.cpp")
 
-  #      TouchPanel.cpp
-  #      Gestures.cpp
-  #      Ink.cpp
 
-        #Common Display/Touch Code
-        "${GRAPHICS_DISPLAY}"
-  #      "${TOUCHPANEL_DEVICE}"
-        
-        #Target board Display/Touch Code
-        Graphics_Memory.cpp
-        "${GRAPHICS_DISPLAY_INTERFACE}"
-  #      "${TOUCHPANEL_INTERFACE}"
+
+SET(GRAPHICS_PATH  src)
+
+ list(APPEND GRAPHICS_INCLUDES 
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Gif
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Displays
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Native
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Interfaces
+ )
+
+ list(APPEND GRAPHICS_SOURCES
+             ${CMAKE_SOURCE_DIR}/src/PAL/Events/nanoPAL_Events_functions.cpp
+             ${CMAKE_SOURCE_DIR}/src/PAL/Events/nanoPAL_Events_driver.cpp
+
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Graphics.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/GraphicsDriver.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/GraphicsMemoryHeap.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Bmp/Bitmap_Decoder.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Fonts/Font.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Gif/Gif.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Gif/GifDecoder.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Gif/lzwread.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jbytearraydatasrc.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcapimin.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcapistd.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jccoefct.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jccolor.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcdctmgr.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jchuff.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jchuff.h
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcinit.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcmainct.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcmarker.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcmaster.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcomapi.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jconfig.h
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcparam.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcphuff.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcprepct.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jcsample.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jctrans.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdapimin.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdapistd.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdcoefct.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdcolor.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jddctmgr.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdhuff.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdinput.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdmainct.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdmarker.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdmaster.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdmerge.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdphuff.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdpostct.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdsample.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jdtrans.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jerror.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jfdctflt.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jfdctfst.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jfdctint.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jidctflt.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jidctfst.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jidctint.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jidctred.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jmemmgr.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jmemnanoclr.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/Jpeg.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jquant1.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jquant2.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/jutils.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/mcbcr.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/mfint.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/miint.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/pfint.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/piint.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Core/Support/Jpeg/transupp.c
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics.cpp
+
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_Bitmap.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_DisplayControl.cpp
+             ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_Font.cpp
+
+ )
+
+ 
+ # Display hardware
+if(GRAPHICS_SUPPORT)
+    list(APPEND GRAPHICS_SOURCES 
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Displays/${DISPLAY_DRIVER}
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Interfaces/${DISPLAY_INTERFACE}
+    )
+endif()
+
+ # Touch Display
+if(TOUCH_DISPLAY_SUPPORT)
+     list(APPEND TOUCH_INCLUDES
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/TouchPanel/Core
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/TouchPanel/Devices
+     )
+    list(APPEND TOUCH_SOURCES
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_TouchEventProcessor.cpp
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/TouchPanel/Core/TouchPanel.cpp
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/TouchPanel/Devices/${TOUCH_INTERFACE_CONTROLLER}
+                ${CMAKE_SOURCE_DIR}/${GRAPHICS_PATH}/nanoFramework.Graphics/TouchPanel/Interfaces/${TOUCH_INTERFACE_DRIVER}
+    )
+endif()
+
+
+list(APPEND nanoFramework.Graphics_INCLUDE_DIRS
+     ${GRAPHICS_INCLUDES}
+     ${TOUCH_INCLUDES}
 )
 
-foreach(SRC_FILE ${nanoFramework.Graphics_SRCS})
+list(APPEND nanoFramework.Graphics_SOURCES
+     ${GRAPHICS_SOURCES}
+     ${TOUCH_SOURCES}
+)
 
-    set(nanoFramework.Graphics_SRC_FILE ${SRC_FILE}-NOTFOUND)
-
-    find_file(nanoFramework.Graphics_SRC_FILE ${SRC_FILE}
-        PATHS 
-        ${CMAKE_SOURCE_DIR}/src/PAL/Events
-        ${CMAKE_SOURCE_DIR}/src/CLR/Core
-        
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Bmp
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Fonts
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Gif
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Jpeg
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Displays
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Core
-        ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Devices
-
-        ${TARGET_BASE_LOCATION}/nanoCLR/nanoFramework.Graphics
-
-        CMAKE_FIND_ROOT_PATH_BOTH     
-    )
-
-    if (BUILD_VERBOSE)
-        message("${SRC_FILE} >> ${nanoFramework.Graphics_SRC_FILE}")
-    endif()
-
-    list(APPEND nanoFramework.Graphics_SOURCES ${nanoFramework.Graphics_SRC_FILE} )
-
-endforeach()
 
 include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(nanoFramework.Graphics DEFAULT_MSG nanoFramework.Graphics_INCLUDE_DIRS nanoFramework.Graphics_SOURCES)

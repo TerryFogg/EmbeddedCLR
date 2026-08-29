@@ -2363,10 +2363,11 @@ HRESULT CLR_RT_AppDomain::GetManagedObject(CLR_RT_HeapBlock &res)
 
         pRes = res.Dereference();
 
-        NANOCLR_CHECK_HRESULT(CLR_RT_ObjectToEvent_Source::CreateInstance(
-            this,
-            *pRes,
-            pRes[Library_corlib_native_System_AppDomain::FIELD___appDomain]));
+        NANOCLR_CHECK_HRESULT(
+            CLR_RT_ObjectToEvent_Source::CreateInstance(
+                this,
+                *pRes,
+                pRes[Library_corlib_native_System_AppDomain::FIELD___appDomain]));
 
         pRes[Library_corlib_native_System_AppDomain::FIELD___friendlyName].SetObjectReference(m_strName);
     }
@@ -2857,8 +2858,8 @@ static const TypeIndexLookup c_TypeIndexLookup[] = {
 
     TIL("nanoFramework.UI", "Bitmap", m_Bitmap),
     TIL("nanoFramework.UI", "Font", m_Font),
-    TIL("nanoFramework.Touch", "TouchEvent", m_TouchEvent),
-    TIL("nanoFramework.Touch", "TouchInput", m_TouchInput),
+    TIL("nanoFramework.UI", "TouchEvent", m_TouchEvent),
+    TIL("nanoFramework.UI", "TouchInput", m_TouchInput),
 
     TIL("System.Net.NetworkInformation", "NetworkInterface", m_NetworkInterface),
     TIL("System.Net.NetworkInformation", "Wireless80211Configuration", m_Wireless80211Configuration),
@@ -3080,6 +3081,10 @@ bool CLR_RT_Assembly::FindTypeDef(const char *name, const char *nameSpace, CLR_R
             const char *szNameSpace = GetString(target->nameSpace);
             const char *szName = GetString(target->name);
 
+            if (strcmp(szNameSpace, "nanoFramework.UI") && strcmp(szName, "TouchEvent"))
+            {
+                idx.Set(m_idx, i);
+            }
             if (!strcmp(szName, name) && !strcmp(szNameSpace, nameSpace))
             {
                 idx.Set(m_idx, i);
@@ -4709,10 +4714,11 @@ HRESULT CLR_RT_AttributeParser::Next(Value *&res)
             }
 
             // instantiate array to hold parameters values
-            NANOCLR_CHECK_HRESULT(CLR_RT_HeapBlock_Array::CreateInstance(
-                m_lastValue.m_value,
-                paramCount,
-                g_CLR_RT_WellKnownTypes.m_Object));
+            NANOCLR_CHECK_HRESULT(
+                CLR_RT_HeapBlock_Array::CreateInstance(
+                    m_lastValue.m_value,
+                    paramCount,
+                    g_CLR_RT_WellKnownTypes.m_Object));
 
             // get a pointer to the first element
             CLR_RT_HeapBlock *currentParam =

@@ -6,7 +6,7 @@
 #ifndef TARGET_PLATFORM_H
 #define TARGET_PLATFORM_H
 
-#include "esp32_ethernet_options.h"
+//#include "esp32_ethernet_options.h"
 
 #define NANOCLR_GRAPHICS                      @NANOCLR_GRAPHICS@
 #define ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES @ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES@

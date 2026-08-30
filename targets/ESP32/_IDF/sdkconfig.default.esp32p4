@@ -1,4 +1,4 @@
-# This file was generated using idf.py save-defconfig. It can be edited manually.
+﻿# This file was generated using idf.py save-defconfig. It can be edited manually.
 # Espressif IoT Development Framework (ESP-IDF)  Project Minimal Configuration
 #
 CONFIG_IDF_TARGET="esp32p4"
@@ -101,4 +101,4 @@ CONFIG_LITTLEFS_OPEN_DIR=y
 CONFIG_LITTLEFS_FCNTL_GET_PATH=y
 
 # remove this following the migration to the new API, but for now we need to suppress the warning
-CONFIG_TOUCH_SUPPRESS_DEPRECATE_WARN=y
+#CONFIG_TOUCH_SUPPRESS_DEPRECATE_WARN=y

@@ -184,12 +184,7 @@ function(nf_set_esp32_target_series)
     # store the series name for later use
     set(TARGET_SERIES_SHORT ${TARGET_SERIES_2} CACHE INTERNAL "ESP32 target series lower case, short version")
 
-    # set the CPU type
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32c3" OR ${TARGET_SERIES_SHORT} STREQUAL "esp32c5" OR ${TARGET_SERIES_SHORT} STREQUAL "esp32c6" OR ${TARGET_SERIES_SHORT} STREQUAL "esp32h2" OR ${TARGET_SERIES_SHORT} STREQUAL "esp32p4")
-        set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
-    else()
-        set(ESP32_CPU_TYPE "xtensa" CACHE INTERNAL "Setting CPU type")
-    endif()
+    set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
 
 endfunction()
 

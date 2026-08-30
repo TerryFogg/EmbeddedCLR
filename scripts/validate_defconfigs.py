@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
  
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
@@ -39,15 +39,7 @@ import kconfiglib
 def find_defconfigs(repo_root: str) -> list[str]:
     """Return all defconfig file paths in the repo."""
     patterns = [
-        "targets/ESP32/defconfig/*_defconfig",
-        "targets/ChibiOS/*/defconfig",
-        "targets/ChibiOS/*/defconfig_*",
-        "targets/FreeRTOS/**/defconfig",
-        "targets/TI_SimpleLink/*/defconfig",
-        "targets/ThreadX/**/defconfig",
-        "targets/ThreadX/**/defconfig_*",
-        "targets-community/ChibiOS/*/defconfig",
-        "targets-community/TI_SimpleLink/*/defconfig",
+        "targets/ESP32/defconfig/*_defconfig"
     ]
     results = []
     for pat in patterns:

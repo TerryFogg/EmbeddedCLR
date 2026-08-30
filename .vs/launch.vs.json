@@ -7,7 +7,7 @@
             "request": "launch",
             "projectTarget": "nanoCLR.elf",
             "project": "CMakeLists.txt",
-            "program": "C:/nf-interpreter/build/nanoCLR.elf",
+            "program": "C:/repos/TerryFogg/EmbeddedCLR/build/nanoCLR.elf",
             "cwd": "${workspaceRoot}",
             "MIMode": "gdb",
             "stopAtEntry": false,

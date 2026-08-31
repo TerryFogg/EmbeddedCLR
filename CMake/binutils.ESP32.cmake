@@ -386,9 +386,6 @@ macro(nf_setup_target_build)
     nf_add_common_packages()
     nf_add_platform_packages()
 
-    #######################################
-
-    add_subdirectory("common")
 
     #######################
     # nanoCLR executable has already been created on main CMakeLists

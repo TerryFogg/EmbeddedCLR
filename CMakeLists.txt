@@ -40,6 +40,11 @@ set(HAL_USE_BLE_OPTION FALSE CACHE INTERNAL "No Bluetooth Support")
 set(ESP32_ETHERNET_SUPPORT FALSE CACHE INTERNAL "")
 set(HAL_USE_THREAD_OPTION FALSE CACHE INTERNAL "No OpenThread Support")
 set(TARGET_BASE_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32/${TARGET_BOARD})
+
+
+set(TARGET_SERIES_SHORT "esp32p4" CACHE INTERNAL "ESP32 target series lower case, short version")
+set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/targets/ESP32)
 nf_add_idf_as_library()
 add_subdirectory(${TARGET_BASE_LOCATION})

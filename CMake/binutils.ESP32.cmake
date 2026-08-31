@@ -173,20 +173,6 @@ macro(nf_set_compile_definitions)
 
 endmacro()
 
-function(nf_set_esp32_target_series)
-
-    # process target series name to set it to lower case
-    string(TOLOWER "${TARGET_SERIES}" TARGET_SERIES_1)
-   
-    # need to remove the underscore from the series name
-    string(REPLACE "_" "" TARGET_SERIES_2 "${TARGET_SERIES_1}")
-
-    # store the series name for later use
-    set(TARGET_SERIES_SHORT ${TARGET_SERIES_2} CACHE INTERNAL "ESP32 target series lower case, short version")
-
-    set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
-
-endfunction()
 
 # Add packages that are common to ESP32 platform builds
 # To be called from target CMakeList.txt

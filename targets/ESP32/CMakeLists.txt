@@ -9,41 +9,16 @@ include(binutils.ESP32)
 set(ESP32_RESERVE_IRAM_IDF_ALLOCATION_KB "0" CACHE STRING "Setting default value for ESP32_RESERVE_IRAM_IDF_ALLOCATION_KB")
 set(ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES "0" CACHE STRING "Setting default value for ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES")
 set(BASE_PATH_FOR_PLATFORM ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
-
-set(NO_ESP32_IDF_PATH TRUE)
-if(ESP32_IDF_PATH)
-    if(NOT "${ESP32_IDF_PATH}" STREQUAL "")
-        set(NO_ESP32_IDF_PATH FALSE)
-    endif()
-endif()
-
-set(ESP32_IDF_TAG "5.5.4" CACHE INTERNAL "ESP32 IDF tag")
-
-if(NO_ESP32_IDF_PATH)
-    FetchContent_Populate(
-        esp32_idf
-        GIT_REPOSITORY https://github.com/espressif/esp-idf
-        GIT_TAG v${ESP32_IDF_TAG}
-    )
-else()
-    set(esp32_idf_SOURCE_DIR ${ESP32_IDF_PATH})
-endif()
+set(NO_ESP32_IDF_PATH FALSE)
+set(esp32_idf_SOURCE_DIR ${ESP32_IDF_PATH})
 
 list(APPEND CMAKE_MODULE_PATH ${esp32_idf_SOURCE_DIR}/CMake)
+
 string(REPLACE "\\" "/" IDF_SOURCE_DIR_PATH "$ENV{IDF_PATH}")
 string(TOLOWER "${IDF_SOURCE_DIR_PATH}" IDF_SOURCE_DIR_PATH_LOWER )
 string(TOLOWER "${esp32_idf_SOURCE_DIR}" esp32_idf_SOURCE_DIR_LOWER )
+set(IDF_PATH_CMAKED ${IDF_SOURCE_DIR_PATH} CACHE INTERNAL "CMake formated IDF path")
 
-# check IDF_PATH environment variable
-if(NOT "${IDF_SOURCE_DIR_PATH_LOWER}" STREQUAL "${esp32_idf_SOURCE_DIR_LOWER}")
-else()
-    if(CMAKE_HOST_WIN32)
-        if(NOT "${IDF_SOURCE_DIR_PATH}" STREQUAL "${esp32_idf_SOURCE_DIR}")
-            message(FATAL_ERROR "ESP32_IDF_PATH var is '${esp32_idf_SOURCE_DIR}'. It's using a different case than the actual path. Please fix this.")
-        endif()
-    endif()
-    set(IDF_PATH_CMAKED ${IDF_SOURCE_DIR_PATH} CACHE INTERNAL "CMake formated IDF path")
-endif()
 
 if(NF_FEATURE_HAS_SDCARD)
     if(EXISTS ${esp32_idf_SOURCE_DIR}/components/fatfs/src/ffconf.h)

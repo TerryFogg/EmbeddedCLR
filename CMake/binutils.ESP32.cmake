@@ -623,30 +623,8 @@ macro(nf_add_idf_as_library)
         message(STATUS "Fixed IDF version. Is now: ${MY_IDF_VER_FIXED}")
     endif()
 
-    # check for SDK config from build options
-    if(SDK_CONFIG_FILE)
-        # got an SDK config CONFIG on the build options
+    set(SDKCONFIG_DEFAULTS_FILE ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${SDK_CONFIG_FILE})
 
-        # check if the file exists
-        if(EXISTS ${SDK_CONFIG_FILE})
-            set(SDKCONFIG_DEFAULTS_FILE ${SDK_CONFIG_FILE})
-        else()
-            # no, try the IDF folder
-            if(EXISTS ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${SDK_CONFIG_FILE})
-                # found it
-                set(SDKCONFIG_DEFAULTS_FILE ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${SDK_CONFIG_FILE})
-            else()
-                message(FATAL_ERROR "Couldn't find IDF SDK CONFIG file '${SDK_CONFIG_FILE}'. Please check the SDK_CONFIG_FILE build option.")
-            endif()
-        endif()
-    else()
-        # get default SDK CONFIG file
-        set(SDKCONFIG_DEFAULTS_FILE ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/sdkconfig.default)
-    endif()
-
-    message(STATUS "\n-- SDK CONFIG is: '${SDKCONFIG_DEFAULTS_FILE}'.")
-
-    # Save original contents to be restored later
     file(READ
         "${SDKCONFIG_DEFAULTS_FILE}"
         SDKCONFIG_ORIGINAL_CONTENTS
@@ -693,15 +671,10 @@ macro(nf_add_idf_as_library)
 )
 
     # Needed for remote Wifi module on P4 boards
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32p4")
         list(APPEND IDF_COMPONENTS_TO_ADD esp_wifi_remote)
         list(APPEND IDF_COMPONENTS_TO_ADD esp_hosted)
         list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_hosted)
         list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_wifi_remote)
-    else()
-        list(APPEND IDF_COMPONENTS_TO_ADD esp_wifi)
-        list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_wifi)
-    endif()
 
     if(HAL_USE_BLE_OPTION)
         list(APPEND IDF_COMPONENTS_TO_ADD bt)
@@ -716,52 +689,6 @@ macro(nf_add_idf_as_library)
     if(HAL_USE_THREAD_OPTION)
         list(APPEND IDF_COMPONENTS_TO_ADD openthread)
         list(APPEND IDF_LIBRARIES_TO_ADD idf::openthread)
-    endif()
-
-    # handle specifics for ESP32S2/S3 series
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32s2" OR ${TARGET_SERIES_SHORT} STREQUAL "esp32s3")
-
-        # need to read the supplied SDK CONFIG file and replace the appropriate option
-        file(READ
-            "${SDKCONFIG_DEFAULTS_TEMP_FILE}"
-            SDKCONFIG_DEFAULT_CONTENTS
-        )
-
-        if(ESP32_USB_CDC)
-
-            # add IDF components specific to ESP32S2/S3 series
-            # They have to be added in a specific order so they compile/link ok
-            list(APPEND IDF_COMPONENTS_TO_ADD tinyusb) 
-            list(APPEND IDF_COMPONENTS_TO_ADD esp_tinyusb) 
-            list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_tinyusb) 
-            list(APPEND IDF_LIBRARIES_TO_ADD  idf::tinyusb) 
-
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "\nCONFIG_TINYUSB_CDC_ENABLED=y\n")
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_TINYUSB_DESC_PRODUCT_STRING=\"nanoFramework device\"\n")
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_TINYUSB_DESC_CDC_STRING=\"nanoFramework device\"\n")
-            # set the TX buffer as large as the WireProtocol packet size
-            # no worries about the RX buffer
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_TINYUSB_CDC_TX_BUFSIZE=1024\n")
-            # better to assign the tinyUSB task to the same core as the ReceiverTask
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_TINYUSB_TASK_AFFINITY=TINYUSB_TASK_AFFINITY_CPU0\n")
-
-            message(STATUS "Support for embedded USB CDC enabled")
-
-        else()
-            message(STATUS "Support for embedded USB CDC **IS NOT** enabled")
-
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "\nCONFIG_TINYUSB_CDC_ENABLED=n\n")
-        endif()
-
-        # need to temporarily allow changes in source files
-        set(CMAKE_DISABLE_SOURCE_CHANGES OFF)
-
-        file(WRITE 
-            ${SDKCONFIG_DEFAULTS_TEMP_FILE} 
-            ${SDKCONFIG_DEFAULT_CONTENTS})
-
-        set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-
     endif()
 
     option(HAL_USE_THREAD_OPTION "option to enable OpenThread support")
@@ -813,39 +740,7 @@ macro(nf_add_idf_as_library)
         set(CMAKE_DISABLE_SOURCE_CHANGES ON)
     endif()
 
-    # option for automatic XTAL frequency detection
-    # (default is OFF which means that fixed default frequency will be used)
-    option(ESP32_XTAL_FREQ_26 "option to set XTAL frequency to 26MHz")
-   
-    message(DEBUG "ESP32_XTAL_FREQ_26 option is ${ESP32_XTAL_FREQ_26}")
-
-    if(ESP32_XTAL_FREQ_26)
-
-        message(STATUS "Set XTAL frequency to 26MHz")
-
-        # need to read the supplied SDK CONFIG file(s) and replace the appropriate options
-
-        message(DEBUG "Reading SDK config from '${SDKCONFIG_DEFAULTS_FILE}'")
-
-        file(READ
-            "${SDKCONFIG_DEFAULTS_TEMP_FILE}"
-            SDKCONFIG_DEFAULT_CONTENTS)
-
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_XTAL_FREQ_26=y\n")
-
-        # need to temporarilly allow changes in source files
-        set(CMAKE_DISABLE_SOURCE_CHANGES OFF)
-
-        file(WRITE 
-            ${SDKCONFIG_DEFAULTS_TEMP_FILE} 
-            ${SDKCONFIG_DEFAULT_CONTENTS})
-
-        message(DEBUG "Wrote updated SDK config to '${SDKCONFIG_DEFAULTS_FILE}'")
-
-        set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-    else()
-        message(STATUS "Using default XTAL frequency")
-    endif()
+    # Fixed default frequency will be used)
 
     # create IDF static libraries
     idf_build_process(${TARGET_SERIES_SHORT}

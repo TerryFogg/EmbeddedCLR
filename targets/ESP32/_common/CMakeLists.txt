@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -21,6 +21,9 @@ list(APPEND TARGET_ESP32_IDF_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/targetHA
 list(APPEND TARGET_ESP32_IDF_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/targetHAL_FileOperation.cpp)
 list(APPEND TARGET_ESP32_IDF_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/nanoSupport_CRC32.c)
 list(APPEND TARGET_ESP32_IDF_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/DeviceMapping_common.cpp)
+
+
+
 
 # add device mapping
 # check if there is a specific one for the target...

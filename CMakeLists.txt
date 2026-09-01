@@ -22,9 +22,11 @@ if(DEFINED NF_TARGET_DEFCONFIG)
 endif()
 
 set(TARGET_BOARD "ESP32_P4")
-string(TOUPPER ${RTOS} RTOS_UPPERCASE)
-set(RTOS_${RTOS_UPPERCASE}_CHECK TRUE)
+set(RTOS_ESP32_CHECK TRUE)
+set(TARGET_SERIES_SHORT "esp32p4" CACHE INTERNAL "ESP32 target series lower case, short version")
+set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
 set(BUILD_VERSION 0.0.0.0)
+
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 
 set(NANOCLR_PROJECT_NAME "nanoCLR")
@@ -41,8 +43,6 @@ set(HAL_USE_THREAD_OPTION FALSE CACHE INTERNAL "No OpenThread Support")
 set(TARGET_BASE_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32/${TARGET_BOARD})
 
 
-set(TARGET_SERIES_SHORT "esp32p4" CACHE INTERNAL "ESP32 target series lower case, short version")
-set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/targets/ESP32)
 nf_add_idf_as_library()

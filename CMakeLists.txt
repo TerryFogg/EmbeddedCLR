@@ -34,7 +34,6 @@ project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 include(ClrProfilerOptions)
 
 
-option(ESP32_USB_CDC "option to enable USB Mass Storage")
 set(NF_FEATURE_USE_LITTLEFS_OPTION FALSE CACHE INTERNAL "Set nF littlefs feature FALSE")
 set(HAL_USE_UART_OPTION TRUE CACHE INTERNAL "HAL OneWire for nanoFramework.Device.OneWire")
 set(HAL_USE_BLE_OPTION FALSE CACHE INTERNAL "No Bluetooth Support")

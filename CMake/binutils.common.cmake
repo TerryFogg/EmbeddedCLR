@@ -7,64 +7,30 @@
 # BUILD_TARGET target name building (either nanoBooter or nanoCLR)
 # optional TARGET target name to set compiler definitions 
 macro(nf_common_compiler_definitions) 
-
-    # parse arguments
     cmake_parse_arguments(NFCCF "" "BUILD_TARGET;TARGET" "" ${ARGN})
-
     if(NOT NFCCF_BUILD_TARGET OR "${NFCCF_BUILD_TARGET}" STREQUAL "")
         message(FATAL_ERROR "Need to set BUILD_TARGET argument when calling nf_common_compiler_definitions()")
     endif()
-   
     if(NOT NFCCF_TARGET OR "${NFCCF_TARGET}" STREQUAL "")
         message(AUTHOR_WARNING "No TARGET argument specified when calling nf_common_compiler_definitions(), defaulting to '${BUILD_TARGET}'")
         set(NFCCF_TARGET ${NFCCF_BUILD_TARGET})
     endif()
-
-    # set define according to target
     string(FIND ${NFCCF_BUILD_TARGET} ${NANOCLR_PROJECT_NAME} CLR_INDEX)
-    
-    
-    # set global define for nanoCLR
     target_compile_definitions(${NFCCF_TARGET} PUBLIC -DI_AM_NANOCLR)
-    
-    # add global defines for nanoCLR
     foreach(DEFINITION ${CLR_EXTRA_COMPILE_DEFINITIONS})
         target_compile_definitions(${NFCCF_TARGET} PUBLIC ${DEFINITION})
     endforeach()
-
-    # build types that have debugging capabilities AND are NOT RTM have to have the define 'NANOCLR_ENABLE_SOURCELEVELDEBUGGING'
     if((NOT NF_BUILD_RTM) AND NF_FEATURE_DEBUGGER)
         target_compile_definitions(${NFCCF_TARGET} PUBLIC -DNANOCLR_ENABLE_SOURCELEVELDEBUGGING)
     endif()
-
-    # set compiler definition for RTM build option
-    if(NF_BUILD_RTM)
-        target_compile_definitions(${NFCCF_TARGET} PUBLIC -DBUILD_RTM)
-    endif()
-
-    # set compiler definition for using Application Domains feature
-    if(NF_FEATURE_USE_APPDOMAINS)
-        target_compile_definitions(${NFCCF_TARGET} PUBLIC -DNANOCLR_USE_APPDOMAINS)
-    endif()
-
-    # set definition for Wire Protocol trace mask
-    target_compile_definitions(${NFCCF_TARGET} PUBLIC -DTRACE_MASK=${WP_TRACE_MASK})
-
-    # set compiler definition regarding inclusion of trace messages and checks on CLR
+    target_compile_definitions(${NFCCF_TARGET} PUBLIC -DTRACE_MASK=0)
     if(NF_CLR_NO_TRACE)
         target_compile_definitions(${NFCCF_TARGET} PUBLIC -DPLATFORM_NO_CLR_TRACE=1)
     endif()
-
     # set compiler definition regarding CLR IL inlining
     if(NF_CLR_NO_IL_INLINE)
         target_compile_definitions(${NFCCF_TARGET} PUBLIC -DNANOCLR_NO_IL_INLINE=1)
     endif()
-
-    # set compiler definition for implementing (or not) TRACE to stdio
-    if(NF_TRACE_TO_STDIO)
-        target_compile_definitions(${NFCCF_TARGET} PUBLIC -DNF_TRACE_TO_STDIO)
-    endif()
-
 endmacro()
 
 # Add packages that are common to ALL builds
@@ -83,182 +49,55 @@ macro(nf_add_common_packages)
 
 endmacro()
 
-
-# Add common include directories to a specific CMake target
-# To be called from target CMakeList.txt
 macro(nf_add_common_include_directories target)
-
     target_include_directories(${target}.elf PUBLIC
-        
-        # target path (both source and binary)
         ${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}
-        # target common path
         ${CMAKE_CURRENT_SOURCE_DIR}/common
-
-        # path for CMake target (both source and binary)
         ${CMAKE_CURRENT_BINARY_DIR}/${target}
         ${CMAKE_CURRENT_SOURCE_DIR}/${target}
-        
         ${NF_HALCore_INCLUDE_DIRS}
     )
-
-
-    # includes specific to nanoCLR
     if(${target} STREQUAL ${NANOCLR_PROJECT_NAME})
-
         target_include_directories(${target}.elf PUBLIC
-
-            # directories for nanoFramework libraries
             ${NF_Diagnostics_INCLUDE_DIRS}
             ${Graphics_Includes}
         )
-
     endif()
-
-
 endmacro()
 
-# Add common target sources to a specific CMake target
-# To be called from target CMakeList.txt
-# mandatory TARGET parameter to set the target
-# optional EXTRA_LIBRARIES with extra libraries to be included in the target build
 macro(nf_add_common_sources)
-
-    # parse arguments
     cmake_parse_arguments(
         NFACS 
         "" 
         "TARGET" 
         "EXTRA_LIBRARIES" 
         ${ARGN})
-
     target_sources(${NFACS_TARGET}.elf PUBLIC
-    
         ${CMAKE_CURRENT_SOURCE_DIR}/target_common.c
         ${CMAKE_CURRENT_SOURCE_DIR}/target_BlockStorage.c
         ${CMAKE_SOURCE_DIR}/src/PAL/BlockStorage/nanoPAL_BlockStorage.c
         ${COMMON_PROJECT_SOURCES}
         ${NF_HALCore_SOURCES}
     )
-
-
-    # sources specific to nanoCLR
     if(${NFACS_TARGET} STREQUAL ${NANOCLR_PROJECT_NAME})
-
         target_link_libraries(${NFACS_TARGET}.elf
             nano::NF_CoreCLR
             nano::NF_NativeAssemblies
             nano::WireProtocol
-            
             ${NFACS_EXTRA_LIBRARIES}
         )
-
         if(NF_FEATURE_DEBUGGER)
-
             target_link_libraries(${NFACS_TARGET}.elf
                 nano::NF_Debugger
             )
-
         endif()  
-
         target_sources(${NFACS_TARGET}.elf PUBLIC
-
             ${NANOCLR_PROJECT_SOURCES}
-
-            # sources for nanoFramework libraries
             ${Graphics_Sources}
         )
-
     endif()
-
 endmacro()
-
-# generates a UF2 image from a binary file for RP2040/RP2350 targets
-# uses the bin2uf2 C# tool (requires dotnet SDK)
-# NOTE: The RP2040 ROM UF2 bootloader does not flash data after address gaps.
-# bin2uf2 --merge automatically pads gaps with 0xFF to produce a continuous image.
-function(nf_generate_uf2_package file1 address1 file2 address2 familyid outputfilename)
-
-    add_custom_command(
-
-        TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
-
-        COMMAND dotnet run --project ${CMAKE_SOURCE_DIR}/CMake/Scripts/bin2uf2
-            -- --merge "${outputfilename}" "${familyid}"
-            "${file1}" "${address1}"
-            "${file2}" "${address2}"
-
-        COMMENT "Generating combined UF2 image for RP2040/RP2350 (gap-free)"
-    )
-
-
-endfunction()
-
-function(nf_generate_dfu_package file1 address1 file2 address2 outputfilename)
-
-    add_custom_command(
-            
-        TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
-
-        COMMAND ${TOOL_HEX2DFU_PREFIX}/hex2dfu 
-
-        -b="${file1}" -a="${address1}"
-        -b="${file2}" -a="${address2}"
-        -o="${outputfilename}"
-
-        WORKING_DIRECTORY ${TOOL_HEX2DFU_PREFIX} 
-
-        COMMENT "exporting bin files to DFU image" 
-    )
-
-
-endfunction()
-
-function(nf_generate_hex_package file1 file2 outputfilename)
-
-    add_custom_command(
-            
-        TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
-
-        COMMAND ${TOOL_SRECORD_PREFIX}/srec_cat
-
-        "${file1}" -Intel
-        "${file2}" -Intel
-        -o "${outputfilename}" -Intel
-        -line-length=44
-
-        WORKING_DIRECTORY ${TOOL_SRECORD_PREFIX} 
-
-        COMMENT "exporting hex files to one hex file" 
-    )
-
-
-endfunction()
-
-# generates a binary file with nanoBooter + nanoCLR at the proper addresses
-# ready to be drag & drop on targets that feature DAPLink 
-function(nf_generate_bin_package file1 file2 offset outputfilename)
-
-    add_custom_command(
-
-        TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
-
-        COMMAND ${TOOL_SRECORD_PREFIX}/srec_cat
-
-        ${file1} -Binary
-        ${file2} -Binary -offset 0x${offset}
-        -o ${outputfilename} -Binary
-
-        WORKING_DIRECTORY ${TOOL_SRECORD_PREFIX}
-
-        BYPRODUCTS ${CMAKE_BINARY_DIR}/${outputfilename}
-
-        COMMENT "exporting hex files to one binary file" 
-    )
-
-
-endfunction()
 
 function(nf_generate_build_output_files target)
 
@@ -271,19 +110,15 @@ function(nf_generate_build_output_files target)
     set(TARGET_DUMP_FILE ${CMAKE_BINARY_DIR}/${TARGET_SHORT}.lst)
 
     if(CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "MinSizeRel")
-
         add_custom_command(TARGET ${TARGET_SHORT}.elf POST_BUILD
             # copy target image to other formats
             COMMAND ${CMAKE_OBJCOPY} $<TARGET_FILE:${TARGET_SHORT}.elf> ${CMAKE_BINARY_DIR}/${TARGET_SHORT}.elf
             COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${TARGET_SHORT}.elf> ${TARGET_HEX_FILE}
             COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${TARGET_SHORT}.elf> ${TARGET_BIN_FILE}
-
             BYPRODUCTS 
                 ${TARGET_HEX_FILE} 
                 ${TARGET_BIN_FILE}
-
             COMMENT "Generate nanoBooter HEX and BIN files for deployment")
-
     else()
 
         add_custom_command(TARGET ${TARGET_SHORT}.elf POST_BUILD
@@ -311,7 +146,6 @@ endfunction()
 #######################################################################################################################################
 # this function sets the linker options AND a specific linker file (full path and name, including extension)
 function(nf_set_linker_options_and_file target linker_file_name)
-
     get_target_property(TARGET_LD_FLAGS ${target} LINK_FLAGS)
     if(TARGET_LD_FLAGS)
         set(TARGET_LD_FLAGS "-T${linker_file_name} ${TARGET_LD_FLAGS}")
@@ -319,57 +153,31 @@ function(nf_set_linker_options_and_file target linker_file_name)
         set(TARGET_LD_FLAGS "-T${linker_file_name}")
     endif()
     set_target_properties(${target} PROPERTIES LINK_FLAGS ${TARGET_LD_FLAGS})
-
 endfunction()
 
-
-# TARGET parameter to set the target that's setting them for
-# optional EXTRA_LINKMAP_PROPERTIES with extra properties to add to the link map
 macro(nf_set_link_map)
-
-    # parse arguments
     cmake_parse_arguments(NFSLM "" "TARGET;EXTRA_LINKMAP_PROPERTIES" "" ${ARGN})
-    
     if(NOT NFSLM_TARGET OR "${NFSLM_TARGET}" STREQUAL "")
         message(FATAL_ERROR "Need to set TARGET argument when calling nf_set_link_map()")
     endif()
-
-    # need to remove the .elf suffix from target name
     string(FIND ${NFSLM_TARGET} "." TARGET_EXTENSION_DOT_INDEX)
     string(SUBSTRING ${NFSLM_TARGET} 0 ${TARGET_EXTENSION_DOT_INDEX} TARGET_SHORT)
-    
-    # add linker flags to generate map file
     set_property(TARGET ${TARGET_SHORT}.elf APPEND_STRING PROPERTY LINK_FLAGS " -Wl,-Map=${CMAKE_BINARY_DIR}/${TARGET_SHORT}.map${NFSLM_EXTRA_LINKMAP_PROPERTIES}")
-
 endmacro()
 
-# macro to include libraries in build
-# to be called from the various gcc_options modules
-# TARGET parameter with target building 
+
 macro(nf_include_libraries_in_build target)
-    
-    # find out which build target
     string(FIND ${target} ${NANOCLR_PROJECT_NAME} CLR_INDEX)
-    
-
-        # these are always present
-        set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_CoreCLR -Wl,--no-whole-archive ")
-        set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_NativeAssemblies -Wl,--no-whole-archive ")
-        set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lWireProtocol -Wl,--no-whole-archive ")
-        
-        # these are dependent on the feature being enabled
-        if(USE_NETWORKING_OPTION)
-            set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_Network -Wl,--no-whole-archive ")
-        endif()
-
-        if(NF_FEATURE_DEBUGGER)
-            set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_Debugger -Wl,--no-whole-archive ")
-        endif()
-
-        # this one has to be at the very end of the list to keep the linker happy
-        set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -lgcc -Wl,--no-whole-archive ")
-
-
+    set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_CoreCLR -Wl,--no-whole-archive ")
+    set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_NativeAssemblies -Wl,--no-whole-archive ")
+    set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lWireProtocol -Wl,--no-whole-archive ")
+    if(USE_NETWORKING_OPTION)
+        set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_Network -Wl,--no-whole-archive ")
+    endif()
+    if(NF_FEATURE_DEBUGGER)
+        set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -L${CMAKE_CURRENT_BINARY_DIR} -lNF_Debugger -Wl,--no-whole-archive ")
+    endif()
+    set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -lgcc -Wl,--no-whole-archive ")
 endmacro()
 
 macro(nf_setup_target_build_common)
@@ -381,13 +189,11 @@ macro(nf_setup_target_build_common)
         "BOOTER_LINKER_FILE;CLR_LINKER_FILE;BOOTER_EXTRA_LINKMAP_PROPERTIES;CLR_EXTRA_LINKMAP_PROPERTIES" 
         "BOOTER_EXTRA_COMPILE_DEFINITIONS;CLR_EXTRA_COMPILE_DEFINITIONS;BOOTER_EXTRA_COMPILE_OPTIONS;CLR_EXTRA_COMPILE_OPTIONS;BOOTER_EXTRA_LINK_FLAGS;CLR_EXTRA_LINK_FLAGS;BOOTER_EXTRA_SOURCE_FILES;CLR_EXTRA_SOURCE_FILES;BOOTER_EXTRA_LIBRARIES;CLR_EXTRA_LIBRARIES" 
         ${ARGN})
-
     
     if(NOT NFSTBC_CLR_LINKER_FILE OR "${NFSTBC_CLR_LINKER_FILE}" STREQUAL "")
         message(FATAL_ERROR "Need to provide CLR_LINKER_FILE argument")
     endif()
 
-    # store these so they can be used to add the compiler definitions globally
     set(BOOTER_EXTRA_COMPILE_DEFINITIONS ${NFSTBC_BOOTER_EXTRA_COMPILE_DEFINITIONS})
     set(CLR_EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS})
 
@@ -412,81 +218,7 @@ macro(nf_setup_target_build_common)
     nf_add_common_include_directories(${NANOCLR_PROJECT_NAME})
     nf_add_platform_include_directories(${NANOCLR_PROJECT_NAME})
     nf_set_compile_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_COMPILE_OPTIONS ${NFSTBC_CLR_EXTRA_COMPILE_OPTIONS})
-
-    if(USE_SECURITY_MBEDTLS_OPTION AND NOT RTOS_ESP32_CHECK)
-        target_compile_definitions(mbedtls PUBLIC -DMBEDTLS_CONFIG_FILE=\"${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h\")
-        target_compile_definitions(mbedcrypto PUBLIC -DMBEDTLS_CONFIG_FILE=\"${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h\")
-        target_compile_definitions(mbedx509 PUBLIC -DMBEDTLS_CONFIG_FILE=\"${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h\")
-        target_compile_definitions(p256m PUBLIC -DMBEDTLS_CONFIG_FILE=\"${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h\")
-        target_compile_definitions(everest PUBLIC -DMBEDTLS_CONFIG_FILE=\"${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h\")
-
-        # set include directories for MbedTLS
-        set(MBEDTLS_INCLUDE_DIRECTORIES
-            ${CMAKE_SOURCE_DIR}/src/CLR/Include
-            ${CMAKE_SOURCE_DIR}/src/HAL/Include
-            ${CMAKE_SOURCE_DIR}/src/PAL
-            ${CMAKE_SOURCE_DIR}/src/PAL/Include
-            ${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets
-            ${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS
-            ${CMAKE_SOURCE_DIR}/src/DeviceInterfaces/Networking.Sntp
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_include
-            ${TARGET_BASE_LOCATION}/nanoCLR
-            ${TARGET_BASE_LOCATION}
-            ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4
-            ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4
-        )
-
-        # need to add extra include directories for MbedTLS
-        target_include_directories(
-            mbedtls PRIVATE
-                ${MBEDTLS_INCLUDE_DIRECTORIES}
-        )
-
-        target_include_directories(
-            mbedcrypto PRIVATE
-                ${MBEDTLS_INCLUDE_DIRECTORIES}
-        )
-
-        target_include_directories(
-            mbedx509 PRIVATE
-                ${MBEDTLS_INCLUDE_DIRECTORIES}
-        )
-
-        target_include_directories(
-            p256m PRIVATE
-                ${MBEDTLS_INCLUDE_DIRECTORIES}
-        )
-
-        target_include_directories(
-            everest PRIVATE
-                ${MBEDTLS_INCLUDE_DIRECTORIES}
-        )
-
-        # platform implementation of hardware random provider
-        if(EXISTS ${TARGET_BASE_LOCATION}/mbedtls_entropy_hardware_pool.c)
-            target_sources(mbedcrypto PRIVATE ${TARGET_BASE_LOCATION}/mbedtls_entropy_hardware_pool.c)
-        else()
-            target_sources(mbedcrypto PRIVATE ${BASE_PATH_FOR_CLASS_LIBRARIES_MODULES}/mbedtls_entropy_hardware_pool.c)
-        endif()
-
-        nf_set_compile_options(TARGET mbedcrypto)
-        nf_set_compile_options(TARGET mbedx509)
-        nf_set_compile_options(TARGET mbedtls)
-        nf_set_compile_definitions(TARGET mbedcrypto BUILD_TARGET ${NANOCLR_PROJECT_NAME})
-        nf_set_compile_definitions(TARGET mbedx509 BUILD_TARGET ${NANOCLR_PROJECT_NAME})
-        nf_set_compile_definitions(TARGET mbedtls BUILD_TARGET ${NANOCLR_PROJECT_NAME})
-
-        # need to unset several flags for MbedTLS to compile correctly
-        target_compile_options(mbedtls PRIVATE -Wno-undef -Wno-error=unused-function -Wno-error=discarded-qualifiers -Wno-error=unused-parameter)
-        target_compile_options(mbedcrypto PRIVATE -Wno-undef -Wno-error=unused-function -Wno-error=discarded-qualifiers -Wno-error=unused-parameter)
-        target_compile_options(mbedx509 PRIVATE -Wno-undef -Wno-error=unused-function -Wno-error=discarded-qualifiers -Wno-error=unused-parameter)
-
-    endif()
-
-    # set compile definitions
     nf_set_compile_definitions(TARGET ${NANOCLR_PROJECT_NAME}.elf BUILD_TARGET ${NANOCLR_PROJECT_NAME} )
-
-    # set linker files
     if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
         nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/${NFSTBC_CLR_LINKER_FILE}-DEBUG.ld)
     else()

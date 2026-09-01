@@ -37,19 +37,14 @@ set(System.IO.FileSystem_SRCS
     Target_System_IO_FileSystem.c
     target_FileSystem.cpp
 )
-
-# add littlefs FS driver
 if(NF_FEATURE_USE_LITTLEFS_OPTION)
-
     list(APPEND System.IO.FileSystem_SRCS
         littlefs_FS_Driver.cpp)
-    
     list(APPEND System.IO.FileSystem_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/targets/ESP32/_littlefs)
 endif()
 
 # add FatFs FS driver
 if(NF_FEATURE_HAS_SDCARD OR NF_FEATURE_HAS_USB_MSD)
-
     list(APPEND System.IO.FileSystem_SRCS
         fatfs_FS_Driver.cpp)
 
@@ -57,38 +52,20 @@ if(NF_FEATURE_HAS_SDCARD OR NF_FEATURE_HAS_USB_MSD)
 endif()
 
 foreach(SRC_FILE ${System.IO.FileSystem_SRCS})
-
     set(System.IO.FileSystem_SRC_FILE SRC_FILE-NOTFOUND)
-
-    find_file(System.IO.FileSystem_SRC_FILE ${SRC_FILE}
-        PATHS
+    find_file(System.IO.FileSystem_SRC_FILE ${SRC_FILE} PATHS
 	        ${BASE_PATH_FOR_THIS_MODULE}
 	        ${TARGET_BASE_LOCATION}
             ${PROJECT_COMMON_PATH}
             ${BASE_PATH_FOR_CLASS_LIBRARIES_MODULES}
-
             ${CMAKE_SOURCE_DIR}/src/System.IO.FileSystem
-
             ${CMAKE_SOURCE_DIR}/src/PAL/FileSystem
-
-            # littlefs
             ${CMAKE_SOURCE_DIR}/targets/ESP32/_littlefs
-
-            # FatFs
             ${CMAKE_SOURCE_DIR}/targets/ESP32/_FatFs
             ${FATFS_PLATFORM}
-
 	    CMAKE_FIND_ROOT_PATH_BOTH
     )
-
-    if (BUILD_VERBOSE)
-        message("${SRC_FILE} >> ${System.IO.FileSystem_SRC_FILE}")
-    endif()
-
     list(APPEND System.IO.FileSystem_SOURCES ${System.IO.FileSystem_SRC_FILE})
-    
 endforeach()
-
 include(FindPackageHandleStandardArgs)
-
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(System.IO.FileSystem DEFAULT_MSG System.IO.FileSystem_INCLUDE_DIRS System.IO.FileSystem_SOURCES)

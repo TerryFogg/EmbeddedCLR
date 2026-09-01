@@ -103,8 +103,8 @@ endmacro()
 # To be called from target CMakeList.txt
 macro(nf_add_platform_dependencies target)
 
-
-    nf_add_common_dependencies(${target})
+    configure_file(${BASE_PATH_FOR_CLASS_LIBRARIES_MODULES}/target_platform.h.in
+                   ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR}/ESP32_P4/target_platform.h @ONLY)
 
     nf_add_lib_coreclr(
         EXTRA_INCLUDES

@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -31,9 +31,9 @@ list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/DeviceInterfaces/Net
 
 list(APPEND NF_CoreCLR_INCLUDE_DIRS ${TARGET_BASE_LOCATION})
 list(APPEND NF_CoreCLR_INCLUDE_DIRS ${TARGET_BASE_LOCATION}/nanoCLR)
-list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_VENDOR})
-list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_VENDOR}/${TARGET_BOARD})
-list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_VENDOR}/${TARGET_BOARD}/nanoCLR)
+list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR})
+list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR}/ESP32_P4)
+list(APPEND NF_CoreCLR_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR}/ESP32_P4/nanoCLR)
 
 # source files for nanoFramework Core, CoreLib and CLR startup
 set(NF_CoreCLR_SRCS

@@ -83,16 +83,6 @@ macro(nf_add_common_packages)
 
 endmacro()
 
-# Add common dependencies to a specific CMake target
-# To be called from target CMakeList.txt
-macro(nf_add_common_dependencies target)
-
-    configure_file(${BASE_PATH_FOR_CLASS_LIBRARIES_MODULES}/target_platform.h.in
-                   ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_VENDOR}/${TARGET_BOARD}/target_platform.h @ONLY)
-
-
-
-endmacro()
 
 # Add common include directories to a specific CMake target
 # To be called from target CMakeList.txt
@@ -332,20 +322,6 @@ function(nf_set_linker_options_and_file target linker_file_name)
 
 endfunction()
 
-# check if a directory exists
-# going through the directory to find if it's not empty takes a lot of time because it sweeps all files
-# simplifying this now to speed up local builds
-macro(nf_directory_exists_not_empty path pathExists)
-
-    if(IS_DIRECTORY "${path}")
-        set(${pathExists} TRUE)
-    else()
-        set(${pathExists} FALSE)
-    endif()
-
-endmacro()
-
-
 
 # TARGET parameter to set the target that's setting them for
 # optional EXTRA_LINKMAP_PROPERTIES with extra properties to add to the link map
@@ -456,8 +432,8 @@ macro(nf_setup_target_build_common)
             ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_include
             ${TARGET_BASE_LOCATION}/nanoCLR
             ${TARGET_BASE_LOCATION}
-            ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_BOARD}
-            ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_VENDOR}/${TARGET_BOARD}
+            ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4
+            ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR}/ESP32_P4
         )
 
         # need to add extra include directories for MbedTLS

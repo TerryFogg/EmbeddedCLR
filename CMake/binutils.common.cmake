@@ -345,10 +345,7 @@ macro(nf_directory_exists_not_empty path pathExists)
 
 endmacro()
 
-# define the base path for the library modules
-macro(nf_set_base_path_for_libraries_modules path)
-    set(BASE_PATH_FOR_CLASS_LIBRARIES_MODULES ${path})
-endmacro()
+
 
 # TARGET parameter to set the target that's setting them for
 # optional EXTRA_LINKMAP_PROPERTIES with extra properties to add to the link map

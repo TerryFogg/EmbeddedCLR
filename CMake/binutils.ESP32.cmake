@@ -5,56 +5,6 @@
 
 include(binutils.common)
 
-# process ESP32 Ethernet options
-macro(nf_process_esp32_ethernet_options)
-
-    # need to process this?
-    if(ESP32_ETHERNET_SUPPORT)
-
-        if(NOT ESP32_ETHERNET_INTERFACE)
-            # default to LAN8720
-            set(ESP32_ETHERNET_INTERFACE "LAN8720" CACHE INTERNAL "Defaulting LAN8720")
-
-            message(STATUS "\n\n*** No Ethernet interface defined. Defaulting to LAN8720. ***\n\n")
-        endif()
-
-        # list of supported PHYs
-        set(ESP32_SUPPORTED_PHY "LAN8720" "IP101" "RTL8201" "DP83848" "KSZ8041" CACHE INTERNAL "supported ESP32 PHYs")
-        # list of supported ETH SPI PHYs
-        # ENJ28J60 currently not supported, driver in IDF examples (TODO)
-        set(ESP32_SUPPORTED_ETH_SPI "W5500" "DM9051" "ENJ28J60" CACHE INTERNAL "supported ESP32 ETH SPIs")
-
-        list(FIND ESP32_SUPPORTED_PHY ${ESP32_ETHERNET_INTERFACE} ESP32_PHY_INDEX)
-
-        if(ESP32_PHY_INDEX EQUAL -1)
-
-            # can't find this under supported PHYs
-        
-            # try with SPIs
-            list(FIND ESP32_SUPPORTED_ETH_SPI ${ESP32_ETHERNET_INTERFACE} ESP32_ETHERNET_SPI_INDEX)
-            
-            if(ESP32_ETHERNET_SPI_INDEX EQUAL -1)
-                # can't find it under SPIs either
-                message(FATAL_ERROR "\n\nSomething wrong happening: can't find support for Ethernet interface ${ESP32_ETHERNET_INTERFACE}!\n\n")
-            else()
-                # store SPI option
-                set(ESP32_ETHERNET_SPI_OPTION TRUE CACHE INTERNAL "Set ESP32_ETHERNET_SPI option")
-                set(ESP32_ETHERNET_INTERNAL_OPTION FALSE CACHE INTERNAL "Set ESP32_ETHERNET_INTERNAL option")
-                # set define with SPI module
-                set(ESP32_ETHERNET_DEFINES -DESP32_ETHERNET_SPI_MODULE_${ESP32_ETHERNET_INTERFACE} CACHE INTERNAL "define for Ethernet SPI module option")
-            endif()
-
-        else()
-            # store PHY option
-            set(ESP32_ETHERNET_INTERNAL_OPTION TRUE CACHE INTERNAL "Set ESP32_ETHERNET_INTERNAL option")
-            set(ESP32_ETHERNET_SPI_OPTION FALSE CACHE INTERNAL "Set ESP32_ETHERNET_SPI option")
-            # set define with PHY name
-            set(ESP32_ETHERNET_DEFINES -DESP32_ETHERNET_PHY_${ESP32_ETHERNET_INTERFACE} CACHE INTERNAL "define for Ethernet PHY interface option")
-        endif()
-
-    endif()
-
-endmacro()
 
 # find a set of files on a list of possible locations
 macro(nf_find_esp32_files_at_location files locations)
@@ -102,54 +52,6 @@ function(nf_set_linker_file target linker_file_name)
 
 endfunction()
 
-# fixes the ESP32_C3 rom linker script for rom_temp_to_power symbol
-# this is required if the CPU it's a revision <= 2 
-macro(nf_fix_esp32c3_rom_file)
-
-    if((${TARGET_SERIES_SHORT} STREQUAL "esp32c3"))
-        # build is for esp32c3
-
-        if(${ESP32_REVISION} LESS_EQUAL 2)
-            # need to UNcomment the rom_temp_to_power symbol
-            file(READ
-                ${IDF_PATH_CMAKED}/components/esp_rom/esp32c3/ld/esp32c3.rom.ld
-                ESP32_C3_ROM_LD_CONTENT)
-        
-            string(REPLACE
-                    "/* rom_temp_to_power = 0x40001ab4; */"
-                    "rom_temp_to_power = 0x40001ab4;"
-                    ESP32_C3_ROM_LD_NEW_CONTENT
-                    "${ESP32_C3_ROM_LD_CONTENT}")
-        
-            file(WRITE 
-                ${IDF_PATH_CMAKED}/components/esp_rom/esp32c3/ld/esp32c3.rom.ld
-                "${ESP32_C3_ROM_LD_NEW_CONTENT}")
-        else()
-            # need to COMMENT the rom_temp_to_power symbol
-            file(READ
-                ${IDF_PATH_CMAKED}/components/esp_rom/esp32c3/ld/esp32c3.rom.ld
-                ESP32_C3_ROM_LD_CONTENT)
-
-            string(FIND "${ESP32_C3_ROM_LD_CONTENT}" "/* rom_temp_to_power = 0x40001ab4; */" ROM_TEMP_SYMBOL_INDEX)
-        
-            if(ROM_TEMP_SYMBOL_INDEX EQUAL -1)
-             
-                string(REPLACE
-                        "rom_temp_to_power = 0x40001ab4;"
-                        "/* rom_temp_to_power = 0x40001ab4; */"
-                        ESP32_C3_ROM_LD_NEW_CONTENT
-                        "${ESP32_C3_ROM_LD_CONTENT}")
-            
-                file(WRITE 
-                    ${IDF_PATH_CMAKED}/components/esp_rom/esp32c3/ld/esp32c3.rom.ld
-                    "${ESP32_C3_ROM_LD_NEW_CONTENT}")
-            endif()
-
-        endif()
-
-    endif()
-    
-endmacro()
 
 
 # setting compile definitions for a target based on general build options
@@ -909,7 +811,6 @@ macro(nf_add_idf_as_library)
         set(ESP32_REVISION "4" CACHE STRING "ESP32 revision")
     endif()
 
-    nf_fix_esp32c3_rom_file()
 
     # find out if there is support for BLE
     string(FIND ${SDKCONFIG_DEFAULT_CONTENTS} "CONFIG_BT_ENABLED=y" CONFIG_BT_ENABLED_POS)

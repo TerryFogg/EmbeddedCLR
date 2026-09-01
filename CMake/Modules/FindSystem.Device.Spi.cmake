@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -8,15 +8,15 @@ set(BASE_PATH_FOR_THIS_MODULE ${BASE_PATH_FOR_CLASS_LIBRARIES_MODULES}/System.De
 
 
 # set include directories
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/CLR/Core)
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/CLR/Include)
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/HAL/Include)
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/PAL/Include)
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${TARGET_BASE_LOCATION})
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${BASE_PATH_FOR_THIS_MODULE})
-list(APPEND System.Device.Spi_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/System.Device.Spi)
-
-# source files
+list(APPEND System.Device.Spi_INCLUDE_DIRS
+            ${CMAKE_SOURCE_DIR}/src/CLR/Core
+            ${CMAKE_SOURCE_DIR}/src/CLR/Include
+            ${CMAKE_SOURCE_DIR}/src/HAL/Include
+            ${CMAKE_SOURCE_DIR}/src/PAL/Include
+            ${TARGET_BASE_LOCATION}
+            ${BASE_PATH_FOR_THIS_MODULE}
+            ${CMAKE_SOURCE_DIR}/src/System.Device.Spi
+)
 set(System.Device.Spi_SRCS
     cpu_spi.cpp   
     nanoHAL_Spi.cpp
@@ -25,26 +25,15 @@ set(System.Device.Spi_SRCS
     sys_dev_spi_native.cpp
     target_system_device_spi_config.cpp
 )
-
 foreach(SRC_FILE ${System.Device.Spi_SRCS})
     set(System.Device.Spi_SRC_FILE SRC_FILE-NOTFOUND)
-    find_file(System.Device.Spi_SRC_FILE ${SRC_FILE}
-        PATHS 
+    find_file(System.Device.Spi_SRC_FILE ${SRC_FILE}  PATHS 
             ${TARGET_BASE_LOCATION}
             ${BASE_PATH_FOR_THIS_MODULE}
             ${CMAKE_SOURCE_DIR}/src/System.Device.Spi
-
-        CMAKE_FIND_ROOT_PATH_BOTH
+            CMAKE_FIND_ROOT_PATH_BOTH
     )
-
-    if (BUILD_VERBOSE)
-        message("${SRC_FILE} >> ${System.Device.Spi_SRC_FILE}")
-    endif()
-
     list(APPEND System.Device.Spi_SOURCES ${System.Device.Spi_SRC_FILE})
 endforeach()
-
-
 include(FindPackageHandleStandardArgs)
-
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(System.Device.Spi DEFAULT_MSG System.Device.Spi_INCLUDE_DIRS System.Device.Spi_SOURCES)

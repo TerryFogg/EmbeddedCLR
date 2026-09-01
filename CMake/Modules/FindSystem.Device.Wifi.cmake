@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -25,7 +25,7 @@ foreach(SRC_FILE ${System.Device.Wifi_SRCS})
 
     find_file(System.Device.Wifi_SRC_FILE ${SRC_FILE}
         PATHS 
-            ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_nanoCLR/System.Device.Wifi
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR/System.Device.Wifi
             ${BASE_PATH_FOR_THIS_MODULE}
             ${CMAKE_SOURCE_DIR}/src/System.Device.Wifi
 

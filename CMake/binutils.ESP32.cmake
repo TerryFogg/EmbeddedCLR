@@ -103,8 +103,10 @@ endmacro()
 # To be called from target CMakeList.txt
 macro(nf_add_platform_dependencies target)
 
+
+
     configure_file(${BASE_PATH_FOR_CLASS_LIBRARIES_MODULES}/target_platform.h.in
-                   ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR}/ESP32_P4/target_platform.h @ONLY)
+                   ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4/target_platform.h @ONLY)
 
     nf_add_lib_coreclr(
         EXTRA_INCLUDES
@@ -113,7 +115,7 @@ macro(nf_add_platform_dependencies target)
             ${CMAKE_CURRENT_SOURCE_DIR}/${target}
             ${CMAKE_CURRENT_SOURCE_DIR}/Include
             ${CMAKE_CURRENT_SOURCE_DIR}/Network
-            ${CMAKE_BINARY_DIR}/targets/${RTOS}
+            ${CMAKE_BINARY_DIR}/targets/ESP32
             ${ESP32_IDF_INCLUDE_DIRS}
             ${TARGET_ESP32_IDF_INCLUDES})
 
@@ -122,7 +124,7 @@ macro(nf_add_platform_dependencies target)
     nf_add_lib_wireprotocol(
         EXTRA_INCLUDES
             ${CMAKE_CURRENT_SOURCE_DIR}
-            ${CMAKE_BINARY_DIR}/targets/${RTOS}
+            ${CMAKE_BINARY_DIR}/targets/ESP32
             ${ESP32_IDF_INCLUDE_DIRS}
             ${TARGET_ESP32_IDF_INCLUDES})
 
@@ -134,7 +136,7 @@ macro(nf_add_platform_dependencies target)
         nf_add_lib_debugger(
             EXTRA_INCLUDES
                 ${CMAKE_CURRENT_SOURCE_DIR}
-                ${CMAKE_BINARY_DIR}/targets/${RTOS}
+                ${CMAKE_BINARY_DIR}/targets/ESP32
                 ${ESP32_IDF_INCLUDE_DIRS}
                 ${TARGET_ESP32_IDF_INCLUDES})
 
@@ -145,7 +147,7 @@ macro(nf_add_platform_dependencies target)
     nf_add_lib_native_assemblies(
         EXTRA_INCLUDES
             ${CMAKE_CURRENT_SOURCE_DIR}
-            ${CMAKE_BINARY_DIR}/targets/${RTOS}
+            ${CMAKE_BINARY_DIR}/targets/ESP32
             ${ESP32_IDF_INCLUDE_DIRS}
             ${TARGET_ESP32_IDF_INCLUDES})
     
@@ -163,7 +165,7 @@ macro(nf_add_platform_dependencies target)
             EXTRA_INCLUDES 
                 ${ESP32_IDF_INCLUDE_DIRS}
                 ${TARGET_ESP32_IDF_INCLUDES}
-                ${CMAKE_BINARY_DIR}/targets/${RTOS}
+                ${CMAKE_BINARY_DIR}/targets/ESP32
                 ${IDF_PATH_CMAKED}/components/mbedtls/mbedtls/include
         )
 
@@ -190,7 +192,7 @@ macro(nf_add_platform_include_directories target)
     target_include_directories(${target}.elf PUBLIC
 
         ${TARGET_ESP32_IDF_COMMON_INCLUDE_DIRS}
-        ${CMAKE_BINARY_DIR}/targets/${RTOS}
+        ${CMAKE_BINARY_DIR}/targets/ESP32
         ${ESP32_IDF_INCLUDE_DIRS}
         ${NF_NativeAssemblies_INCLUDE_DIRS}
         ${NF_CoreCLR_INCLUDE_DIRS}
@@ -229,7 +231,7 @@ macro(nf_add_platform_sources target)
            
         # add header with target platform definitions
         configure_file(${CMAKE_SOURCE_DIR}/CMake/ESP32_target_os.h.in
-                       ${CMAKE_BINARY_DIR}/targets/${RTOS}/target_os.h @ONLY)
+                       ${CMAKE_BINARY_DIR}/targets/ESP32/target_os.h @ONLY)
 
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/target_board.h.in
                        ${CMAKE_CURRENT_BINARY_DIR}/nanoCLR/target_board.h @ONLY)
@@ -701,7 +703,7 @@ macro(nf_add_idf_as_library)
         list(INSERT 
             IDF_LWIP_INCLUDE_DIRECTORIES 0
                 ${CMAKE_SOURCE_DIR}/targets/ESP32/_include
-                ${CMAKE_SOURCE_DIR}/targets/ESP32/${TARGET_BOARD}
+                ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4
                 ${CMAKE_SOURCE_DIR}/src/DeviceInterfaces/Networking.Sntp
                 ${CMAKE_SOURCE_DIR}/src/CLR/Include
                 ${CMAKE_SOURCE_DIR}/src/HAL/Include
@@ -736,13 +738,13 @@ macro(nf_add_idf_as_library)
     # add nanoCLR include path to FATFS so our lwipots are taken instead of the IDF ones
     list(APPEND
         IDF_FATFS_INCLUDE_DIRECTORIES
-        ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_BOARD}/
+        ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4/
     )
 
     # add nanoCLR include path to FATFS so our lwipots are taken instead of the IDF ones
     list(APPEND
         IDF_FATFS_INCLUDE_DIRECTORIES
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/${TARGET_BOARD}
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4
     )
 
     # replace the include directories

@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -9,7 +9,7 @@
 list(APPEND NF_HALCore_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/CLR/Include)
 list(APPEND NF_HALCore_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/HAL/Include)
 list(APPEND NF_HALCore_INCLUDE_DIRS ${BASE_PATH_FOR_PLATFORM}/Include)
-list(APPEND NF_HALCore_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_BOARD})
+list(APPEND NF_HALCore_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4)
 
 if(RTOS_CHIBIOS_CHECK)
     

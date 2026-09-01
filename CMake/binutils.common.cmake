@@ -429,11 +429,11 @@ macro(nf_setup_target_build_common)
             ${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets
             ${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS
             ${CMAKE_SOURCE_DIR}/src/DeviceInterfaces/Networking.Sntp
-            ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_include
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_include
             ${TARGET_BASE_LOCATION}/nanoCLR
             ${TARGET_BASE_LOCATION}
             ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4
-            ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_VENDOR}/ESP32_P4
+            ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4
         )
 
         # need to add extra include directories for MbedTLS

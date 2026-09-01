@@ -8,7 +8,7 @@ option(ESP32_ETHERNET_SUPPORT "Enable ESP32 ethernet" OFF)
 #nf_process_esp32_ethernet_options()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/esp32_ethernet_options.h.in
-               ${CMAKE_BINARY_DIR}/targets/${RTOS}/${TARGET_BOARD}/esp32_ethernet_options.h @ONLY)
+               ${CMAKE_BINARY_DIR}/targets/ESP32/${TARGET_BOARD}/esp32_ethernet_options.h @ONLY)
  
 # append networking files, if enabled
 list(APPEND TARGET_ESP32_IDF_NETWORK_SOURCES

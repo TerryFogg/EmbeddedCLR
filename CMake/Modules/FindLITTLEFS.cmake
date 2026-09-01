@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -9,7 +9,7 @@ FetchContent_GetProperties(littlefs)
 # List of the required include paths
 list(APPEND littlefs_INCLUDE_DIRS
     ${littlefs_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_littlefs)
+    ${CMAKE_SOURCE_DIR}/targets/ESP32/_littlefs)
 
 set(src_LITTLEFS
 
@@ -31,7 +31,7 @@ foreach(SRC_FILE ${src_LITTLEFS})
         PATHS
 
             ${littlefs_SOURCE_DIR}
-            ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_littlefs
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_littlefs
             ${TARGET_BASE_LOCATION}
 
         CMAKE_FIND_ROOT_PATH_BOTH

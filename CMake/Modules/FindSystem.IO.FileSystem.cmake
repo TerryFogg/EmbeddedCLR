@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -10,7 +10,7 @@ if(RTOS_FREERTOS_CHECK)
     set(PROJECT_COMMON_PATH ${PROJECT_SOURCE_DIR}/targets/FreeRTOS/NXP/_common)
     set(FATFS_PLATFORM ${PROJECT_SOURCE_DIR}/targets/FreeRTOS/NXP/_FatFs)
 else()
-    set(PROJECT_COMMON_PATH ${PROJECT_SOURCE_DIR}/targets/${RTOS}/_common)
+    set(PROJECT_COMMON_PATH ${PROJECT_SOURCE_DIR}/targets/ESP32/_common)
 endif()
 
 # set include directories
@@ -44,7 +44,7 @@ if(NF_FEATURE_USE_LITTLEFS_OPTION)
     list(APPEND System.IO.FileSystem_SRCS
         littlefs_FS_Driver.cpp)
     
-    list(APPEND System.IO.FileSystem_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_littlefs)
+    list(APPEND System.IO.FileSystem_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/targets/ESP32/_littlefs)
 endif()
 
 # add FatFs FS driver
@@ -53,7 +53,7 @@ if(NF_FEATURE_HAS_SDCARD OR NF_FEATURE_HAS_USB_MSD)
     list(APPEND System.IO.FileSystem_SRCS
         fatfs_FS_Driver.cpp)
 
-    list(APPEND System.IO.FileSystem_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_FatFs)
+    list(APPEND System.IO.FileSystem_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/targets/ESP32/_FatFs)
 endif()
 
 foreach(SRC_FILE ${System.IO.FileSystem_SRCS})
@@ -72,10 +72,10 @@ foreach(SRC_FILE ${System.IO.FileSystem_SRCS})
             ${CMAKE_SOURCE_DIR}/src/PAL/FileSystem
 
             # littlefs
-            ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_littlefs
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_littlefs
 
             # FatFs
-            ${CMAKE_SOURCE_DIR}/targets/${RTOS}/_FatFs
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_FatFs
             ${FATFS_PLATFORM}
 
 	    CMAKE_FIND_ROOT_PATH_BOTH

@@ -28,6 +28,7 @@ set(RTOS_ESP32_CHECK TRUE)
 set(TARGET_SERIES_SHORT "esp32p4" CACHE INTERNAL "ESP32 target series lower case, short version")
 set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
 set(BUILD_VERSION 0.0.0.0)
+add_compile_definitions(CONFIG_TOUCH_DISPLAY_SUPPORT)
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 

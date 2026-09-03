@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -28,7 +28,6 @@
 #include "nf_errors_exceptions.h"
 
 #include "Display.h"
-#include "Gestures.h"
 // ???? Redefined below but gets past the compile error of not defined
 // CLR_GFX_Font needs CLR_GFX_Bitmap  and CLR_GFX_Bitmap needs CLR_GFX_Font
 struct CLR_GFX_Bitmap;

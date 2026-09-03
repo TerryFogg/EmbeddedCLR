@@ -180,62 +180,62 @@ macro(nf_include_libraries_in_build target)
     set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS " -Wl,--whole-archive -lgcc -Wl,--no-whole-archive ")
 endmacro()
 
-macro(nf_setup_target_build_common)
-
-    # parse arguments
-    cmake_parse_arguments(
-        NFSTBC 
-        "HAS_NANOBOOTER" 
-        "BOOTER_LINKER_FILE;CLR_LINKER_FILE;BOOTER_EXTRA_LINKMAP_PROPERTIES;CLR_EXTRA_LINKMAP_PROPERTIES" 
-        "BOOTER_EXTRA_COMPILE_DEFINITIONS;CLR_EXTRA_COMPILE_DEFINITIONS;BOOTER_EXTRA_COMPILE_OPTIONS;CLR_EXTRA_COMPILE_OPTIONS;BOOTER_EXTRA_LINK_FLAGS;CLR_EXTRA_LINK_FLAGS;BOOTER_EXTRA_SOURCE_FILES;CLR_EXTRA_SOURCE_FILES;BOOTER_EXTRA_LIBRARIES;CLR_EXTRA_LIBRARIES" 
-        ${ARGN})
-    
-    if(NOT NFSTBC_CLR_LINKER_FILE OR "${NFSTBC_CLR_LINKER_FILE}" STREQUAL "")
-        message(FATAL_ERROR "Need to provide CLR_LINKER_FILE argument")
-    endif()
-
-    set(BOOTER_EXTRA_COMPILE_DEFINITIONS ${NFSTBC_BOOTER_EXTRA_COMPILE_DEFINITIONS})
-    set(CLR_EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS})
-
-    nf_add_common_packages()
-    nf_add_platform_packages()
-    add_subdirectory("common")
-    add_subdirectory("nanoCLR")
-    add_executable(
-        ${NANOCLR_PROJECT_NAME}.elf
-        ${NFSTBC_CLR_EXTRA_SOURCE_FILES}
-    )
-
-    nf_add_platform_packages(TARGET ${NANOCLR_PROJECT_NAME})
-    nf_add_platform_dependencies(${NANOCLR_PROJECT_NAME})
-
-    if(API_nanoFramework.System.Security.Cryptography)
-        target_sources(NF_NativeAssemblies PRIVATE ${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h)
-    endif()
-
-    nf_add_common_sources(TARGET ${NANOCLR_PROJECT_NAME} EXTRA_LIBRARIES ${CLR_EXTRA_LIBRARIES})
-    nf_add_platform_sources(${NANOCLR_PROJECT_NAME})
-    nf_add_common_include_directories(${NANOCLR_PROJECT_NAME})
-    nf_add_platform_include_directories(${NANOCLR_PROJECT_NAME})
-    nf_set_compile_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_COMPILE_OPTIONS ${NFSTBC_CLR_EXTRA_COMPILE_OPTIONS})
-    nf_set_compile_definitions(TARGET ${NANOCLR_PROJECT_NAME}.elf BUILD_TARGET ${NANOCLR_PROJECT_NAME} )
-    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-        nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/${NFSTBC_CLR_LINKER_FILE}-DEBUG.ld)
-    else()
-        nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/${NFSTBC_CLR_LINKER_FILE}.ld)
-    endif()
-
-    # set linker options
-    nf_set_link_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_LINK_FLAGS ${NFSTBC_CLR_EXTRA_LINK_FLAGS})
-
-    nf_set_link_map(
-        TARGET 
-            ${NANOCLR_PROJECT_NAME}.elf
-        EXTRA_LINKMAP_PROPERTIES ${NFSTBC_CLR_EXTRA_LINKMAP_PROPERTIES})
-    nf_generate_build_output_files(${NANOCLR_PROJECT_NAME}.elf)
-    nf_clear_output_files_nanoclr()
-
-endmacro()
+#macro(nf_setup_target_build_common)
+#
+#    # parse arguments
+#    cmake_parse_arguments(
+#        NFSTBC 
+#        "HAS_NANOBOOTER" 
+#        "BOOTER_LINKER_FILE;CLR_LINKER_FILE;BOOTER_EXTRA_LINKMAP_PROPERTIES;CLR_EXTRA_LINKMAP_PROPERTIES" 
+#        "BOOTER_EXTRA_COMPILE_DEFINITIONS;CLR_EXTRA_COMPILE_DEFINITIONS;BOOTER_EXTRA_COMPILE_OPTIONS;CLR_EXTRA_COMPILE_OPTIONS;BOOTER_EXTRA_LINK_FLAGS;CLR_EXTRA_LINK_FLAGS;BOOTER_EXTRA_SOURCE_FILES;CLR_EXTRA_SOURCE_FILES;BOOTER_EXTRA_LIBRARIES;CLR_EXTRA_LIBRARIES" 
+#        ${ARGN})
+#    
+#    if(NOT NFSTBC_CLR_LINKER_FILE OR "${NFSTBC_CLR_LINKER_FILE}" STREQUAL "")
+#        message(FATAL_ERROR "Need to provide CLR_LINKER_FILE argument")
+#    endif()
+#
+#    set(BOOTER_EXTRA_COMPILE_DEFINITIONS ${NFSTBC_BOOTER_EXTRA_COMPILE_DEFINITIONS})
+#    set(CLR_EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS})
+#
+#    nf_add_common_packages()
+#    nf_add_platform_packages()
+#    add_subdirectory("common")
+#    add_subdirectory("nanoCLR")
+#    add_executable(
+#        ${NANOCLR_PROJECT_NAME}.elf
+#        ${NFSTBC_CLR_EXTRA_SOURCE_FILES}
+#    )
+#
+#    nf_add_platform_packages(TARGET ${NANOCLR_PROJECT_NAME})
+#    nf_add_platform_dependencies(${NANOCLR_PROJECT_NAME})
+#
+#    if(API_nanoFramework.System.Security.Cryptography)
+#        target_sources(NF_NativeAssemblies PRIVATE ${CMAKE_SOURCE_DIR}/src/PAL/COM/sockets/ssl/MbedTLS/nf_mbedtls_config.h)
+#    endif()
+#
+#    nf_add_common_sources(TARGET ${NANOCLR_PROJECT_NAME} EXTRA_LIBRARIES ${CLR_EXTRA_LIBRARIES})
+#    nf_add_platform_sources(${NANOCLR_PROJECT_NAME})
+#    nf_add_common_include_directories(${NANOCLR_PROJECT_NAME})
+#    nf_add_platform_include_directories(${NANOCLR_PROJECT_NAME})
+#    nf_set_compile_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_COMPILE_OPTIONS ${NFSTBC_CLR_EXTRA_COMPILE_OPTIONS})
+#    nf_set_compile_definitions(TARGET ${NANOCLR_PROJECT_NAME}.elf BUILD_TARGET ${NANOCLR_PROJECT_NAME} )
+#    if(CMAKE_BUILD_TYPE MATCHES Debug OR CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+#        nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/${NFSTBC_CLR_LINKER_FILE}-DEBUG.ld)
+#    else()
+#        nf_set_linker_file(${NANOCLR_PROJECT_NAME}.elf ${CMAKE_CURRENT_SOURCE_DIR}/nanoCLR/${NFSTBC_CLR_LINKER_FILE}.ld)
+#    endif()
+#
+#    # set linker options
+#    nf_set_link_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_LINK_FLAGS ${NFSTBC_CLR_EXTRA_LINK_FLAGS})
+#
+#    nf_set_link_map(
+#        TARGET 
+#            ${NANOCLR_PROJECT_NAME}.elf
+#        EXTRA_LINKMAP_PROPERTIES ${NFSTBC_CLR_EXTRA_LINKMAP_PROPERTIES})
+#    nf_generate_build_output_files(${NANOCLR_PROJECT_NAME}.elf)
+#    nf_clear_output_files_nanoclr()
+#
+#endmacro()
 
 
 macro(nf_clear_common_output_files_nanoclr)
@@ -268,62 +268,62 @@ function(nf_check_path_limits)
     endif()
 endfunction()
 
-function(nf_add_mbedtls_library)
-    set(NO_MBEDTLS_SOURCE TRUE)
-    if(MBEDTLS_SOURCE)
-        if(NOT ${MBEDTLS_SOURCE} STREQUAL "")
-            set(NO_MBEDTLS_SOURCE FALSE)
-        endif()
-    endif()
-    set(MBEDTLS_GIT_TAG "mbedtls-3.6.5")
-    option(ENABLE_TESTING "no testing when building Mbed TLS." OFF)
-    if(NO_MBEDTLS_SOURCE)
-        FetchContent_Declare(
-            mbedtls
-            GIT_REPOSITORY https://github.com/ARMmbed/mbedtls
-            GIT_TAG ${MBEDTLS_GIT_TAG}
-        )
-    else()
-        FetchContent_Declare(
-            mbedtls
-            SOURCE_DIR ${MBEDTLS_SOURCE}
-        )
-
-    endif()
-    set(ENABLE_TESTING CACHE BOOL OFF)
-    set(ENABLE_PROGRAMS CACHE BOOL OFF)
-    cmake_policy(SET CMP0048 NEW)
-    set(MBEDTLS_AS_SUBPROJECT TRUE)
-    set(DISABLE_PACKAGE_CONFIG_AND_INSTALL OFF)
-    FetchContent_MakeAvailable(mbedtls)
-
-endfunction()
-
-function(nf_add_lwip_library)
-    cmake_parse_arguments(NFLWIP "" "" "PLATFORM_INCLUDES" ${ARGN})
-    set(NO_LWIP_SOURCE TRUE)
-    if(LWIP_SOURCE)
-        if(NOT ${LWIP_SOURCE} STREQUAL "")
-            set(NO_LWIP_SOURCE FALSE)
-        endif()
-    endif()
-    set(LWIP_GIT_TAG "STABLE-2_1_3_RELEASE")
-    if(NO_LWIP_SOURCE)
-        FetchContent_Declare(
-            lwIP
-            GIT_REPOSITORY https://github.com/lwip-tcpip/lwip.git
-            GIT_TAG ${LWIP_GIT_TAG}
-        )
-    else()
-        FetchContent_Declare(
-            lwIP
-            SOURCE_DIR ${LWIP_SOURCE}
-        )
-    endif()
-    FetchContent_GetProperties(lwip)
-    if(NOT lwIP_POPULATED)
-        FetchContent_MakeAvailable(lwIP)
-    endif()
-    add_custom_target(lwipdocs)
-endfunction()
+#function(nf_add_mbedtls_library)
+#    set(NO_MBEDTLS_SOURCE TRUE)
+#    if(MBEDTLS_SOURCE)
+#        if(NOT ${MBEDTLS_SOURCE} STREQUAL "")
+#            set(NO_MBEDTLS_SOURCE FALSE)
+#        endif()
+#    endif()
+#    set(MBEDTLS_GIT_TAG "mbedtls-3.6.5")
+#    option(ENABLE_TESTING "no testing when building Mbed TLS." OFF)
+#    if(NO_MBEDTLS_SOURCE)
+#        FetchContent_Declare(
+#            mbedtls
+#            GIT_REPOSITORY https://github.com/ARMmbed/mbedtls
+#            GIT_TAG ${MBEDTLS_GIT_TAG}
+#        )
+#    else()
+#        FetchContent_Declare(
+#            mbedtls
+#            SOURCE_DIR ${MBEDTLS_SOURCE}
+#        )
+#
+#    endif()
+#    set(ENABLE_TESTING CACHE BOOL OFF)
+#    set(ENABLE_PROGRAMS CACHE BOOL OFF)
+#    cmake_policy(SET CMP0048 NEW)
+#    set(MBEDTLS_AS_SUBPROJECT TRUE)
+#    set(DISABLE_PACKAGE_CONFIG_AND_INSTALL OFF)
+#    FetchContent_MakeAvailable(mbedtls)
+#
+#endfunction()
+#
+#function(nf_add_lwip_library)
+#    cmake_parse_arguments(NFLWIP "" "" "PLATFORM_INCLUDES" ${ARGN})
+#    set(NO_LWIP_SOURCE TRUE)
+#    if(LWIP_SOURCE)
+#        if(NOT ${LWIP_SOURCE} STREQUAL "")
+#            set(NO_LWIP_SOURCE FALSE)
+#        endif()
+#    endif()
+#    set(LWIP_GIT_TAG "STABLE-2_1_3_RELEASE")
+#    if(NO_LWIP_SOURCE)
+#        FetchContent_Declare(
+#            lwIP
+#            GIT_REPOSITORY https://github.com/lwip-tcpip/lwip.git
+#            GIT_TAG ${LWIP_GIT_TAG}
+#        )
+#    else()
+#        FetchContent_Declare(
+#            lwIP
+#            SOURCE_DIR ${LWIP_SOURCE}
+#        )
+#    endif()
+#    FetchContent_GetProperties(lwip)
+#    if(NOT lwIP_POPULATED)
+#        FetchContent_MakeAvailable(lwIP)
+#    endif()
+#    add_custom_target(lwipdocs)
+#endfunction()
 

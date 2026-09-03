@@ -12,15 +12,20 @@
 #include <nanoPAL_BlockStorage.h>
 #include <nanoHAL_ConfigurationManager.h>
 #include <nanoHAL_StorageOperation.h>
-#include <nanoHAL_Graphics.h>
+#include "DisplayInterface.h"
+#include "Display.h"
+#include "GraphicsMemoryHeap.h"
 
-#if (TOUCH_DISPLAY_SUPPORT == TRUE)
+#if (CONFIG_TOUCH_DISPLAY_SUPPORT == TRUE)
 #include "TouchPanel.h"
 #include "TouchInterface.h"
 extern TouchPanel g_TouchPanel;
 extern TouchInterface g_TouchInterface;
 extern TouchDevice g_TouchDevice;
 #endif
+extern DisplayInterface g_DisplayInterface;
+extern DisplayDriver g_DisplayDriver;
+extern GraphicsMemoryHeap g_GraphicsMemoryHeap;
 
 //#if (HAL_USE_UART == TRUE)
 //#include <sys_io_ser_native_target.h>

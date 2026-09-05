@@ -5,17 +5,6 @@
 
 include(binutils.common)
 
-macro(nf_find_esp32_files_at_location files locations)
-    foreach(SRC_FILE ${files})
-        set(IDF_SRC_FILE SRC_FILE -NOTFOUND)
-        find_file(IDF_SRC_FILE ${SRC_FILE}
-            PATHS 
-            ${locations}
-            CMAKE_FIND_ROOT_PATH_BOTH
-        )
-        list(APPEND ESP32_IDF_SOURCES ${IDF_SRC_FILE})
-    endforeach()
-endmacro()
 
 function(nf_set_optimization_options target) 
     target_compile_options(${target} PRIVATE
@@ -25,8 +14,7 @@ function(nf_set_optimization_options target)
         $<$<CONFIG:RelWithDebInfo>:-Os -g>
     )
 endfunction()
-function(nf_set_linker_file target linker_file_name)
-endfunction()
+
 macro(nf_set_compile_definitions)
     cmake_parse_arguments(NFSCD "" "TARGET" "EXTRA_COMPILE_DEFINITIONS;BUILD_TARGET" ${ARGN})
     if(NOT NFSCD_TARGET OR "${NFSCD_TARGET}" STREQUAL "")
@@ -38,7 +26,7 @@ endmacro()
 macro(nf_add_platform_packages)
     cmake_parse_arguments(NFAPP "" "TARGET" "" ${ARGN})
     find_package(ESP32_IDF REQUIRED QUIET)
-    if("${NFAPP_TARGET}" STREQUAL "${NANOCLR_PROJECT_NAME}")
+    if("${NFAPP_TARGET}" STREQUAL "nanoCLR")
         if(USE_NETWORKING_OPTION)
             find_package(NF_Network REQUIRED QUIET)
         endif()
@@ -91,7 +79,7 @@ macro(nf_add_platform_include_directories target)
         ${NF_NativeAssemblies_INCLUDE_DIRS}
         ${NF_CoreCLR_INCLUDE_DIRS}
     )
-    if(${target} STREQUAL ${NANOCLR_PROJECT_NAME})
+    if(${target} STREQUAL nanoCLR)
 
         target_include_directories(${target}.elf PUBLIC
 
@@ -161,7 +149,7 @@ macro(nf_setup_target_build)
     nf_add_common_include_directories(nanoCLR)
     nf_add_platform_include_directories(nanoCLR)
     nf_set_compile_options(TARGET nanoCLR.elf EXTRA_COMPILE_OPTIONS ${NFSTBC_BOOTER_EXTRA_COMPILE_OPTIONS})
-    nf_set_compile_definitions(TARGET nanoCLR.elf EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS} BUILD_TARGET ${NANOCLR_PROJECT_NAME} )
+    nf_set_compile_definitions(TARGET nanoCLR.elf EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS} BUILD_TARGET nanoCLR )
     nf_set_link_options(TARGET nanoCLR.elf EXTRA_LINK_FLAGS ${NFSTBC_CLR_EXTRA_LINK_FLAGS})
     idf_build_executable(nanoCLR.elf)
 endmacro()
@@ -176,21 +164,21 @@ macro(nf_setup_partition_tables_generator)
     set(gen_partition_table "python" "${ESP32_PARTITION_TABLE_UTILITY}")
 
 
-        add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
+        add_custom_command( TARGET nanoCLR.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 4MB 
             ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_4mb.csv
             ${CMAKE_BINARY_DIR}/partitions_4mb.bin
             COMMENT "Generate partition table for 4MB flash" )
 
-        add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
+        add_custom_command( TARGET nanoCLR.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 8MB 
             ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_8mb.csv
             ${CMAKE_BINARY_DIR}/partitions_8mb.bin
             COMMENT "Generate partition table for 8MB flash" )
 
-        add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
+        add_custom_command( TARGET nanoCLR.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 16MB 
             ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_16mb.csv
@@ -200,7 +188,7 @@ macro(nf_setup_partition_tables_generator)
 
 
         # 32MB partition table for ESP32_S3
-        add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
+        add_custom_command( TARGET nanoCLR.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 32MB 
             ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_32mb.csv
@@ -234,7 +222,7 @@ macro(nf_add_tinyusb_component)
     )
 
     target_compile_options(${etusb_lib} PUBLIC ${compile_options})
-    target_compile_options(${NANOCLR_PROJECT_NAME}.elf PUBLIC ${compile_options})
+    target_compile_options(nanoCLR.elf PUBLIC ${compile_options})
 
 endmacro()
 
@@ -530,7 +518,7 @@ macro(nf_add_idf_as_library)
     )
 
     # Link the static libraries to the executable
-    target_link_libraries(${NANOCLR_PROJECT_NAME}.elf 
+    target_link_libraries(nanoCLR.elf 
         ${IDF_LIBRARIES_TO_ADD}
     )
 
@@ -597,7 +585,7 @@ macro(nf_add_idf_as_library)
     endif()    
 
     # Disable warning on link
-    target_link_libraries(${NANOCLR_PROJECT_NAME}.elf "-Wl,--no-warn-rwx-segments")
+    target_link_libraries(nanoCLR.elf "-Wl,--no-warn-rwx-segments")
 
     ############################################################
     # output component size summary for the nanoCLR executable #
@@ -605,14 +593,14 @@ macro(nf_add_idf_as_library)
     
     # set the map file with the components
     set(nanoCLRMapfile "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.map")
-    target_link_libraries(${NANOCLR_PROJECT_NAME}.elf "-Wl,--cref" "-Wl,--Map=\"${nanoCLRMapfile}\"")
+    target_link_libraries(nanoCLR.elf "-Wl,--cref" "-Wl,--Map=\"${nanoCLRMapfile}\"")
 
     # setup the call to the python script to generate the size summary
     set(ESP32_IDF_SIZE_UTILITY ${IDF_PATH_CMAKED}/tools/idf_size.py)
     set(output_idf_size "python" "${ESP32_IDF_SIZE_UTILITY}")
 
     add_custom_command(
-        TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
+        TARGET nanoCLR.elf POST_BUILD
         COMMAND ${output_idf_size}
         --archives ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.map
         COMMENT "Output IDF size summary")

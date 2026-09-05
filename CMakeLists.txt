@@ -2,7 +2,6 @@
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
-
 cmake_minimum_required(VERSION 3.30)
 
 include(CMakeToolsHelpers OPTIONAL)
@@ -35,8 +34,6 @@ add_compile_definitions(PLATFORM_NO_CLR_TRACE=0)
 add_compile_definitions(NANOCLR_NO_IL_INLINE=0)
 add_compile_definitions(TRACE_MASK=0)
 add_compile_definitions(PLATFORM_ESP32)
-
-
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 

@@ -2,7 +2,6 @@
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
-
 #include <esp32_idf.h>
 #include <nanoPAL.h>
 #include <nanoHAL_Time.h>
@@ -14,17 +13,15 @@
 #include <nanoHAL_StorageOperation.h>
 #include <nanoHAL_Graphics.h>
 
-#if (TOUCH_DISPLAY_SUPPORT == TRUE)
+#if (CONFIG_TOUCH_DISPLAY_SUPPORT == TRUE)
 #include "TouchPanel.h"
 #include "TouchInterface.h"
+#include "TouchDevice.h"
 extern TouchPanel g_TouchPanel;
 extern TouchInterface g_TouchInterface;
 extern TouchDevice g_TouchDevice;
 #endif
 
-//#if (HAL_USE_UART == TRUE)
-//#include <sys_io_ser_native_target.h>
-//#endif
 void Storage_Initialize();
 void Storage_Uninitialize();
 
@@ -37,6 +34,7 @@ extern void ibeacon_start();
 
 
 static bool rebootinprogress = false;
+
 //
 //  Reboot handlers clean up on reboot
 //
@@ -127,7 +125,7 @@ void nanoHAL_Initialize()
 //#endif
 
     // no PAL events required until now
-    // PalEvent_Initialize();
+    PalEvent_Initialize();
 
     // Init Networking
     Network_Initialize();
@@ -152,14 +150,9 @@ void nanoHAL_Initialize()
     }
 #endif
 
-#if (TOUCH_DISPLAY_SUPPORT == TRUE)
-    g_TouchInterface.Initialize(TOUCH_INTERFACE_BUS, TOUCH_INTERFACE_SLAVE_ADDRESS);
-    g_TouchDevice.Initialize(
-        TOUCH_INTERFACE_INTERRUPT,
-        TOUCH_INTERFACE_WIDTH,
-        TOUCH_INTERFACE_HEIGHT,
-        TOUCH_INVERT_X,
-        TOUCH_INVERT_Y);
+#if (CONFIG_TOUCH_DISPLAY_SUPPORT == TRUE)
+    g_TouchInterface.Initialize();
+    g_TouchDevice.Initialize();
     g_TouchPanel.Initialize();
 #endif
 }

@@ -7,7 +7,7 @@
             "type": "default",
             "command": "${env.COMSPEC}",
             "args": [
-                "python c:/nfTools/espressif/v5.5.4/esp-idf/components/esptool_py/esptool/esptool.py --chip auto --port com8 --baud 1500000 --before default_reset --after hard_reset erase_flash"
+                "python -m esptool --chip esp32p4 -p COM3 --baud 460800 --before default_reset --after hard_reset erase_flash"
             ]
         },
         {
@@ -35,7 +35,7 @@
             "type": "default",
             "command": "${env.COMSPEC}",
             "args": [
-                "cd build && python -m esptool     --chip esp32p4 -p COM3 -b 460800    --before default_reset --after hard_reset write_flash @flash_args"
+                "cd build && python -m esptool --chip esp32p4 -p COM3 -b 460800 --before default_reset --after hard_reset write_flash @flash_args"
             ],
             "windows": {
                 "options": {

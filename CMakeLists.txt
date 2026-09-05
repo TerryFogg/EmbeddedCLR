@@ -25,22 +25,20 @@ endif()
 set(NANOCLR_PROJECT_NAME "nanoCLR")
 set(TARGET_BOARD "ESP32_P4")
 set(RTOS_ESP32_CHECK TRUE)
-set(TARGET_SERIES_SHORT "esp32p4" CACHE INTERNAL "ESP32 target series lower case, short version")
 set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
 set(BUILD_VERSION 0.0.0.0)
 add_compile_definitions(CONFIG_TOUCH_DISPLAY_SUPPORT)
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 
-include(ClrProfilerOptions)
+#include(ClrProfilerOptions)
 
 
 
-set(TARGET_BASE_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32/ESP32_P4)
 set(BASE_PATH_FOR_PLATFORM ${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32)
 set(BASE_PATH_FOR_CLASS_LIBRARIES_MODULES ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/targets/ESP32)
 nf_add_idf_as_library()
-add_subdirectory(${TARGET_BASE_LOCATION})
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32/ESP32_P4)
 nf_clear_output_files_nanoclr()

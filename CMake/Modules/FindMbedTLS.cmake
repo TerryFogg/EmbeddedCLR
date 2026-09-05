@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
@@ -237,7 +237,7 @@ if(RTOS_ESP32_CHECK)
 
     if(CONFIG_MBEDTLS_HARDWARE_MPI)
         list(APPEND mbedTLS_SOURCES ${esp32_idf_SOURCE_DIR}/components/mbedtls/port/esp_bignum.c)
-        list(APPEND src_platform_specific ${esp32_idf_SOURCE_DIR}/components/mbedtls/port/${TARGET_SERIES_SHORT}/bignum.c)
+        list(APPEND src_platform_specific ${esp32_idf_SOURCE_DIR}/components/mbedtls/port/esp32p4/bignum.c)
     endif()
 
 else()

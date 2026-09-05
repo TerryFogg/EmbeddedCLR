@@ -1,49 +1,30 @@
 ﻿{
     "version": 4,
     "include": [
-        "../../CMake/riscv-esp32p4.json",
         "../../config/user-tools-repos.json",
         "../../config/user-prefs.json"
     ],
     "configurePresets": [
-            {
+        {
             "name": "ESP32_P4_UART_REV_LESS3",
             "environment": {
                 "PATH": "$penv{PATH};C:/users/terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
-                "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf"
+                "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
+                "ESP_IDF_VERSION": "5.5"
             },
 
             "inherits": [
-                "riscv-esp32p4-preset",
+                "general-preset",
                 "user-tools-repos",
                 "user-prefs"
             ],
             "hidden": false,
             "cacheVariables": {
                 "TARGET_NAME": "${presetName}",
-                "NF_TARGET_DEFCONFIG": "targets/ESP32/defconfig/ESP32_P4_UART_REV_LESS3_defconfig"
+                "NF_TARGET_DEFCONFIG": "targets/ESP32/defconfig/ESP32_P4_UART_REV_LESS3_defconfig",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/CMake/toolchain.riscv32-esp32p4-elf.cmake",
+                "NF_INTEROP_ASSEMBLIES": null
             }
-        },
-        {
-            "name": "ESP32_P4_USB_REV_LESS3",
-            "inherits": [
-                "riscv-esp32p4-preset",
-                "user-tools-repos",
-                "user-prefs"
-            ],
-            "hidden": false,
-            "cacheVariables": {
-                "TARGET_NAME": "${presetName}",
-                "NF_TARGET_DEFCONFIG": "targets/ESP32/defconfig/ESP32_P4_USB_REV_LESS3_defconfig"
-            }
-        }
-    ],
-    "buildPresets": [
-        {
-            "inherits": "base-user",
-            "name": "ESP32_P4_USB_REV_LESS3",
-            "displayName": "ESP32_P4_USB_REV_LESS3",
-            "configurePreset": "ESP32_P4_USB_REV_LESS3"
         }
     ]
 }

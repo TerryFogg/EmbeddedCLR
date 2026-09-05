@@ -348,73 +348,39 @@ macro(nf_setup_partition_tables_generator)
     # create command line for partition table generator
     set(gen_partition_table "python" "${ESP32_PARTITION_TABLE_UTILITY}")
 
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c3" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c5" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c6" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32h2" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32p4" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32s2" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32s3")
 
         add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 4MB 
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${TARGET_SERIES_SHORT}/partitions_nanoclr_4mb.csv
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_4mb.csv
             ${CMAKE_BINARY_DIR}/partitions_4mb.bin
             COMMENT "Generate partition table for 4MB flash" )
-
-    endif()
-
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c3" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c5" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c6" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32p4" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32s2" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32s3")
 
         add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 8MB 
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${TARGET_SERIES_SHORT}/partitions_nanoclr_8mb.csv
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_8mb.csv
             ${CMAKE_BINARY_DIR}/partitions_8mb.bin
             COMMENT "Generate partition table for 8MB flash" )
 
         add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 16MB 
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${TARGET_SERIES_SHORT}/partitions_nanoclr_16mb.csv
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_16mb.csv
             ${CMAKE_BINARY_DIR}/partitions_16mb.bin
             COMMENT "Generate partition table for 16MB flash" )
 
-    endif()
 
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32s3" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32p4")
 
         # 32MB partition table for ESP32_S3
         add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
             COMMAND ${gen_partition_table} 
             --flash-size 32MB 
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${TARGET_SERIES_SHORT}/partitions_nanoclr_32mb.csv
+            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/partitions_nanoclr_32mb.csv
             ${CMAKE_BINARY_DIR}/partitions_32mb.bin
             COMMENT "Generate partition table for 32MB flash" )
 
-    endif()
 
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32" OR 
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32c3" OR
-       ${TARGET_SERIES_SHORT} STREQUAL "esp32h2" )
-        # 2MB partition table for ESP32
-       
-        add_custom_command( TARGET ${NANOCLR_PROJECT_NAME}.elf POST_BUILD
-            COMMAND ${gen_partition_table}  
-            --flash-size 2MB 
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32/partitions_nanoclr_2mb.csv
-            ${CMAKE_BINARY_DIR}/partitions_2mb.bin
-            COMMENT "Generate partition table for 2MB flash" )
-    endif()
 
 endmacro()
 
@@ -434,13 +400,7 @@ macro(nf_add_tinyusb_component)
 
     # Set the CFG_TUSB_MCU compile option for the target MCU
     # for esp_tinyusb lib and main project
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32s3")
-        set(tusb_mcu "OPT_MCU_ESP32S3")
-    elseif(${TARGET_SERIES_SHORT} STREQUAL "esp32s2")
-        set(tusb_mcu "OPT_MCU_ESP32S2")
-    elseif(${TARGET_SERIES_SHORT} STREQUAL "esp32p4")
-        set(tusb_mcu "OPT_MCU_ESP32P4")
-    endif()
+    set(tusb_mcu "OPT_MCU_ESP32P4")
 
     set(compile_options
         "-DCFG_TUSB_MCU=${tusb_mcu}"
@@ -483,11 +443,8 @@ macro(nf_add_idf_as_library)
 
 
     nf_install_idf_component_from_registry(littlefs 97bf51ce-1daa-4369-81ec-eacbd8102815) 
-
-    if(${TARGET_SERIES_SHORT} STREQUAL "esp32p4")
-       nf_install_idf_component_from_registry(esp_wifi_remote c90c182f-b7fc-4a59-a445-96f712e36bb2)
-       nf_install_idf_component_from_registry(esp_hosted 2c2bb417-ac4a-415a-8bd8-d2437701bb5e)
-       endif()
+    nf_install_idf_component_from_registry(esp_wifi_remote c90c182f-b7fc-4a59-a445-96f712e36bb2)
+    nf_install_idf_component_from_registry(esp_hosted 2c2bb417-ac4a-415a-8bd8-d2437701bb5e)
     
     include(${IDF_PATH_CMAKED}/tools/cmake/idf.cmake)
 
@@ -640,7 +597,7 @@ macro(nf_add_idf_as_library)
     # Fixed default frequency will be used)
 
     # create IDF static libraries
-    idf_build_process(${TARGET_SERIES_SHORT}
+    idf_build_process(esp32p4
         COMPONENTS 
             ${IDF_COMPONENTS_TO_ADD}
         SDKCONFIG_DEFAULTS
@@ -655,8 +612,8 @@ macro(nf_add_idf_as_library)
     # add IDF app_main
     add_executable(
         ${NANOCLR_PROJECT_NAME}.elf
-        ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/${TARGET_SERIES_SHORT}/app_main.c
-        ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/project_elf_src_${TARGET_SERIES_SHORT}.c
+        ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/app_main.c
+        ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/project_elf_src_esp32p4.c
     )
 
     if(USE_NETWORKING_OPTION)
@@ -776,7 +733,7 @@ macro(nf_add_idf_as_library)
 
     # find out revision info for any target series
     unset(ESP32_REVISION)
-    string(TOUPPER CONFIG_${TARGET_SERIES_SHORT}_REV_MIN_ CONFIG_ESP32X_REV_MIN)
+    string(TOUPPER CONFIG_esp32p4_REV_MIN_ CONFIG_ESP32X_REV_MIN)
     string(FIND ${SDKCONFIG_DEFAULT_CONTENTS} ${CONFIG_ESP32X_REV_MIN}0=y CONFIG_ESP32X_REV_MIN_0_POS)
     string(FIND ${SDKCONFIG_DEFAULT_CONTENTS} ${CONFIG_ESP32X_REV_MIN}1=y CONFIG_ESP32X_REV_MIN_1_POS)
     string(FIND ${SDKCONFIG_DEFAULT_CONTENTS} ${CONFIG_ESP32X_REV_MIN}2=y CONFIG_ESP32X_REV_MIN_2_POS)

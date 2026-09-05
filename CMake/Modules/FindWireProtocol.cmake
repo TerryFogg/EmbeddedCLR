@@ -3,68 +3,44 @@
 # See LICENSE file in the project root for full license information.
 #
 
-# this one has to follow the declaration on src\CLR\Include\WireProtocol_Message.h
-# #define TRACE_ERRORS 1
-# #define TRACE_HEADERS 2
-# #define TRACE_STATE 4
-# #define TRACE_NODATA 8
+macro(add_wireprotocol)
 
-# default to 0 (no Wire Protocol trace)
-set(WP_TRACE_MASK 0 CACHE INTERNAL "WP trace mask")
+    set(WP_TRACE_MASK 0 CACHE INTERNAL "WP trace mask")
+    if(NF_WP_TRACE_ERRORS)
+        math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 1")
+    endif()
+    if(NF_WP_TRACE_HEADERS)
+        math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 2")
+    endif()
+    if(NF_WP_TRACE_STATE)
+        math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 4")
+    endif()
+    if(NF_WP_TRACE_NODATA)
+        math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 8")
+    endif()
+    if(NF_WP_TRACE_VERBOSE)
+        math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 16")
+    endif()
+    if(NF_WP_TRACE_ALL)
+        math(EXPR WP_TRACE_MASK "16 + 8 + 4 + 2 + 1")
+    endif()
 
-if(NF_WP_TRACE_ERRORS)
-    math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 1")
-endif()
-if(NF_WP_TRACE_HEADERS)
-    math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 2")
-endif()
-if(NF_WP_TRACE_STATE)
-    math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 4")
-endif()
-if(NF_WP_TRACE_NODATA)
-    math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 8")
-endif()
-if(NF_WP_TRACE_VERBOSE)
-    math(EXPR WP_TRACE_MASK "${WP_TRACE_MASK} + 16")
-endif()
-if(NF_WP_TRACE_ALL)
-    math(EXPR WP_TRACE_MASK "16 + 8 + 4 + 2 + 1")
-endif()
-
-list(APPEND WireProtocol_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/CLR/Include)
-set(WireProtocol_SRCS
-    WireProtocol_Message.c
-    WireProtocol_MonitorCommands.c
-    WireProtocol_HAL_Interface.c
-    WireProtocol_App_Interface.c
-    nanoSupport_CRC32.c
-)
-foreach(SRC_FILE ${WireProtocol_SRCS})
-    set(WireProtocol_SRC_FILE SRC_FILE-NOTFOUND)
-    find_file(WireProtocol_SRC_FILE ${SRC_FILE} PATHS 
-              ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol
-              ${CMAKE_SOURCE_DIR}/src/CLR/Core
-              CMAKE_FIND_ROOT_PATH_BOTH
+    list(APPEND WireProtocol_INCLUDE_DIRS
+                ${CMAKE_SOURCE_DIR}/src/CLR/Include
     )
-    list(APPEND WireProtocol_SOURCES ${WireProtocol_SRC_FILE})
-endforeach()
 
-include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(WireProtocol DEFAULT_MSG WireProtocol_INCLUDE_DIRS WireProtocol_SOURCES)
+    list(APPEND WireProtocol_SRCS
+        ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_Message.c
+        ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_MonitorCommands.c
+        ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_App_Interface.c
+        ${CMAKE_SOURCE_DIR}/targets/ESP32/_common/WireProtocol_HAL_Interface.c
+        ${CMAKE_SOURCE_DIR}/targets/ESP32/_common/nanoSupport_CRC32.c
+    )
 
-macro(nf_add_lib_wireprotocol)
-    cmake_parse_arguments(NFAWP "" "" "EXTRA_INCLUDES;EXTRA_COMPILE_DEFINITIONS" ${ARGN})
-    set(LIB_NAME WireProtocol)
-    add_library(${LIB_NAME} STATIC 
-                ${WireProtocol_SOURCES})
-    target_include_directories( ${LIB_NAME} PUBLIC 
-            ${WireProtocol_INCLUDE_DIRS}
-            ${NF_CoreCLR_INCLUDE_DIRS}
-            ${NFAWP_EXTRA_INCLUDES})
-        nf_common_compiler_definitions(TARGET ${LIB_NAME} BUILD_TARGET ${NANOCLR_PROJECT_NAME})
-        target_compile_definitions( ${LIB_NAME} PUBLIC
-                                    -DPLATFORM_ESP32
-                                   ${NFAWP_EXTRA_COMPILER_DEFINITIONS}
-        )
-    add_library("nano::${LIB_NAME}" ALIAS ${LIB_NAME})
+    target_sources(nanoCLR.elf PUBLIC
+                   ${WireProtocol_SRCS}
+    )
+    target_include_directories(nanoCLR.elf PUBLIC 
+                               ${WireProtocol_INCLUDE_DIRS}
+    )   
 endmacro()

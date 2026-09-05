@@ -32,9 +32,9 @@ macro(nf_set_compile_definitions)
     if(NOT NFSCD_TARGET OR "${NFSCD_TARGET}" STREQUAL "")
         message(FATAL_ERROR "Need to set TARGET argument when calling nf_set_compile_definitions()")
     endif()
-    nf_common_compiler_definitions(TARGET ${NFSCD_TARGET} BUILD_TARGET ${NFSCD_BUILD_TARGET})
-    target_compile_definitions(${NFSCD_TARGET} PUBLIC ${NFSCD_EXTRA_COMPILE_DEFINITIONS})
+     target_compile_definitions(nanoCLR.elf PUBLIC ${NFSCD_EXTRA_COMPILE_DEFINITIONS})
 endmacro()
+
 macro(nf_add_platform_packages)
     cmake_parse_arguments(NFAPP "" "TARGET" "" ${ARGN})
     find_package(ESP32_IDF REQUIRED QUIET)
@@ -61,27 +61,10 @@ macro(nf_add_platform_dependencies target)
 
     add_dependencies(${target}.elf nano::NF_CoreCLR)
 
-    nf_add_lib_wireprotocol(
-        EXTRA_INCLUDES
-            ${CMAKE_CURRENT_SOURCE_DIR}
-            ${CMAKE_BINARY_DIR}/targets/ESP32
-            ${ESP32_IDF_INCLUDE_DIRS}
-            ${TARGET_ESP32_IDF_INCLUDES})
-
-    add_dependencies(${target}.elf nano::WireProtocol)
-
     
     if(NF_FEATURE_DEBUGGER)
-
-        nf_add_lib_debugger(
-            EXTRA_INCLUDES
-                ${CMAKE_CURRENT_SOURCE_DIR}
-                ${CMAKE_BINARY_DIR}/targets/ESP32
-                ${ESP32_IDF_INCLUDE_DIRS}
-                ${TARGET_ESP32_IDF_INCLUDES})
-
-        add_dependencies(${target}.elf nano::NF_Debugger)
-
+        add_wireprotocol()
+        add_debugger()
     endif()
 
     nf_add_lib_native_assemblies(
@@ -93,38 +76,9 @@ macro(nf_add_platform_dependencies target)
     
     add_dependencies(${target}.elf nano::NF_NativeAssemblies)
   
-    if(USE_NETWORKING_OPTION)
-
-        nf_add_lib_network(
-            BUILD_TARGET
-                ${target}
-            EXTRA_COMPILE_DEFINITIONS
-                ${ESP32_ETHERNET_DEFINES}
-            EXTRA_SOURCES 
-                ${TARGET_ESP32_IDF_NETWORK_SOURCES}
-            EXTRA_INCLUDES 
-                ${ESP32_IDF_INCLUDE_DIRS}
-                ${TARGET_ESP32_IDF_INCLUDES}
-                ${CMAKE_BINARY_DIR}/targets/ESP32
-                ${IDF_PATH_CMAKED}/components/mbedtls/mbedtls/include
-        )
-
-        add_dependencies(${target}.elf nano::NF_Network)
-
-        # security provider is MbedTLS
-        if(USE_SECURITY_MBEDTLS_OPTION)
-            add_dependencies(NF_Network mbedtls)
-        endif()
-    endif()
-
-    # if(USE_FILESYSTEM_OPTION)
-    #     find_package(CHIBIOS_FATFS REQUIRED)
-    # endif()
 
 endmacro()
 
-# Add ESP32 platform include directories to a specific CMake target
-# To be called from target CMakeList.txt
 macro(nf_add_platform_include_directories target)
 
     FetchContent_GetProperties(esp32_idf)
@@ -137,8 +91,6 @@ macro(nf_add_platform_include_directories target)
         ${NF_NativeAssemblies_INCLUDE_DIRS}
         ${NF_CoreCLR_INCLUDE_DIRS}
     )
-
-    # includes specific to nanoCLR
     if(${target} STREQUAL ${NANOCLR_PROJECT_NAME})
 
         target_include_directories(${target}.elf PUBLIC
@@ -151,8 +103,6 @@ macro(nf_add_platform_include_directories target)
 
 endmacro()
 
-# Add ESP32 platform target sources to a specific CMake target
-# To be called from target CMakeList.txt
 macro(nf_add_platform_sources target)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/target_common.h.in
                    ${CMAKE_CURRENT_BINARY_DIR}/target_common.h @ONLY)
@@ -168,10 +118,10 @@ macro(nf_add_platform_sources target)
     )
  if(USE_SECURITY_MBEDTLS_OPTION)
         target_link_libraries(${target}.elf
-        mbedtls
-        )
+                             mbedtls
+                  )
 
-        add_dependencies(NF_Network mbedtls)
+ add_dependencies(NF_Network mbedtls)
     endif()
 
 endmacro()
@@ -188,8 +138,8 @@ macro(nf_setup_target_build)
         ${NFSTBC_CLR_EXTRA_SOURCE_FILES}
     )
 
-    nf_add_platform_packages(TARGET ${NANOCLR_PROJECT_NAME})
-    nf_add_platform_dependencies(${NANOCLR_PROJECT_NAME})
+    #nf_add_platform_packages(TARGET nanoCLR)
+    nf_add_platform_dependencies(nanoCLR)
     target_sources(nanoCLR.elf PUBLIC
                    ${CMAKE_CURRENT_SOURCE_DIR}/target_common.c
                    ${CMAKE_CURRENT_SOURCE_DIR}/target_BlockStorage.c
@@ -200,8 +150,6 @@ macro(nf_setup_target_build)
     target_link_libraries(nanoCLR.elf
                           NF_CoreCLR
                           NF_NativeAssemblies
-                          NF_Debugger
-                          WireProtocol
                           ${NFACS_EXTRA_LIBRARIES}
     )
 
@@ -209,13 +157,13 @@ macro(nf_setup_target_build)
         ${NANOCLR_PROJECT_SOURCES}
         ${Graphics_Sources}
     )
-    nf_add_platform_sources(${NANOCLR_PROJECT_NAME})
-    nf_add_common_include_directories(${NANOCLR_PROJECT_NAME})
-    nf_add_platform_include_directories(${NANOCLR_PROJECT_NAME})
-    nf_set_compile_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_COMPILE_OPTIONS ${NFSTBC_BOOTER_EXTRA_COMPILE_OPTIONS})
-    nf_set_compile_definitions(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS} BUILD_TARGET ${NANOCLR_PROJECT_NAME} )
-    nf_set_link_options(TARGET ${NANOCLR_PROJECT_NAME}.elf EXTRA_LINK_FLAGS ${NFSTBC_CLR_EXTRA_LINK_FLAGS})
-    idf_build_executable(${NANOCLR_PROJECT_NAME}.elf)
+    nf_add_platform_sources(nanoCLR)
+    nf_add_common_include_directories(nanoCLR)
+    nf_add_platform_include_directories(nanoCLR)
+    nf_set_compile_options(TARGET nanoCLR.elf EXTRA_COMPILE_OPTIONS ${NFSTBC_BOOTER_EXTRA_COMPILE_OPTIONS})
+    nf_set_compile_definitions(TARGET nanoCLR.elf EXTRA_COMPILE_DEFINITIONS ${NFSTBC_CLR_EXTRA_COMPILE_DEFINITIONS} BUILD_TARGET ${NANOCLR_PROJECT_NAME} )
+    nf_set_link_options(TARGET nanoCLR.elf EXTRA_LINK_FLAGS ${NFSTBC_CLR_EXTRA_LINK_FLAGS})
+    idf_build_executable(nanoCLR.elf)
 endmacro()
 
 # macro that setups the calls to the partition tool to generate the various partitions
@@ -490,7 +438,7 @@ macro(nf_add_idf_as_library)
 
     # add IDF app_main
     add_executable(
-        ${NANOCLR_PROJECT_NAME}.elf
+        nanoCLR.elf
         ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/app_main.c
         ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/project_elf_src_esp32p4.c
     )
@@ -587,11 +535,8 @@ macro(nf_add_idf_as_library)
     )
 
     # add nano libraries to the link dependencies of IDF build
-    idf_build_set_property(__LINK_DEPENDS "NF_CoreCLR;NF_NativeAssemblies;NF_Debugger;WireProtocol" APPEND)
-#TERRY    idf_build_set_property(__LINK_DEPENDS "NF_CoreCLR;NF_NativeAssemblies;NF_Debugger;WireProtocol;NF_Network" APPEND)
-
+    idf_build_set_property(__LINK_DEPENDS "NF_CoreCLR;NF_NativeAssemblies" APPEND)
     nf_setup_partition_tables_generator()
-
     # need to read the supplied SDK CONFIG file        
     file(READ
         ${CMAKE_SOURCE_DIR}/sdkconfig

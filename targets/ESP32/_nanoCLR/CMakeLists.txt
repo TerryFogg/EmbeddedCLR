@@ -5,7 +5,6 @@
 
 # append target Esp32 nanoCLR source files
 set( TARGET_ESP32_IDF_NANOCLR_SOURCES
-            ${CMAKE_CURRENT_SOURCE_DIR}/WireProtocol_MonitorCommands.c
             ${CMAKE_CURRENT_SOURCE_DIR}/CLR_Startup_Thread.c 
             ${CMAKE_CURRENT_SOURCE_DIR}/targetPAL.c 
             ${CMAKE_CURRENT_SOURCE_DIR}/nanoHAL.cpp

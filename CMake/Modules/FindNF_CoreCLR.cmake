@@ -170,11 +170,6 @@ set(NF_CoreCLR_SRCS
     Hardware.cpp
 )
 
-# append CRC32, if not already included with Wire Protocol
-if(NOT WireProtocol_FOUND)
-    list(APPEND NF_CoreCLR_SRCS nanoSupport_CRC32.c)
-endif()
-
 if(NF_TRACE_TO_STDIO)
     list(APPEND NF_CoreCLR_SRCS GenericPort_stdio.c)
 endif()
@@ -331,9 +326,6 @@ macro(nf_add_lib_coreclr)
 
     # TODO can be removed later
     if(RTOS_ESP32_CHECK)
-        nf_common_compiler_definitions(TARGET ${LIB_NAME} BUILD_TARGET ${NANOCLR_PROJECT_NAME})
-
-        # this is the only one different
         target_compile_definitions(
             ${LIB_NAME} PUBLIC
             -DPLATFORM_ESP32

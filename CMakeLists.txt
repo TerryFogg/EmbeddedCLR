@@ -27,13 +27,18 @@ set(TARGET_BOARD "ESP32_P4")
 set(RTOS_ESP32_CHECK TRUE)
 set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
 set(BUILD_VERSION 0.0.0.0)
+
 add_compile_definitions(CONFIG_TOUCH_DISPLAY_SUPPORT)
+add_compile_definitions(NANOCLR_ENABLE_SOURCELEVELDEBUGGING)
+add_compile_definitions(I_AM_NANOCLR)
+add_compile_definitions(PLATFORM_NO_CLR_TRACE=0)
+add_compile_definitions(NANOCLR_NO_IL_INLINE=0)
+add_compile_definitions(TRACE_MASK=0)
+add_compile_definitions(PLATFORM_ESP32)
+
+
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
-
-#include(ClrProfilerOptions)
-
-
 
 set(BASE_PATH_FOR_PLATFORM ${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32)
 set(BASE_PATH_FOR_CLASS_LIBRARIES_MODULES ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR)
@@ -41,4 +46,3 @@ set(BASE_PATH_FOR_CLASS_LIBRARIES_MODULES ${CMAKE_SOURCE_DIR}/targets/ESP32/_nan
 add_subdirectory(${CMAKE_SOURCE_DIR}/targets/ESP32)
 nf_add_idf_as_library()
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32/ESP32_P4)
-nf_clear_output_files_nanoclr()

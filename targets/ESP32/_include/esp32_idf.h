@@ -24,12 +24,14 @@
 #include <esp_attr.h>
 #include <nvs_flash.h>
 #include <sdkconfig.h>
-
+ 
 // network
-#include <esp_wifi.h>
-#include <esp_eth.h>
-#include <esp_event.h>
-#include <esp_netif_lwip_internal.h>
+#if defined (NETWORK_INTERFACE)
+  #include <esp_wifi.h>
+  #include <esp_eth.h>
+  #include <esp_event.h>
+  #include <esp_netif_lwip_internal.h>
+#endif
 
 #include <esp_timer.h>
 #include <esp_sleep.h>

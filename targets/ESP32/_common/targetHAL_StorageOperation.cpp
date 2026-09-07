@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -37,23 +37,23 @@ int create_directories(const char *path)
         temp[len - 1] = 0;
     }
 
-    for (pos = temp + 1; *pos; pos++)
-    {
-        if (*pos == '/')
-        {
-            *pos = 0;
-            if (mkdir(temp, 0700) && errno != EEXIST)
-            {
-                return -1;
-            }
-            *pos = '/';
-        }
-    }
-
-    if (mkdir(temp, 0700) && errno != EEXIST)
-    {
-        return -1;
-    }
+ //   for (pos = temp + 1; *pos; pos++)
+ //   {
+ //       if (*pos == '/')
+ //       {
+ //           *pos = 0;
+ //           if (mkdir(temp, 0700) && errno != EEXIST)
+ //           {
+ //               return -1;
+ //           }
+ //           *pos = '/';
+ //       }
+ //   }
+ //
+ //   if (mkdir(temp, 0700) && errno != EEXIST)
+ //   {
+ //       return -1;
+ //   }
 
     return 0;
 }

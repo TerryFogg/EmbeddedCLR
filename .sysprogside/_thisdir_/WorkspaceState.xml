@@ -19,7 +19,7 @@
         <Children>
           <FileTreeStateEntry>
             <Name>CMake Files</Name>
-            <IsExpanded>true</IsExpanded>
+            <IsExpanded xsi:nil="true" />
             <Children>
               <FileTreeStateEntry>
                 <Name>targets</Name>
@@ -30,6 +30,20 @@
                     <IsExpanded>true</IsExpanded>
                   </FileTreeStateEntry>
                 </Children>
+              </FileTreeStateEntry>
+              <FileTreeStateEntry>
+                <Name>targets/ESP32/ESP32_P4</Name>
+                <IsExpanded>true</IsExpanded>
+              </FileTreeStateEntry>
+            </Children>
+          </FileTreeStateEntry>
+          <FileTreeStateEntry>
+            <Name>targets</Name>
+            <IsExpanded>true</IsExpanded>
+            <Children>
+              <FileTreeStateEntry>
+                <Name>ESP32</Name>
+                <IsExpanded>true</IsExpanded>
               </FileTreeStateEntry>
             </Children>
           </FileTreeStateEntry>
@@ -63,6 +77,24 @@
       </Path>
       <FirstVisibleLine>0</FirstVisibleLine>
       <CaretLine>0</CaretLine>
+      <CaretOffset>0</CaretOffset>
+    </PersistentDocumentState>
+    <PersistentDocumentState>
+      <Path>
+        <FullPath>C:\repos\TerryFogg\EmbeddedCLR\targets\ESP32\CMakePresets.json</FullPath>
+        <IsCaseSensitive>false</IsCaseSensitive>
+      </Path>
+      <FirstVisibleLine>0</FirstVisibleLine>
+      <CaretLine>27</CaretLine>
+      <CaretOffset>0</CaretOffset>
+    </PersistentDocumentState>
+    <PersistentDocumentState>
+      <Path>
+        <FullPath>C:\repos\TerryFogg\EmbeddedCLR\targets\ESP32\ESP32_P4\CMakeLists.txt</FullPath>
+        <IsCaseSensitive>false</IsCaseSensitive>
+      </Path>
+      <FirstVisibleLine>0</FirstVisibleLine>
+      <CaretLine>17</CaretLine>
       <CaretOffset>0</CaretOffset>
     </PersistentDocumentState>
   </DocumentStates>

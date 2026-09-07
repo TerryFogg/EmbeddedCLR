@@ -4,12 +4,21 @@
 #
 cmake_minimum_required(VERSION 3.30)
 
-include(CMakeToolsHelpers OPTIONAL)
-include(ExternalProject)
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
+Set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
+
 include(binutils.common)
-include(binutils.ESP32)
+include(ExternalProject)
+include(CMakeToolsHelpers OPTIONAL)
+
+project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
+add_executable(nanoCLR)
+
+include(Setup)
+
+include(Esp32_1)
+include(${TARGET_FAMILY})
+include(nf-Interpreter)
+
 nf_check_path_limits()
 set(CMAKE_BUILD_TYPE "Debug")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
@@ -21,11 +30,52 @@ if(DEFINED NF_TARGET_DEFCONFIG)
     nf_load_kconfig()
 endif()
 
-set(NANOCLR_PROJECT_NAME "nanoCLR")
-set(TARGET_BOARD "ESP32_P4")
-set(RTOS_ESP32_CHECK TRUE)
-set(ESP32_CPU_TYPE "riscv" CACHE INTERNAL "Setting CPU type")
-set(BUILD_VERSION 0.0.0.0)
+
+
+# NF Core
+
+include(CoreIO)
+include(RuntimeEvents)
+include(RuntimeSerialization)
+if(Collections)
+    include(Collections)
+endif()
+if(Cryptography)
+   include(Cryptography)
+endif()
+if(Esp32Hardware)
+   include(Esp32Hardware)
+endif()
+if(Hashing)
+    include(Hashing)
+endif()
+if(FileSystem)
+   include(FileSystem)
+endif()
+if(Graphics)
+    include(Graphics)
+endif()
+if(Mathematics)
+   include(Mathematics)
+endif()
+if(Network)
+   include(Network)
+endif()
+if(OneWire)
+   include(OneWire)
+endif()
+if(ResourceManager)
+    include(ResourceManager)
+endif()
+if(Text)
+    include(Text)
+endif()
+if(UsbStream)
+    include(UsbStream)
+endif()
+if(WireProtocol)
+    include(WireProtocol)
+endif()
 
 add_compile_definitions(CONFIG_TOUCH_DISPLAY_SUPPORT)
 add_compile_definitions(NANOCLR_ENABLE_SOURCELEVELDEBUGGING)
@@ -34,12 +84,38 @@ add_compile_definitions(PLATFORM_NO_CLR_TRACE=0)
 add_compile_definitions(NANOCLR_NO_IL_INLINE=0)
 add_compile_definitions(TRACE_MASK=0)
 add_compile_definitions(PLATFORM_ESP32)
+add_compile_definitions(ESP_PLATFORM)
+add_compile_definitions(TARGET=esp32p4)
+add_compile_definitions(USE_FPU=TRUE)
 
-project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
+#add_compile_definitions(Wall
+#                        Wextra
+#                        Werror
+#                        Wno-sign-compare
+#                        Wno-unused-parameter
+#                        Wshadow
+#                        Wimplicit-fallthrough
+#                        fshort-wchar
+#                        fno-builtin
+#                        fno-common
+#                        fno-exceptions
+#                        fcheck-new )
 
-set(BASE_PATH_FOR_PLATFORM ${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32)
-set(BASE_PATH_FOR_CLASS_LIBRARIES_MODULES ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/targets/ESP32)
 nf_add_idf_as_library()
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/targets/ESP32/ESP32_P4)
+
+
+target_include_directories(nanoCLR PUBLIC ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4)
+
+target_sources(nanoCLR PUBLIC
+               ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/app_main.c
+               ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4/configuration/CLR_RT_InteropAssembliesTable.cpp
+)
+
+# Add the linker option to suppress warnings about read/write/execute segments
+target_link_options(nanoCLR PUBLIC "-Wl,--no-warn-rwx-segments")
+
+ idf_build_executable(nanoCLR)
+
+
+nf_generate_build_output_files(nanoCLR)

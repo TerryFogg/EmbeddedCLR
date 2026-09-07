@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -7,7 +7,11 @@
 #define TARGET_HAL_H
 
 #include <target_board.h>
-#include <lwipopts.h>
+
+#ifdef LWIP
+    #include <lwipopts.h>
+#endif
+
 #include <esp32_idf.h>
 
 // global mutex protecting the internal state of the interpreter, including event flags

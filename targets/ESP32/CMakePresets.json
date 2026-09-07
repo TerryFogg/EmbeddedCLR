@@ -10,7 +10,7 @@
             "environment": {
                 "PATH": "$penv{PATH};C:/users/terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
                 "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
-                "ESP_IDF_VERSION": "5.5",
+                "ESP_IDF_VERSION": "5.5"
             },
             "cacheVariables": {
                 "TARGET_NAME": "${presetName}",

@@ -24,6 +24,9 @@
                 "dev": true,
                 "uninitialized": false,
                 "unusedCli": false
+            },
+            "environment": {
+                "CMAKE_BUILD_PARALLEL_LEVEL": "16"
             }
         }
     ]

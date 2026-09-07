@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -287,9 +287,9 @@ CT_ASSERT_UNIQUE_NAME(sizeof(SOCK_sockaddr_in) == 16, SOCK_SOCKADDR_IN)
 typedef struct GNU_PACKED SOCK_in_addr6
 {
     union {
-        u32_t u32_addr[4];
-        u16_t u16_addr[8];
-        u8_t u8_addr[16];
+        uint32_t u32_addr[4];
+        uint16_t u16_addr[8];
+        uint8_t u8_addr[16];
     } un;
 } SOCK_in_addr6;
 
@@ -298,7 +298,7 @@ typedef struct GNU_PACKED SOCK_sockaddr_in6
     short sin_family;
     u_short sin_port;
     SOCK_in_addr6 sin_addr;
-    u32_t scopeId;
+    uint32_t scopeId;
 } SOCK_sockaddr_in6;
 
 CT_ASSERT_UNIQUE_NAME(sizeof(SOCK_sockaddr_in6) == 24, SOCK_SOCKADDR_IN6)

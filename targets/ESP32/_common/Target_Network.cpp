@@ -5,7 +5,10 @@
 //
 
 #include "NF_ESP32_Network.h"
-#include <esp32_ethernet_options.h>
+#ifdef ESP32_ETHERNET_SUPPORT
+  #include <esp32_ethernet_options.h>
+#endif
+
 #include <esp_wifi_types.h>
 //
 // Works with the Target_NetworkConfig to map the Network_Interface_XXXXX calls to the correct driver

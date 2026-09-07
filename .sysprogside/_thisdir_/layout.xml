@@ -59,12 +59,32 @@
               </Tab>
             </Tabs>
             <ActiveTabIndex>1</ActiveTabIndex>
-            <IsGloballyActive>true</IsGloballyActive>
+            <IsGloballyActive>false</IsGloballyActive>
           </FirstContents>
           <SecondContents xsi:type="TabGroup">
-            <Tabs />
-            <ActiveTabIndex>-1</ActiveTabIndex>
-            <IsGloballyActive>false</IsGloballyActive>
+            <Tabs>
+              <Tab>
+                <Definition>
+                  <Document>
+                    <Path>
+                      <FullPath>C:\repos\TerryFogg\EmbeddedCLR\targets\ESP32\CMakePresets.json</FullPath>
+                      <IsCaseSensitive>false</IsCaseSensitive>
+                    </Path>
+                    <OwningProject>
+                      <Type>builtin:folder</Type>
+                      <Path>
+                        <FullPath>C:\repos\TerryFogg\EmbeddedCLR</FullPath>
+                        <IsCaseSensitive>false</IsCaseSensitive>
+                      </Path>
+                    </OwningProject>
+                    <IsTemporary>false</IsTemporary>
+                  </Document>
+                </Definition>
+                <TabText>CMakePresets.json</TabText>
+              </Tab>
+            </Tabs>
+            <ActiveTabIndex>0</ActiveTabIndex>
+            <IsGloballyActive>true</IsGloballyActive>
           </SecondContents>
         </FirstContents>
         <SecondContents xsi:type="TabGroup">
@@ -102,9 +122,9 @@
     <WindowState>
       <Top>131</Top>
       <Left>508</Left>
-      <Width>2580</Width>
-      <Height>1023</Height>
-      <IsMaximized>false</IsMaximized>
+      <Width>3440</Width>
+      <Height>1392</Height>
+      <IsMaximized>true</IsMaximized>
     </WindowState>
   </RootElement>
   <ExtraWindows />

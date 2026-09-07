@@ -108,7 +108,7 @@ void nanoHAL_Initialize()
 
     Storage_Initialize();
 
-    CPU_GPIO_Initialize();
+   // CPU_GPIO_Initialize();
 
 #if (HAL_USE_SPI == TRUE)
     nanoSPI_Initialize();
@@ -189,7 +189,7 @@ void nanoHAL_Uninitialize(bool isPoweringDown)
     nanoSPI_Uninitialize();
 #endif
 
-    CPU_GPIO_Uninitialize();
+//    CPU_GPIO_Uninitialize();
 
     // PalEvent_Uninitialize();
 

@@ -30,16 +30,17 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_FileOperation.cpp
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_Rtos.c
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_StorageOperation.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_Time.cpp
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/Target_BlockStorage_ESP32FlashDriver.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol_HAL_Interface.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol_ReceiverThread.c
 
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/CLR_Startup_Thread.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol/WireProtocol_HAL_Interface.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol/WireProtocol_ReceiverThread.c
+
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/CLR_Startup_Thread.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/targetHAL.cpp
+
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/Memory.cpp
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/nanoHAL.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetHAL_Power.c
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetHAL_Time.cpp
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetPAL.c 

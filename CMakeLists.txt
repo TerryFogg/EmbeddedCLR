@@ -43,7 +43,7 @@ endforeach()
 
 include(CommonBuild)
 target_sources(nanoCLR PUBLIC
-               ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/app_main.c
+               ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/app_main.c
                ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration/CLR_RT_InteropAssembliesTable.cpp
 )
 nf_add_idf_as_library()

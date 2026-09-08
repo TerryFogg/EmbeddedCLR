@@ -60,18 +60,14 @@ list(APPEND ESP32_Includes
 target_sources(nanoCLR PUBLIC ${ESP32_Sources} )
 target_include_directories(nanoCLR PUBLIC ${ESP32_Includes} )
 
-# Add the linker option to suppress warnings about read/write/execute segments
+# Add the linker option to ESP32 build to suppress warnings about read/write/execute segments
 target_link_options(nanoCLR PUBLIC "-Wl,--no-warn-rwx-segments")
 
-
 set(TARGET_CONFIGURATION_PATH  ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4/Configuration CACHE INTERNAL "Target configuration path")
-
-
- configure_file(${TARGET_CONFIGURATION_PATH}/ESP32_target_os.h.in ${CMAKE_BINARY_DIR}/target_os.h @ONLY)
- configure_file(${TARGET_CONFIGURATION_PATH}/target_platform.h.in ${CMAKE_BINARY_DIR}/target_platform.h @ONLY)
- configure_file(${TARGET_CONFIGURATION_PATH}/target_common.h.in ${CMAKE_BINARY_DIR}/target_common.h @ONLY)
- configure_file(${TARGET_CONFIGURATION_PATH}/target_board.h.in ${CMAKE_BINARY_DIR}/target_board.h @ONLY)
-
+configure_file(${TARGET_CONFIGURATION_PATH}/ESP32_target_os.h.in ${CMAKE_BINARY_DIR}/target_os.h @ONLY)
+configure_file(${TARGET_CONFIGURATION_PATH}/target_platform.h.in ${CMAKE_BINARY_DIR}/target_platform.h @ONLY)
+configure_file(${TARGET_CONFIGURATION_PATH}/target_common.h.in ${CMAKE_BINARY_DIR}/target_common.h @ONLY)
+configure_file(${TARGET_CONFIGURATION_PATH}/target_board.h.in ${CMAKE_BINARY_DIR}/target_board.h @ONLY)
 
 set(ESP32_PARTITION_TABLE_UTILITY ${IDF_PATH_CMAKED}/components/partition_table/gen_esp32part.py )
 set(gen_partition_table "python" "${ESP32_PARTITION_TABLE_UTILITY}")

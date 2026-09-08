@@ -3,6 +3,7 @@
 # See LICENSE file in the project root for full license information.
 #
 cmake_minimum_required(VERSION 3.30)
+
 list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/CMake"
     "${CMAKE_SOURCE_DIR}/CMake/IOfeatures"
@@ -14,22 +15,21 @@ list(APPEND CMAKE_MODULE_PATH
 include(binutils.common)
 include(ExternalProject)
 include(CMakeToolsHelpers OPTIONAL)
-
 nf_check_path_limits()
-
-string(TIMESTAMP BUILD_TIMESTAMP UTC)
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 add_executable(nanoCLR)
-
-include(${TARGET_FAMILY})
-include(${TARGET_RTOS})
-include(nf-Interpreter)
 
 if(DEFINED NF_TARGET_DEFCONFIG)
     include(NF_Kconfig)
     nf_load_kconfig()
 endif()
+
+string(TIMESTAMP BUILD_TIMESTAMP UTC)
+
+include(${TARGET_FAMILY})
+include(${TARGET_RTOS})
+include(nf-Interpreter)
 
 foreach(FEATURE IN LISTS ENABLED_CORE_FEATURES)
         include(${FEATURE})

@@ -1,8 +1,5 @@
-﻿ {
+﻿  {
     "version": 4,
-    "include": [
-        "targets/ESP32/CMakePresets.json"
-    ],
     "configurePresets": [
         {
             "name": "general-preset",
@@ -27,6 +24,40 @@
             },
             "environment": {
                 "CMAKE_BUILD_PARALLEL_LEVEL": "16"
+            }
+        },
+        {
+            "name": "ESP32_P4_UART_REV_LESS3",
+            "inherits": [
+                "general-preset"
+            ],
+            "hidden": false,
+            "environment": {
+                "PATH": "$penv{PATH};C:/users/terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
+                "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
+                "ESP_IDF_VERSION": "5.5"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "TARGET_NAME": "WaveShare ESP32-WIFI6-Touch",
+                "TARGET_FAMILY": "Esp32",
+                "TARGET_BOARD": "ESP32_P4",
+                "TARGET_RTOS": "ESP-IDF",
+
+                "NF_TARGET_DEFCONFIG": "targets/ESP32/defconfig/ESP32_P4_UART_REV_LESS3_defconfig",
+                "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/CMake/toolchain.riscv32-esp32p4-elf.cmake",
+                "NF_INTEROP_ASSEMBLIES": null,
+                "BUILD_VERSION": "0.9.99.999",
+                "BUILD_VERBOSE": "OFF",
+                "NF_FEATURE_HAS_CONFIG_BLOCK": false,
+                "NF_FEATURE_BINARY_SERIALIZATION": true,
+                "NF_FEATURE_SUPPORT_REFLECTION": true,
+                "ENABLED_CORE_FEATURES": "Collections;Hashing;Mathematics;Graphics;ResourceManager;RuntimeEvents;RuntimeSerialization;Text;WireProtocol",
+                "ENABLED_IO_FEATURES": "CoreIO",
+                "NF_SECURITY_MBEDTLS": true,
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "NF_TRACE_TO_STDIO": false
             }
         }
     ]

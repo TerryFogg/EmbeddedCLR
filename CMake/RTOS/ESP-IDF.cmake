@@ -51,7 +51,7 @@ macro(nf_add_idf_as_library)
         message(STATUS "Fixed IDF version. Is now: ${MY_IDF_VER_FIXED}")
     endif()
 
-    set(SDKCONFIG_DEFAULTS_FILE ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/sdkconfig.default.rev.less3.esp32p4)
+    set(SDKCONFIG_DEFAULTS_FILE ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration/sdkconfig.default.rev.less3.esp32p4)
 
     file(READ
         "${SDKCONFIG_DEFAULTS_FILE}"

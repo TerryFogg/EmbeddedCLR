@@ -139,8 +139,6 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/PAL/FileSystem/nanoPAL_FileSystem_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/nanoPAL_Network_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/Profiler/nanoPAL_PerformanceCounters_stubs.cpp
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4/target_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4/target_common.c
     )
 
 list(APPEND Core_Includes
@@ -169,7 +167,7 @@ list(APPEND Core_Includes
 
             ${TARGET_BASE_LOCATION}
             ${TARGET_BASE_LOCATION}/nanoCLR
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_include
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/include
 
 )
 
@@ -195,9 +193,9 @@ else()
     )
 endif()
 
-list(APPEND Core_Sources
-            ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR/nanoFramework.Runtime.Native/nf_rt_native_nanoFramework_Runtime_Native_Rtc.cpp
-)
+#list(APPEND Core_Sources
+#            ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR/nanoFramework.Runtime.Native/nf_rt_native_nanoFramework_Runtime_Native_Rtc.cpp
+#)
 
 target_sources(nanoCLR PUBLIC ${Core_Sources} )
 target_include_directories(nanoCLR PUBLIC  ${Core_Includes} )   

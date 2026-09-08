@@ -43,8 +43,9 @@
                 "TARGET_FAMILY": "Esp32",
                 "TARGET_BOARD": "ESP32_P4",
                 "TARGET_RTOS": "ESP-IDF",
+                "VENDOR" :  "Espressif",
 
-                "NF_TARGET_DEFCONFIG": "targets/ESP32/defconfig/ESP32_P4_UART_REV_LESS3_defconfig",
+                "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
                 "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
                 "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/CMake/toolchain.riscv32-esp32p4-elf.cmake",
                 "NF_INTEROP_ASSEMBLIES": null,

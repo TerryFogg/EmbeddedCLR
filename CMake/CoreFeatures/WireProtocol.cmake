@@ -31,8 +31,6 @@
         ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_Message.c
         ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_MonitorCommands.c
         ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_App_Interface.c
-        ${CMAKE_SOURCE_DIR}/targets/ESP32/_common/WireProtocol_HAL_Interface.c
-        ${CMAKE_SOURCE_DIR}/targets/ESP32/_common/nanoSupport_CRC32.c
     )
 
     target_sources(nanoCLR PUBLIC  ${WireProtocol_SRCS} )

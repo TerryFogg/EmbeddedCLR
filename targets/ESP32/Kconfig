@@ -11,7 +11,7 @@ config SDK_CONFIG_FILE
     default ""
     help
       Relative path to the IDF sdkconfig defaults file.
-      Leave empty to use targets/ESP32/_IDF/sdkconfig.default.
+      Leave empty to use targets/Espressif/ESP32P4/Configuration/sdkconfig.default.
 
 config ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES
     int "SPIRAM reserved for IDF allocation (bytes)"

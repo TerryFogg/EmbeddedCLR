@@ -3,21 +3,10 @@
 # See LICENSE file in the project root for full license information.
 #
 
-
-
-macro(nf_add_common_sources)
-    target_sources(${NFACS_TARGET}.elf PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/target_common.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/target_BlockStorage.c
-        ${CMAKE_SOURCE_DIR}/src/PAL/BlockStorage/nanoPAL_BlockStorage.c
-        ${COMMON_PROJECT_SOURCES}
-        ${NF_HALCore_SOURCES}
-    )
-endmacro()
-
 function(nf_generate_build_output_files target)
     target_link_options(nanoCLR PUBLIC "-Wl,-Map=${CMAKE_BINARY_DIR}/nanoCLR.map,--cref")
     set(PythonCommand "python" ${IDF_PATH_CMAKED}/tools/idf_size.py)
+
     add_custom_command(TARGET nanoCLR POST_BUILD
       COMMAND ${CMAKE_OBJCOPY}           $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.elf
       COMMAND ${CMAKE_OBJCOPY} -Oihex    $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.hex

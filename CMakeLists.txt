@@ -9,8 +9,10 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/CMake/IOfeatures"
     "${CMAKE_SOURCE_DIR}/CMake/CoreFeatures"
     "${CMAKE_SOURCE_DIR}/CMake/RTOS"
-    "${CMAKE_SOURCE_DIR}/CMake/Vendor"
+    "${CMAKE_SOURCE_DIR}/CMake/Vendor/${VENDOR}"
 )
+
+
 
 include(binutils.common)
 include(ExternalProject)
@@ -41,8 +43,8 @@ endforeach()
 
 include(CommonBuild)
 target_sources(nanoCLR PUBLIC
-               ${CMAKE_SOURCE_DIR}/targets/ESP32/_IDF/esp32p4/app_main.c
-               ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4/configuration/CLR_RT_InteropAssembliesTable.cpp
+               ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/app_main.c
+               ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration/CLR_RT_InteropAssembliesTable.cpp
 )
 nf_add_idf_as_library()
 idf_build_executable(nanoCLR)

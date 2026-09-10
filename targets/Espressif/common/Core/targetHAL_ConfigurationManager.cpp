@@ -20,44 +20,6 @@ static const char *TAG = "cm";
 
 // #define DEBUG_CONFIG        1
 
-#ifdef DEBUG_CONFIG
-void PrintBlock(char *pBlock, int bsize)
-{
-    char *pCurrStart;
-    char *pCurrPos;
-    char *pCurrEnd;
-    char *pCurrEndBlock = pBlock + bsize;
-
-    pCurrStart = pBlock;
-
-    while (pCurrStart <= pCurrEndBlock)
-    {
-        pCurrPos = pCurrStart;
-        pCurrEnd = pCurrStart + 32;
-
-        while (pCurrPos < pCurrEnd && pCurrPos <= pCurrEndBlock)
-        {
-            ets_printf("%02X ", *pCurrPos);
-            pCurrPos++;
-        }
-
-        ets_printf(" ");
-
-        pCurrPos = pCurrStart;
-        while (pCurrPos < pCurrEnd && pCurrPos <= pCurrEndBlock)
-        {
-            if (*pCurrPos < 32)
-                ets_printf(".");
-            else
-                ets_printf("%c", *pCurrPos);
-            pCurrPos++;
-        }
-        ets_printf("\n");
-
-        pCurrStart = pCurrEnd;
-    }
-}
-#endif
 
 // initialization of configuration manager
 void ConfigurationManager_Initialize()
@@ -103,14 +65,6 @@ bool StoreConfigBlock(
     if (fileHandle != NULL)
     {
         result = ConfigStorage_WriteFile(fileHandle, (uint8_t *)configBlock, writeSize);
-#ifdef DEBUG_CONFIG
-        ets_printf(
-            "store type %d index %d, length %d result %d\n",
-            (int)configType,
-            configurationIndex,
-            writeSize,
-            (int)result);
-#endif
         ConfigStorage_CloseFile(fileHandle);
     }
 
@@ -460,9 +414,6 @@ bool ConfigurationManager_GetConfigurationBlock(
         if (g_TargetConfiguration.Wireless80211Configs->Count == 0 ||
             (configurationIndex + 1) > g_TargetConfiguration.Wireless80211Configs->Count)
         {
-#ifdef DEBUG_CONFIG
-            ets_printf("GetConfig WN exit false\n");
-#endif
             return false;
         }
 
@@ -474,9 +425,6 @@ bool ConfigurationManager_GetConfigurationBlock(
         if (g_TargetConfiguration.WirelessAPConfigs->Count == 0 ||
             (configurationIndex + 1) > g_TargetConfiguration.WirelessAPConfigs->Count)
         {
-#ifdef DEBUG_CONFIG
-            ets_printf("GetConfig AP exit false\n");
-#endif
             return false;
         }
 
@@ -488,9 +436,6 @@ bool ConfigurationManager_GetConfigurationBlock(
         if (g_TargetConfiguration.CertificateStore->Count == 0 ||
             (configurationIndex + 1) > g_TargetConfiguration.CertificateStore->Count)
         {
-#ifdef DEBUG_CONFIG
-            ets_printf("GetConfig XC exit false\n");
-#endif
             return false;
         }
 
@@ -502,9 +447,6 @@ bool ConfigurationManager_GetConfigurationBlock(
         if (g_TargetConfiguration.DeviceCertificates->Count == 0 ||
             (configurationIndex + 1) > g_TargetConfiguration.DeviceCertificates->Count)
         {
-#ifdef DEBUG_CONFIG
-            ets_printf("GetConfig XC exit false\n");
-#endif
             return false;
         }
 
@@ -596,15 +538,6 @@ bool ConfigurationManager_StoreConfigurationBlock(
     bool result = false;
     bool requiresEnumeration = false;
 
-#ifdef DEBUG_CONFIG
-    ets_printf(
-        "StoreConfig config:%d, index:%d  size:%d  offset:%d\n",
-        (int)configuration,
-        configurationIndex,
-        blockSize,
-        offset);
-#endif
-
     if (configuration == DeviceConfigurationOption_All)
     {
         // not supported
@@ -660,13 +593,6 @@ bool ConfigurationManager_StoreConfigurationBlock(
                     requiresEnumeration = true;
                 }
             }
-
-#ifdef DEBUG_CONFIG
-            ets_printf(
-                "StoreConfig x509 blockSize:%d, certsize:%d",
-                blockSize,
-                ((HAL_Configuration_X509CaRootBundle *)configurationBlock)->CertificateSize);
-#endif
         }
         else if (configuration == DeviceConfigurationOption_X509DeviceCertificates)
         {
@@ -701,13 +627,6 @@ bool ConfigurationManager_StoreConfigurationBlock(
                     requiresEnumeration = true;
                 }
             }
-
-#ifdef DEBUG_CONFIG
-            ets_printf(
-                "StoreDeviceCert blockSize:%d, certsize:%d",
-                blockSize,
-                ((HAL_Configuration_X509DeviceCertificate *)configurationBlock)->CertificateSize);
-#endif
         }
         else
         {
@@ -727,10 +646,6 @@ bool ConfigurationManager_StoreConfigurationBlock(
         // perform enumeration of configuration blocks
         ConfigurationManager_EnumerateConfigurationBlocks();
     }
-
-#ifdef DEBUG_CONFIG
-    ets_printf("StoreConfig exit %d", result);
-#endif
 
     return result;
 }

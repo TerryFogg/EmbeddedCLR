@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -646,19 +646,11 @@ bool ConfigurationManager_GetConfigurationBlockFromStorage(
     FILE *handle;
     int32_t readSize = 0;
 
-#ifdef DEBUG_CONFIG
-    ets_printf("GetConfigFromStorage %d, %d\n", (int)configuration, configurationIndex);
-#endif
-
     handle = ConfigStorage_OpenFile(configuration, configurationIndex, false, false);
 
     if (handle != NULL)
     {
         readSize = ConfigStorage_ReadFile(handle, configurationBlock, maxBlockSize);
-
-#ifdef DEBUG_CONFIG
-        ets_printf("GetConfigFromStorage read %d, %d size %d\n", (int)configuration, configurationIndex, readSize);
-#endif
 
         ConfigStorage_CloseFile(handle);
     }

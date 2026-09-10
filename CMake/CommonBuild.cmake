@@ -1,5 +1,51 @@
 ﻿
 
+target_compile_options( nanoCLR PUBLIC
+    -Wall
+    -Wextra
+    -Werror
+    -Wno-sign-compare
+    -Wno-unused-parameter
+    -Wshadow
+    -Wimplicit-fallthrough
+    -fshort-wchar
+    -fno-builtin
+    -fno-common
+    -fno-exceptions
+  #  -mabi=ilp32f
+)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(nanoCLR PRIVATE
+                           -Og
+                           -g3
+                           -fno-omit-frame-pointer
+                           -fno-inline
+                           -fno-optimize-sibling-calls
+    )
+    target_compile_definitions( nanoCLR PRIVATE
+                                NANOCLR_ENABLE_SOURCELEVELDEBUGGING
+                                DEBUG
+    )
+endif()
+
+target_compile_definitions( nanoCLR PRIVATE
+                            ESP_PLATFORM
+                            F_GETPATH=20
+                            I_AM_NANOCLR
+                            NANOCLR_ENABLE_SOURCELEVELDEBUGGING
+                            PLATFORM_ESP32
+                            SOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE
+                            SOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ
+                            TARGET=esp32p4
+                            TRACE_MASK=0
+                            USE_FPU=TRUE
+)
+
+target_compile_definitions(nanoCLR PRIVATE
+                            CONFIG_TOUCH_DISPLAY_SUPPORT
+                          )  
+
 
 
 # Defines used in the c/c++ code in rare situations to debug and profile
@@ -16,30 +62,21 @@ add_compile_definitions(NANOCLR_NO_IL_INLINE=0)
 endif()
 
 if(ADVANCED_PROFILING)
-    add_compile_definitions(PLATFORM_NO_CLR_TRACE=0)
-    add_compile_definitions(NANOCLR_PROFILE_NEW_CALLS=1)
-    add_compile_definitions(PROFILE_NEW_ALLOCATIONS=1)
-    add_compile_definitions(DTRACE_MEMORY_STATS=1)
+     target_compile_definitions(nanoCLR PRIVATE
+                                PLATFORM_NO_CLR_TRACE=0
+                                NANOCLR_PROFILE_NEW_CALLS=1
+                                PROFILE_NEW_ALLOCATIONS=1
+                                DTRACE_MEMORY_STATS=1
+     )
 endif()
 
-add_compile_definitions(CONFIG_TOUCH_DISPLAY_SUPPORT)
-add_compile_definitions(I_AM_NANOCLR)
-add_compile_definitions(TRACE_MASK=0)
-add_compile_definitions(PLATFORM_ESP32)
-add_compile_definitions(ESP_PLATFORM)
-add_compile_definitions(TARGET=esp32p4)
-add_compile_definitions(USE_FPU=TRUE)
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug") 
-    add_compile_definitions(DNANOCLR_ENABLE_SOURCELEVELDEBUGGING)
-endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    add_compile_definitions(BUILD_RTM)
+   target_compile_definitions(nanoCLR PRIVATE BUILD_RTM)
 endif()
 
 if(CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
-    add_compile_definitions(CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
+      target_compile_definitions(nanoCLR PRIVATE CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
 endif()
 
 
@@ -53,3 +90,11 @@ endif()
  set(NANOCLR_PROFILE_NEW_CALLS FALSE CACHE INTERNAL "option to support profilling new function calls")
 set(NANOCLR_PROFILE_NEW_ALLOCATIONS FALSE CACHE INTERNAL "option to support profilling new object allocations")
 set(NANOCLR_TRACE_MEMORY_STATS FALSE CACHE INTERNAL "option to enable trace of memory stats")
+
+
+
+set_source_files_properties(
+    ${CMAKE_SOURCE_DIR}/src/CLR/Core/CLR_RT_Interop.cpp
+    PROPERTIES
+    COMPILE_OPTIONS "-Wno-error=cast-user-defined"
+)

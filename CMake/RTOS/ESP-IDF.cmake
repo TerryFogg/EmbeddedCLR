@@ -6,11 +6,61 @@
 include(binutils.common)
 include(FetchContent)
 
+
+
+set(ESP32_RESERVE_IRAM_IDF_ALLOCATION_KB "0" CACHE STRING "Setting default value for ESP32_RESERVE_IRAM_IDF_ALLOCATION_KB")
+set(ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES "0" CACHE STRING "Setting default value for ESP32_RESERVE_SPIRAM_IDF_ALLOCATION_BYTES")
+
+list(APPEND ESP32_Sources
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/Device_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/nanoCRT.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/nanoHAL.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/nanoSupport_CRC32.c
+
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/platform_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/platform_heap.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL.c
+#            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_ConfigStorageLittlefs.c
+#            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_ConfigurationManager.cpp
+#            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_FileOperation.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_Rtos.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_StorageOperation.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_Time.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetPAL.c 
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetPAL_Events.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetPAL_Time.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/target_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/Target_BlockStorage_ESP32FlashDriver.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/target_common.c
+
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol/WireProtocol_HAL_Interface.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol/WireProtocol_ReceiverThread.c
+
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/CLR_Startup_Thread.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/targetHAL.cpp
+
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration/Memory.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/targetHAL_Power.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/targetRandom.cpp
+
+)
+list(APPEND ESP32_Includes
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/FileSystem
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/Network
+)
+
+target_sources(nanoCLR PUBLIC ${ESP32_Sources} )
+target_include_directories(nanoCLR PUBLIC ${ESP32_Includes} )
+
+
 macro(nf_install_idf_component_from_registry component_name object_id)
     set(downloadUrl https://components.espressif.com/api/downloads/?object_type=component&object_id=${object_id})
     set(archiveName ${CMAKE_BINARY_DIR}/downloads/${component_name}_${object_id}.zip)
-    set(destinationPath ${IDF_PATH_CMAKED}/components/${component_name})
-    set(extractPath ${IDF_PATH_CMAKED}/components)
+    set(destinationPath ${ESP32_IDF_PATH}/components/${component_name})
+    set(extractPath ${ESP32_IDF_PATH}/components)
     if(NOT EXISTS ${destinationPath})
         file(DOWNLOAD ${downloadUrl} ${archiveName})
         message(STATUS "Component archive '" ${component_name} "' downloaded")
@@ -29,7 +79,7 @@ macro(nf_add_idf_as_library)
     nf_install_idf_component_from_registry(littlefs 97bf51ce-1daa-4369-81ec-eacbd8102815) 
     nf_install_idf_component_from_registry(esp_wifi_remote c90c182f-b7fc-4a59-a445-96f712e36bb2)
     nf_install_idf_component_from_registry(esp_hosted 2c2bb417-ac4a-415a-8bd8-d2437701bb5e)
-    include(${IDF_PATH_CMAKED}/tools/cmake/idf.cmake)
+    include(${ESP32_IDF_PATH}/tools/cmake/idf.cmake)
     # if needed, "fix" the reported version so it doesn't show '-dirty'
     # this is because we could be deleting some files and tweaking others in the IDF
     get_property(MY_IDF_VER TARGET __idf_build_target PROPERTY IDF_VER)
@@ -68,18 +118,18 @@ macro(nf_add_idf_as_library)
         lwip
         freertos
         esptool_py
-        fatfs
+ #       fatfs
         esp_event
         vfs
-        esp_netif
-        esp_eth
+#        esp_netif
+#        esp_eth
         esp_psram
         esp_adc
-        littlefs
+#        littlefs
         esp_lcd
         esp_driver_ppa
         nvs_flash
-        esp_wifi
+#        esp_wifi
         esp_timer
     )
 
@@ -89,92 +139,92 @@ macro(nf_add_idf_as_library)
         idf::lwip
         idf::freertos
         idf::esptool_py
-        idf::fatfs
+  #      idf::fatfs
         idf::esp_event
         idf::vfs
-        idf::esp_netif
-        idf::esp_eth
+   #     idf::esp_netif
+    #    idf::esp_eth
         idf::esp_psram
         idf::esp_adc
-        idf::littlefs
+     #   idf::littlefs
         idf::esp_lcd
         idf::esp_driver_ppa
         idf::nvs_flash
-        idf::esp_wifi
+   #     idf::esp_wifi
         idf::esp_timer
 
 )
 
 
     # Needed for remote Wifi module on P4 boards
-    list(APPEND IDF_COMPONENTS_TO_ADD esp_wifi_remote)
-    list(APPEND IDF_COMPONENTS_TO_ADD esp_hosted)
-    list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_hosted)
-    list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_wifi_remote)
+#    list(APPEND IDF_COMPONENTS_TO_ADD esp_wifi_remote)
+#    list(APPEND IDF_COMPONENTS_TO_ADD esp_hosted)
+#    list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_hosted)
+#    list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_wifi_remote)
 
     if(HAL_USE_BLE_OPTION)
         list(APPEND IDF_COMPONENTS_TO_ADD bt)
         list(APPEND IDF_LIBRARIES_TO_ADD idf::bt)
     endif()
 
-    if(ESP32_ETHERNET_SUPPORT)
-        list(APPEND IDF_COMPONENTS_TO_ADD esp_eth)
-        list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_eth)
-    endif()
+#    if(ESP32_ETHERNET_SUPPORT)
+#        list(APPEND IDF_COMPONENTS_TO_ADD esp_eth)
+#        list(APPEND IDF_LIBRARIES_TO_ADD idf::esp_eth)
+#    endif()
 
-    if(HAL_USE_THREAD_OPTION)
-        list(APPEND IDF_COMPONENTS_TO_ADD openthread)
-        list(APPEND IDF_LIBRARIES_TO_ADD idf::openthread)
-    endif()
+#    if(HAL_USE_THREAD_OPTION)
+#        list(APPEND IDF_COMPONENTS_TO_ADD openthread)
+#        list(APPEND IDF_LIBRARIES_TO_ADD idf::openthread)
+#    endif()
 
-    option(HAL_USE_THREAD_OPTION "option to enable OpenThread support")
-    option(ESP32_THREAD_DEVICE_TYPE "option to specify OpenThread device type (FTD or MTD")
+#    option(HAL_USE_THREAD_OPTION "option to enable OpenThread support")
+#    option(ESP32_THREAD_DEVICE_TYPE "option to specify OpenThread device type (FTD or MTD")
 
-    if(HAL_USE_THREAD_OPTION)
-        message(DEBUG "Reading SDK config from '${SDKCONFIG_DEFAULTS_FILE}' to set Thread options")
-
-        file(READ
-            "${SDKCONFIG_DEFAULTS_TEMP_FILE}"
-            SDKCONFIG_DEFAULT_CONTENTS)
-
-        # Append config based on options
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "\nCONFIG_OPENTHREAD_ENABLED=y\n")
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "\nCONFIG_OPENTHREAD_CLI=y\n")
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_LOG_LEVEL_DYNAMIC=y\n")
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_JOINER=y\n")
-        
-        # make sure these options are enabled for openthread & mbedtls
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_CMAC_C=y\n")
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_SSL_PROTO_DTLS=y\n")
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_KEY_EXCHANGE_ECJPAKE=y\n")
-        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_ECJPAKE_C=y\n")
-        
-        # ESP32_THREAD_DEVICE_TYPE
-        set(ESP32_THREAD_DEVICE_TYPE_SUPPORTED "FTD" "MTD" CACHE INTERNAL "supported THREAD device types")
-        list(FIND ESP32_THREAD_DEVICE_TYPE_SUPPORTED ${ESP32_THREAD_DEVICE_TYPE} ESP32_THREAD_DEVICE_TYPE_INDEX)
-
-        if(ESP32_THREAD_DEVICE_TYPE_INDEX EQUAL -1)
-            # Default FTD if not specified
-            set(ESP32_THREAD_DEVICE_TYPE_INDEX 0)
-        endif()
-        
-        if (${ESP32_THREAD_DEVICE_TYPE_INDEX} EQUAL 0)
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_FTD=y\n")
-            message(STATUS "OpenThread configured as full thread device (FTD)")
-        else()
-            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_MTD=y\n")
-            message(STATUS "OpenThread configured as a minimal thread device (MTD)")
-        endif()
-
-        # need to temporarilly allow changes in source files
-        set(CMAKE_DISABLE_SOURCE_CHANGES OFF)
-
-        file(WRITE 
-            ${SDKCONFIG_DEFAULTS_TEMP_FILE} 
-            ${SDKCONFIG_DEFAULT_CONTENTS})
-
-        set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-    endif()
+#    if(HAL_USE_THREAD_OPTION)
+#        message(DEBUG "Reading SDK config from '${SDKCONFIG_DEFAULTS_FILE}' to set Thread options")
+#
+#        file(READ
+#            "${SDKCONFIG_DEFAULTS_TEMP_FILE}"
+#            SDKCONFIG_DEFAULT_CONTENTS)
+#
+#        # Append config based on options
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "\nCONFIG_OPENTHREAD_ENABLED=y\n")
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "\nCONFIG_OPENTHREAD_CLI=y\n")
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_LOG_LEVEL_DYNAMIC=y\n")
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_JOINER=y\n")
+#        
+#        # make sure these options are enabled for openthread & mbedtls
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_CMAC_C=y\n")
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_SSL_PROTO_DTLS=y\n")
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_KEY_EXCHANGE_ECJPAKE=y\n")
+#        string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_MBEDTLS_ECJPAKE_C=y\n")
+#        
+#        # ESP32_THREAD_DEVICE_TYPE
+#        set(ESP32_THREAD_DEVICE_TYPE_SUPPORTED "FTD" "MTD" CACHE INTERNAL "supported THREAD device types")
+#        list(FIND ESP32_THREAD_DEVICE_TYPE_SUPPORTED ${ESP32_THREAD_DEVICE_TYPE} ESP32_THREAD_DEVICE_TYPE_INDEX)
+#
+#        if(ESP32_THREAD_DEVICE_TYPE_INDEX EQUAL -1)
+#            # Default FTD if not specified
+#            set(ESP32_THREAD_DEVICE_TYPE_INDEX 0)
+#        endif()
+#        
+#        if (${ESP32_THREAD_DEVICE_TYPE_INDEX} EQUAL 0)
+#            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_FTD=y\n")
+#            message(STATUS "OpenThread configured as full thread device (FTD)")
+#        else()
+#            string(APPEND SDKCONFIG_DEFAULT_CONTENTS "CONFIG_OPENTHREAD_MTD=y\n")
+#            message(STATUS "OpenThread configured as a minimal thread device (MTD)")
+#        endif()
+#
+#        # need to temporarilly allow changes in source files
+#        set(CMAKE_DISABLE_SOURCE_CHANGES OFF)
+#
+#        file(WRITE 
+#            ${SDKCONFIG_DEFAULTS_TEMP_FILE} 
+#            ${SDKCONFIG_DEFAULT_CONTENTS})
+#
+#        set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+#    endif()
 
     # Fixed default frequency will be used)
 

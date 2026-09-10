@@ -26,7 +26,7 @@ double CLR_RT_Random::NextDouble()
 
 void CLR_RT_Random::NextBytes(unsigned char* buffer, unsigned int count)
 {
-    unsigned int i;
+    //unsigned int i;
 
    // for(i = 0; i < count; i++)
    // {

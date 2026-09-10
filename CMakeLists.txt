@@ -12,14 +12,6 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/CMake/Vendor/${VENDOR}"
 )
 
-set(CMAKE_BUILD_TYPE "Debug")
-add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
-
-add_compile_options("-O0")
-add_compile_options("-g3")
-add_compile_options("-fno-inline")
-add_compile_options("-fno-omit-frame-pointer")
-
 
 include(binutils.common)
 include(ExternalProject)
@@ -49,6 +41,7 @@ foreach(FEATURE IN LISTS ENABLED_IO_FEATURES)
 endforeach()
 
 include(CommonBuild)
+
 target_sources(nanoCLR PUBLIC
                ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/app_main.c
                ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration/CLR_RT_InteropAssembliesTable.cpp

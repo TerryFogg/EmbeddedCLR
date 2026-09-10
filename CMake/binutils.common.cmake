@@ -5,7 +5,7 @@
 
 function(nf_generate_build_output_files target)
     target_link_options(nanoCLR PUBLIC "-Wl,-Map=${CMAKE_BINARY_DIR}/nanoCLR.map,--cref")
-    set(PythonCommand "python" ${IDF_PATH_CMAKED}/tools/idf_size.py)
+    set(PythonCommand "python" ${ESP32_IDF_PATH}/tools/idf_size.py)
 
     add_custom_command(TARGET nanoCLR POST_BUILD
       COMMAND ${CMAKE_OBJCOPY}           $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.elf

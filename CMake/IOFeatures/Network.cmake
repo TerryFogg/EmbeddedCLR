@@ -121,9 +121,9 @@ target_include_directories(nanoCLR PUBLIC  ${Network_Includes} )
 ###        # remove the ones we'll be replacing
 ###        list(REMOVE_ITEM 
 ###            IDF_LWIP_SOURCES
-###                ${IDF_PATH_CMAKED}/components/lwip/lwip/src/api/api_msg.c
-###                ${IDF_PATH_CMAKED}/components/lwip/lwip/src/api/sockets.c
-###                ${IDF_PATH_CMAKED}/components/lwip/port/freertos/sys_arch.c
+###                ${ESP32_IDF_PATH}/components/lwip/lwip/src/api/api_msg.c
+###                ${ESP32_IDF_PATH}/components/lwip/lwip/src/api/sockets.c
+###                ${ESP32_IDF_PATH}/components/lwip/port/freertos/sys_arch.c
 ###        )
 ###   
 ###        # add our modified sources

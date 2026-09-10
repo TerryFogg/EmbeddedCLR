@@ -17,7 +17,8 @@
             "serverStarted": "Listening on port 3333 for gdb connections",
             "setupCommands": [
                 { "text": "set architecture riscv:rv32" },
-                { "text": "set remote hardware-watchpoint-limit 3" }
+                { "text": "set remote hardware-watchpoint-limit 3" },
+                { "text": "info files" }
             ],
             "postRemoteConnectCommands": [
                 { "text": "target extended-remote localhost:3333" }

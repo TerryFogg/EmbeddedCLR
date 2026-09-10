@@ -1,4 +1,4 @@
-﻿  {
+﻿{
     "version": 4,
     "configurePresets": [
         {
@@ -27,11 +27,27 @@
             }
         },
         {
-            "name": "ESP32_P4_UART_REV_LESS3",
+            "name": "DEBUG",
+            "description": "This is non-optimized and contains all the debug symbols",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "RELEASE",
+            "description": "This is optimized for speed without debugging symbols and with asserts disabled.",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "ESP32_P4_WIFI6",
             "inherits": [
                 "general-preset"
             ],
-            "hidden": false,
+            "hidden": true,
             "environment": {
                 "PATH": "$penv{PATH};C:/users/terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
                 "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
@@ -43,10 +59,12 @@
                 "TARGET_FAMILY": "Esp32",
                 "TARGET_BOARD": "ESP32_P4",
                 "TARGET_RTOS": "ESP-IDF",
-                "VENDOR" :  "Espressif",
+                "VENDOR": "Espressif",
+                "PARTITION_SIZE":"32MB",
 
                 "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
                 "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
+                "ESP_TOOLCHAIN_DIR": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
                 "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/CMake/toolchain.riscv32-esp32p4-elf.cmake",
                 "NF_INTEROP_ASSEMBLIES": null,
                 "BUILD_VERSION": "0.9.99.999",
@@ -60,6 +78,30 @@
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "NF_TRACE_TO_STDIO": false
             }
+        },
+        {
+            "name": "ESP32_P4_WIFI6_DEBUG",
+            "inherits": [
+                "ESP32_P4_WIFI6",
+                "DEBUG"
+            ]
+        },
+        {
+            "name": "ESP32_P4_WIFI6_RELEASE",
+            "inherits": [
+                "ESP32_P4_WIFI6",
+                "RELEASE"
+            ]
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "ESP32_P4_WIFI6_DEBUG",
+            "configurePreset": "ESP32_P4_WIFI6_DEBUG"
+        },
+        {
+            "name": "ESP32_P4_WIFI6_RELEASE",
+            "configurePreset": "ESP32_P4_WIFI6_RELEASE"
         }
     ]
 }

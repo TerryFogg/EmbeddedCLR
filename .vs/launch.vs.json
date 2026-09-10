@@ -5,22 +5,22 @@
             "name": "ESP32-P4",
             "type": "cppdbg",
             "request": "launch",
-            "projectTarget": "nanoCLR.elf",
+            "projectTarget": "nanoCLR",
             "project": "CMakeLists.txt",
             "program": "C:/repos/TerryFogg/EmbeddedCLR/build/nanoCLR.elf",
             "cwd": "${workspaceRoot}",
             "MIMode": "gdb",
-            "stopAtEntry": false,
-            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/16.3_20250913/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
-            "debugServerPath": "C:/Users/Terry/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260304/openocd-esp32/bin/openocd.exe",
-            "debugServerArgs": " -f interface/esp_usb_jtag.cfg -f board/esp32p4-builtin.cfg -c \"adapter speed 6000\" -c \"gdb port 3333\" -c \"init\" -c \"reset halt\"",
+            "stopAtEntry": true,
+            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
+            "debugServerPath": "C:/Users/Terry/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/bin/openocd.exe",
+            "debugServerArgs": " -f interface/esp_usb_jtag.cfg -f board/esp32p4-builtin.cfg -c \"adapter speed 6000\" -c \"gdb port 3333\" -c \"init\" -c \"reset halt\" -c \"gdb breakpoint_override\"",
             "serverStarted": "Listening on port 3333 for gdb connections",
             "setupCommands": [
-                { "text": "set architecture riscv:rv32" }
+                { "text": "set architecture riscv:rv32" },
+                { "text": "set remote hardware-watchpoint-limit 3" }
             ],
             "postRemoteConnectCommands": [
                 { "text": "target extended-remote localhost:3333" }
-                //{ "text": "thb app_main" }
             ],
             "launchCompleteCommand": "exec-run",
             "filterStderr": true,

@@ -12,6 +12,13 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/CMake/Vendor/${VENDOR}"
 )
 
+set(CMAKE_BUILD_TYPE "Debug")
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
+
+add_compile_options("-O0")
+add_compile_options("-g3")
+add_compile_options("-fno-inline")
+add_compile_options("-fno-omit-frame-pointer")
 
 
 include(binutils.common)

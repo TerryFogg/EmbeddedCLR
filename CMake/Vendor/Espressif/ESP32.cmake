@@ -20,17 +20,26 @@ set(IDF_PATH_CMAKED ${IDF_SOURCE_DIR_PATH} CACHE INTERNAL "CMake formated IDF pa
 
 
 list(APPEND ESP32_Sources
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/Device_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/nanoSupport_CRC32.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/platform_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/platform_heap.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_ConfigStorageLittlefs.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_ConfigurationManager.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_FileOperation.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_Rtos.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/targetHAL_StorageOperation.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/Target_BlockStorage_ESP32FlashDriver.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/Device_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/nanoCRT.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/nanoHAL.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/nanoSupport_CRC32.c
+
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/platform_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/platform_heap.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_ConfigStorageLittlefs.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_ConfigurationManager.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_FileOperation.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_Rtos.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_StorageOperation.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetHAL_Time.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetPAL.c 
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetPAL_Events.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/targetPAL_Time.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/target_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/Target_BlockStorage_ESP32FlashDriver.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/target_common.c
 
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol/WireProtocol_HAL_Interface.c
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/WireProtocol/WireProtocol_ReceiverThread.c
@@ -38,28 +47,15 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/CLR_Startup_Thread.c
             ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Startup/targetHAL.cpp
 
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/Memory.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/nanoCRT.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/nanoHAL.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetHAL_Power.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetHAL_Time.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetPAL.c 
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetPAL_Events.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetPAL_I2c.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetPAL_Time.cpp
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption/targetRandom.cpp
-
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/target_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/target_common.c
-            ${COMMON_PROJECT_SOURCES}
-            ${NF_HALCore_SOURCES}
-
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration/Memory.cpp
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/targetHAL_Power.c
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/targetRandom.cpp
 
 )
 list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/Espressif/ESP32P4/Configuration
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Adaption
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common
+            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core
             ${CMAKE_SOURCE_DIR}/targets/Espressif/FileSystem
             ${CMAKE_SOURCE_DIR}/targets/Espressif/Network
 )

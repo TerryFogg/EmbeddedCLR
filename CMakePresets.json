@@ -110,7 +110,29 @@
                 "NANOCLR_TRACE_SYSTEMEVENTWAIT": "OFF"
             }
         },
-
+        {
+            "name": "nanoCLR_Runtime.h #ifdef",
+            "hidden": true,
+            "cacheVariables": {
+                "ENABLE_NATIVE_PROFILER" :"ON",
+                "HIGH_SURROGATE_START" :"ON",
+                "NANANOCLR_EMULATED_FLOATINGPOINT" :"ON",
+                "NANOCLR_APPDOMAINS" :"ON",
+                "NANOCLR_DELEGATE_PRESERVE_STACK" :"ON"
+                "NANOCLR_ENABLE_SOURCELEVELDEBUGGING" :"ON",
+                "NANOCLR_FILL_MEMORY_WITH_DIRTY_PATTERN" :"ON",
+                "NANOCLR_NO_ASSEMBLY_STRINGS" :"ON",
+                "NANOCLR_NO_IL_INLINE" :"ON",
+                "NANOCLR_OPCODE_NAMES" :"ON",
+                "NANOCLR_OPCODE_PARSER" :"ON",
+                "NANOCLR_OPCODE_STACKCHANGES" :"ON",
+                "NANOCLR_PROFILE_HANDLER" :"ON",
+                "NANOCLR_USE_AVLTREE_FOR_METHODLOOKUP" :"ON",
+                "NANOCLR_VALIDATE_APPDOMAIN_ISOLATION" :"ON",
+                "NOCLR_PROFILE_NEW_CALLS" :"ON",
+                "PLATFORM_WINDOWS_EMULATOR" :"ON"
+            }
+        },
         {
             "name": "ESP32_P4_WIFI6",
             "inherits": [

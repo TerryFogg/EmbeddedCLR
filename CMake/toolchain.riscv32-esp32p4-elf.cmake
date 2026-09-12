@@ -5,6 +5,8 @@
 
 include(CMakeForceCompiler)
 
+# the name of the operating system for which CMake is to build
+set(CMAKE_SYSTEM_NAME Generic)
 
 
 set(ESP_TOOLCHAIN_DIR

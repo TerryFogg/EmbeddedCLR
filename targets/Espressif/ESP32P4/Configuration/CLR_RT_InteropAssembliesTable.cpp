@@ -5,113 +5,124 @@
 #include <Core.h>
 
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_mscorlib;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_ResourceManager;
-
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events_EventSink_DriverProcs;
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Native;
 
+#if CONFIG_SUPPORT_RUNTIMEEVENTS
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events;
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events_EventSink_DriverProcs;
+#endif
+
+#if CONFIG_SUPPORT_RESOURCEMANAGER
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_ResourceManager;
+#endif
+#if CONFIG_SUPPORT_COLLECTIONS
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_System_Collections;
+#endif
+#if CONFIG_SUPPORT_TEXT
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_System_Text;
-
+#endif
+#if CONFIG_SUPPORT_MATHEMATICS
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Math;
+#endif
+#if CONFIG_SUPPORT_RUNTIMESERIALIZATION
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Runtime_Serialization;
-
-#ifdef CoreIO
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Adc;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Dac;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Gpio;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_I2c_Slave;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_I2c;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_I2s;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Pwm;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Spi;
+#endif
+#if CONFIG_SUPPORT_GPIO
+#endif
+#if CONFIG_SUPPORT_SERIALPORTS
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_IO_Ports;
 #endif
-
-#ifdef CAN_SUPPORT
-     extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Device_Can;
+#if CONFIG_SUPPORT_CAN
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Device_Can;
 #endif
-#ifdef ONE_WIRE
-     extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Device_OneWire;
+#if CONFIG_SUPPORT_ONEWIRE
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Device_OneWire;
 #endif
-#ifdef IO_HASHING
-     extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_System_IO_Hashing;
+#if CONFIG_SUPPORT_HASHING
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_System_IO_Hashing;
 #endif
-#ifdef CRYPTOGRAPHY
-     extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_System_Security_Cryptography;
+#if CONFIG_SUPPORT_CRYPTOGRAPHY
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_System_Security_Cryptography;
 #endif
-#ifdef FILE_SUPPORT
-    extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_IO_FileSystem;
+#if CONFIG_SUPPORT_FILESYSTEM
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_IO_FileSystem;
 #endif
-#if (NANOCLR_GRAPHICS == TRUE)
-    extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Graphics;
+#if CONFIG_SUPPORT_GRAPHICS
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Graphics;
 #endif
-#ifdef NETWORKING_SUPPORT
-    extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Net;
-    extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Wifi;
-  //  extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Networking_Sntp;
+#if (CONFIG_SUPPORT_NETWORK)
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Net;
 #endif
-#ifdef USB_SUPPORT
-    extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_UsbStream;
+#if (CONFIG_SUPPORT_WIFI)
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Wifi;
 #endif
-#ifdef BLUETOOTH
-    extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Device_Bluetooth,
+//  extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Networking_Sntp;
+#if CONFIG_SUPPORT_USBSTREAM
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_UsbStream;
+#endif
+#if CONFIG_SUPPORT_BLUETOOTH
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Device_Bluetooth;
 #endif
 
 const CLR_RT_NativeAssemblyData *g_CLR_InteropAssembliesNativeData[] = {
     &g_CLR_AssemblyNative_mscorlib,
+    &g_CLR_AssemblyNative_nanoFramework_Runtime_Native,
+#if CONFIG_SUPPORT_RUNTIMEEVENTS
     &g_CLR_AssemblyNative_nanoFramework_Runtime_Events,
     &g_CLR_AssemblyNative_nanoFramework_Runtime_Events_EventSink_DriverProcs,
-    &g_CLR_AssemblyNative_nanoFramework_Runtime_Native,
-
+#endif
+#if CONFIG_SUPPORT_MATHEMATICS
     &g_CLR_AssemblyNative_System_Math,
+#endif
+#if CONFIG_SUPPORT_RUNTIMESERIALIZATION
     &g_CLR_AssemblyNative_System_Runtime_Serialization,
+#endif
+#if CONFIG_SUPPORT_RESOURCEMANAGER
     &g_CLR_AssemblyNative_nanoFramework_ResourceManager,
+#endif
+#if CONFIG_SUPPORT_COLLECTIONS
     &g_CLR_AssemblyNative_nanoFramework_System_Collections,
+#endif
+#if CONFIG_SUPPORT_TEXT
     &g_CLR_AssemblyNative_nanoFramework_System_Text,
+#endif
 
-#ifdef CoreIO
-    &g_CLR_AssemblyNative_System_Device_Adc,
-    &g_CLR_AssemblyNative_System_Device_Dac,
-    &g_CLR_AssemblyNative_System_Device_Gpio,
-    &g_CLR_AssemblyNative_System_Device_I2c_Slave,
-    &g_CLR_AssemblyNative_System_Device_I2c,
-    &g_CLR_AssemblyNative_System_Device_I2s,
-    &g_CLR_AssemblyNative_System_Device_Pwm,
-    &g_CLR_AssemblyNative_System_Device_Spi,
+#if CONFIG_SUPPORT_GPIO
+#endif
+#if CONFIG_SUPPORT_SERIALPORTS
     &g_CLR_AssemblyNative_System_IO_Ports,
 #endif
-
-#ifdef CAN_SUPPORT
+#if CONFIG_SUPPORT_CAN
     &g_CLR_AssemblyNative_nanoFramework_Device_Can,
 #endif
-#ifdef ONE_WIRE
+#if CONFIG_SUPPORT_ONEWIRE
     &g_CLR_AssemblyNative_nanoFramework_Device_OneWire,
 #endif
-#ifdef IO_HASHING
+#if CONFIG_SUPPORT_HASHING
     &g_CLR_AssemblyNative_nanoFramework_System_IO_Hashing,
 #endif
-#ifdef CRYPTOGRAPHY
+#if CONFIG_SUPPORT_CRYPTOGRAPHY
         &g_CLR_AssemblyNative_nanoFramework_System_Security_Cryptography,
 #endif
-#ifdef FILE_SUPPORT
+#if CONFIG_SUPPORT_FILESYSTEM
     &g_CLR_AssemblyNative_System_IO_FileSystem,
 #endif
-#if (NANOCLR_GRAPHICS == TRUE)
+#if CONFIG_SUPPORT_GRAPHICS
     &g_CLR_AssemblyNative_nanoFramework_Graphics,
 #endif
-#ifdef NETWORKING_SUPPORT
+#if CONFIG_SUPPORT_NETWORK
     &g_CLR_AssemblyNative_System_Net,
-    &g_CLR_AssemblyNative_System_Device_Wifi,
-  //  &g_CLR_AssemblyNative_nanoFramework_Networking_Sntp,
 #endif
-#ifdef USB_SUPPORT
+#if CONFIG_SUPPORT_WIFI
+    &g_CLR_AssemblyNative_System_Device_Wifi,
+#endif
+  //  &g_CLR_AssemblyNative_nanoFramework_Networking_Sntp,
+#if CONFIG_SUPPORT_USBSTREAM
     &g_CLR_AssemblyNative_System_Device_UsbStream,
 #endif
-#ifdef BLUETOOTH
-        &g_CLR_AssemblyNative_nanoFramework_Device_Bluetooth,
+#if CONFIG_SUPPORT_BLUETOOTH
+    &g_CLR_AssemblyNative_nanoFramework_Device_Bluetooth,
 #endif
     NULL};
 
-const uint16_t g_CLR_InteropAssembliesCount = sizeof(g_CLR_InteropAssembliesNativeData) / sizeof(g_CLR_InteropAssembliesNativeData[0]) - 1;
+const uint16_t g_CLR_InteropAssembliesCount = (sizeof(g_CLR_InteropAssembliesNativeData) / sizeof(g_CLR_InteropAssembliesNativeData[0])) - 1;

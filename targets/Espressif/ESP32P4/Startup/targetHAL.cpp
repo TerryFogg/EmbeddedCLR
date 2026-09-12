@@ -13,7 +13,7 @@
 #include <nanoHAL_StorageOperation.h>
 #include <nanoHAL_Graphics.h>
 
-#if (CONFIG_TOUCH_DISPLAY_SUPPORT == TRUE)
+#if (CONFIG_SUPPORT_GRAPHICSTOUCH == TRUE)
 #include "TouchPanel.h"
 #include "TouchInterface.h"
 #include "TouchDevice.h"
@@ -102,7 +102,9 @@ void nanoHAL_Initialize()
     ::HeapLocation(heapStart, heapSize);
     memset(heapStart, 0, heapSize);
 
-    ConfigurationManager_Initialize();
+    #ifdef CONFIG_SUPPORT_CONFIGBLOCK
+        ConfigurationManager_Initialize();
+    #endif
 
     Events_Initialize();
 
@@ -139,7 +141,7 @@ void nanoHAL_Initialize()
     // ibeacon_start();  // Ibeacon test code
 #endif
 
-#if (NANOCLR_GRAPHICS == TRUE)
+#if (CONFIG_SUPPORT_GRAPHICS == TRUE)
     if (!rebootinprogress)
     {
         DisplayInterfaceConfig displayConfig;
@@ -150,7 +152,7 @@ void nanoHAL_Initialize()
     }
 #endif
 
-#if (CONFIG_TOUCH_DISPLAY_SUPPORT == TRUE)
+#if (CONFIG_SUPPORT_GRAPHICSTOUCH == TRUE)
     g_TouchInterface.Initialize();
     g_TouchDevice.Initialize();
     g_TouchPanel.Initialize();

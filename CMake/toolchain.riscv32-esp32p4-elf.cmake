@@ -5,28 +5,7 @@
 
 include(CMakeForceCompiler)
 
-# the name of the operating system for which CMake is to build
-set(CMAKE_SYSTEM_NAME Generic)
 
-# macro to setup compilers
-macro(nf_set_compiler_var var name)
-   find_program(
-      CMAKE_${var}
-      riscv32-esp-elf-${name}
-      CMAKE_FIND_ROOT_PATH_BOTH
-      REQUIRED)
-endmacro()
-
-# safer to have these here as a check if the toolchain are accessible in the PATH
-
-# setup C compiler
-nf_set_compiler_var(C_COMPILER gcc)
-
-# setup C++ compiler
-nf_set_compiler_var(CXX_COMPILER g++)
-
-# setup Assembler compiler
-nf_set_compiler_var(ASM_COMPILER gcc)
 
 set(ESP_TOOLCHAIN_DIR
     "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin")

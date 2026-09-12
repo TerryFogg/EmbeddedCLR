@@ -119,6 +119,7 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/CLR/Startup/CLRStartup.cpp
             ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_Boot.c
             ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_Capabilites.c
+            ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager_stubs.c
             ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_SystemEvents.c
             ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_SystemInformation.cpp
             ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_Time.cpp
@@ -139,6 +140,7 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/PAL/FileSystem/nanoPAL_FileSystem_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/nanoPAL_Network_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/Profiler/nanoPAL_PerformanceCounters_stubs.cpp
+
     )
 
 list(APPEND Core_Includes
@@ -158,17 +160,14 @@ list(APPEND Core_Includes
             ${CMAKE_SOURCE_DIR}/src/nanoFramework.System.Collections
             ${CMAKE_SOURCE_DIR}/src/DeviceInterfaces/Networking.Sntp
 
-            ${CMAKE_BINARY_DIR}/targets/ESP32/
-            ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4
-            ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4/nanoCLR
+            ${CMAKE_BINARY_DIR}
 
             ${CMAKE_SOURCE_DIR}/src/CLR/Messaging
             ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol
 
             ${TARGET_BASE_LOCATION}
             ${TARGET_BASE_LOCATION}/nanoCLR
-            ${CMAKE_SOURCE_DIR}/targets/Espressif/common/include
-
+            ${CMAKE_SOURCE_DIR}/targets/common
 )
 
 if(NF_TRACE_TO_STDIO)
@@ -183,19 +182,6 @@ if(NOT USE_SECURITY_MBEDTLS_OPTION)
     )
 endif()
 
-if(NF_FEATURE_HAS_CONFIG_BLOCK)
-    list(APPEND Core_Sources
-                ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager.c
-    )
-else()
-    list(APPEND Core_Sources
-                ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager_stubs.c
-    )
-endif()
-
-#list(APPEND Core_Sources
-#            ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR/nanoFramework.Runtime.Native/nf_rt_native_nanoFramework_Runtime_Native_Rtc.cpp
-#)
 
 target_sources(nanoCLR PUBLIC ${Core_Sources} )
 target_include_directories(nanoCLR PUBLIC  ${Core_Includes} )   

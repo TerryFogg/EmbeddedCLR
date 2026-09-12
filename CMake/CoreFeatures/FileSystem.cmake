@@ -24,3 +24,5 @@ list(APPEND FileSystem_Includes
 
 target_sources(nanoCLR PUBLIC ${FileSystem_Sources} )
 target_include_directories(nanoCLR PUBLIC  ${FileSystem_Includes} )   
+
+#define SDC_MAX_OPEN_FILES 5

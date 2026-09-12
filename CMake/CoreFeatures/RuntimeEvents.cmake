@@ -26,3 +26,21 @@ target_sources(nanoCLR PUBLIC
 target_include_directories(nanoCLR PUBLIC 
                            ${Runtime_Includes}
 )   
+
+
+# Default #define PLATFORM_DEPENDENT_ENTRY_SIZE ENTRY_SIZE__medium
+# Other Options:
+  # ENTRY_SIZE__small,
+  # ENTRY_SIZE__large
+
+# Default #define PLATFORM_DEPENDENT_HASH_TABLE_SIZE HASH_TABLE_ENTRY__medium
+# Other Options:
+  # HASH_TABLE_ENTRY__small,
+  # HASH_TABLE_ENTRY__large
+
+  #define PLATFORM_DEPENDENT_INTERRUPT_RECORDS INTERRUPT_RECORDS__medium
+  # Other Options: NONE
+
+  #define PLATFORM_DEPENDENT_INLINE_BUFFER_SIZE INLINE_BUFFER__medium
+    # Other Options: NONE
+

@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -31,6 +31,7 @@ bool GetHalSystemInfo(HalSystemInfo &systemInfo)
 
     len = sizeof(systemInfo.m_releaseInfo.TargetName);
     hal_strncpy_s((char *)&systemInfo.m_releaseInfo.TargetName[0], len, PLATFORMNAMESTRING, len - 1);
+
 
     // OEM_MODEL_SKU:
     ConfigurationManager_GetOemModelSku((char *)&systemInfo.m_OemModelInfo, sizeof(systemInfo.m_OemModelInfo));

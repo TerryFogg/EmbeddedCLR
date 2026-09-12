@@ -42,9 +42,6 @@ target_compile_definitions( nanoCLR PRIVATE
                             USE_FPU=TRUE
 )
 
-target_compile_definitions(nanoCLR PRIVATE
-                            CONFIG_TOUCH_DISPLAY_SUPPORT
-                          )  
 
 
 

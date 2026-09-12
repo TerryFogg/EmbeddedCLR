@@ -14,3 +14,12 @@ list(APPEND Mathematics_Includes
 target_sources(nanoCLR PUBLIC ${Mathematics_Sources} )
 target_include_directories(nanoCLR PUBLIC  ${Mathematics_Includes} )   
 
+if(CONFIG_SUPPORT_MATHEMATICS_EMULATION) 
+  target_compile_definitions(nanoCLR PRIVATE NANOCLR_EMULATED_FLOATINGPOINT)
+  else()
+  target_compile_definitions(nanoCLR PRIVATE CONFIG_NF_ENABLE_DOUBLE_PRECISION_FP)
+endif()
+
+
+
+

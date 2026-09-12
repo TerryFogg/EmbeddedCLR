@@ -13,7 +13,6 @@
 
 # Mapping from Kconfig symbol names to CMake variable names.
 set(_NF_KCONFIG_API_MAP
-    # System APIs
     "API_SYSTEM_MATH|API_System.Math"
     "API_SYSTEM_NET|API_System.Net"
     "API_SYSTEM_DEVICE_GPIO|API_System.Device.Gpio"
@@ -28,23 +27,11 @@ set(_NF_KCONFIG_API_MAP
     "API_SYSTEM_DEVICE_USBSTREAM|API_System.Device.UsbStream"
     "API_SYSTEM_IO_PORTS|API_System.IO.Ports"
     "API_SYSTEM_IO_FILESYSTEM|API_System.IO.FileSystem"
-
-    # nanoFramework APIs
     "API_NANOFRAMEWORK_DEVICE_ONEWIRE|API_nanoFramework.Device.OneWire"
     "API_NANOFRAMEWORK_DEVICE_CAN|API_nanoFramework.Device.Can"
     "API_NANOFRAMEWORK_SYSTEM_SECURITY_CRYPTOGRAPHY|API_nanoFramework.System.Security.Cryptography"
     "API_NANOFRAMEWORK_NETWORKING_THREAD|API_nanoFramework.Networking.Thread"
-
-    # Platform-specific APIs
-    "API_HARDWARE_STM32|API_Hardware.Stm32"
     "API_HARDWARE_ESP32|API_Hardware.Esp32"
-    "API_NANOFRAMEWORK_HARDWARE_ESP32_RMT|API_nanoFramework.Hardware.Esp32.Rmt"
-    "API_NANOFRAMEWORK_HARDWARE_TI|API_nanoFramework.Hardware.TI"
-    "API_NANOFRAMEWORK_TI_EASYLINK|API_nanoFramework.TI.EasyLink"
-    "API_HARDWARE_GIANTGECKO|API_Hardware.GiantGecko"
-    "API_NANOFRAMEWORK_GIANTGECKO_ADC|API_nanoFramework.GiantGecko.Adc"
-
-    # Internal (auto-selected) APIs
     "API_NANOFRAMEWORK_NETWORKING_SNTP|API_nanoFramework.Networking.Sntp"
     "API_SYSTEM_RUNTIME_SERIALIZATION|API_System.Runtime.Serialization"
 )

@@ -109,6 +109,14 @@ target_sources(nanoCLR PUBLIC ${Network_Sources} )
 target_include_directories(nanoCLR PUBLIC  ${Network_Includes} )   
 
 
+target_compile_definitions(nanoCLR PRIVATE LWIP_IPV6=0)
+target_compile_definitions(nanoCLR PRIVATE PLATFORM_ESP32=0)
+target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIFI_SUPPORTED=0)
+target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIRELESS_HOST_SUPPORTED=0)
+
+
+
+
 
 
 ###    if(USE_NETWORKING_OPTION)

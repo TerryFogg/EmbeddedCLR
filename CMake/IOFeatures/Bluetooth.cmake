@@ -3,6 +3,8 @@
 # See LICENSE file in the project root for full license information.
 #
 
+SET(
+
 list(APPEND Bluetooth_Sources
     ${CMAKE_SOURCE_DIR}/targets/ESP32/_nanoCLR/nanoFramework.Device.Bluetoothsys_dev_ble_native.cpp
 

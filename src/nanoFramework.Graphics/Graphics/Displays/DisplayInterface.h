@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -14,20 +14,20 @@
 struct DisplayInterfaceConfig
 {
     union {
-        struct
-        {
-            CLR_UINT8 spiBus;
-            CLR_INT32 chipSelect;
-            CLR_INT32 dataCommand;
-            CLR_INT32 reset;
-            CLR_INT32 backLight;
-        } Spi;
-        struct
-        {
-            CLR_INT8 i2cBus;
-            CLR_INT8 address;
-            CLR_INT8 fastMode;
-        } I2c;
+        //struct
+        //{
+        //    CLR_UINT8 spiBus;
+        //    CLR_INT32 chipSelect;
+        //    CLR_INT32 dataCommand;
+        //    CLR_INT32 reset;
+        //    CLR_INT32 backLight;
+        //} Spi;
+        //struct
+        //{
+        //    CLR_INT8 i2cBus;
+        //    CLR_INT8 address;
+        //    CLR_INT8 fastMode;
+        //} I2c;
         struct
         {
             CLR_INT16 enable;

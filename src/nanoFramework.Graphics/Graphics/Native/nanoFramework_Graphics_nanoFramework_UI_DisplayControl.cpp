@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -111,85 +111,85 @@ HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_DisplayControl::
 {
     NANOCLR_HEADER();
 
-    CLR_RT_HeapBlock *spiconfig;
-    CLR_RT_HeapBlock *screenconfig;
-    CLR_RT_HeapBlock *graphicDriver;
-    CLR_INT32 desired;
-    // Initialise Graphics after devices initialised
-    DisplayInterfaceConfig displayConfig;
+    //CLR_RT_HeapBlock *spiconfig;
+    //CLR_RT_HeapBlock *screenconfig;
+    //CLR_RT_HeapBlock *graphicDriver;
+    //CLR_INT32 desired;
+    //// Initialise Graphics after devices initialised
+    //DisplayInterfaceConfig displayConfig;
 
-    desired = stack.Arg2().NumericByRef().u4;
-    g_GraphicsMemoryHeap.Initialize(desired);
+    //desired = stack.Arg2().NumericByRef().u4;
+    //g_GraphicsMemoryHeap.Initialize(desired);
 
-    spiconfig = stack.Arg0().Dereference();
-    screenconfig = stack.Arg1().Dereference();
+    //spiconfig = stack.Arg0().Dereference();
+    //screenconfig = stack.Arg1().Dereference();
 
-    // Define SPI display configuration for the display
-    // internally SPI bus ID is zero based, so better take care of that here
-    displayConfig.Spi.spiBus = spiconfig[SpiConfiguration::FIELD___spiBus].NumericByRef().u1 - 1;
+    //// Define SPI display configuration for the display
+    //// internally SPI bus ID is zero based, so better take care of that here
+    //displayConfig.Spi.spiBus = spiconfig[SpiConfiguration::FIELD___spiBus].NumericByRef().u1 - 1;
 
-    displayConfig.Spi.chipSelect = spiconfig[SpiConfiguration::FIELD___chipSelect].NumericByRef().s4;
-    displayConfig.Spi.dataCommand = spiconfig[SpiConfiguration::FIELD___dataCommand].NumericByRef().s4;
-    displayConfig.Spi.reset = spiconfig[SpiConfiguration::FIELD___reset].NumericByRef().s4;
-    displayConfig.Spi.backLight = spiconfig[SpiConfiguration::FIELD___backLight].NumericByRef().s4;
-    displayConfig.Screen.x = screenconfig[ScreenConfiguration::FIELD___x].NumericByRef().u2;
-    displayConfig.Screen.y = screenconfig[ScreenConfiguration::FIELD___y].NumericByRef().u2;
-    displayConfig.Screen.width = screenconfig[ScreenConfiguration::FIELD___width].NumericByRef().u2;
-    displayConfig.Screen.height = screenconfig[ScreenConfiguration::FIELD___height].NumericByRef().u2;
-    graphicDriver = screenconfig[ScreenConfiguration::FIELD___graphicDriver].Dereference();
+    //displayConfig.Spi.chipSelect = spiconfig[SpiConfiguration::FIELD___chipSelect].NumericByRef().s4;
+    //displayConfig.Spi.dataCommand = spiconfig[SpiConfiguration::FIELD___dataCommand].NumericByRef().s4;
+    //displayConfig.Spi.reset = spiconfig[SpiConfiguration::FIELD___reset].NumericByRef().s4;
+    //displayConfig.Spi.backLight = spiconfig[SpiConfiguration::FIELD___backLight].NumericByRef().s4;
+    //displayConfig.Screen.x = screenconfig[ScreenConfiguration::FIELD___x].NumericByRef().u2;
+    //displayConfig.Screen.y = screenconfig[ScreenConfiguration::FIELD___y].NumericByRef().u2;
+    //displayConfig.Screen.width = screenconfig[ScreenConfiguration::FIELD___width].NumericByRef().u2;
+    //displayConfig.Screen.height = screenconfig[ScreenConfiguration::FIELD___height].NumericByRef().u2;
+    //graphicDriver = screenconfig[ScreenConfiguration::FIELD___graphicDriver].Dereference();
 
-    if (graphicDriver != NULL)
-    {
-        displayConfig.GenericDriverCommands.Width = graphicDriver[GraphicDriver::FIELD___width].NumericByRef().u4;
-        displayConfig.GenericDriverCommands.Height = graphicDriver[GraphicDriver::FIELD___height].NumericByRef().u4;
-        displayConfig.GenericDriverCommands.BitsPerPixel =
-            graphicDriver[GraphicDriver::FIELD___initializationSequence].NumericByRef().u1;
-        displayConfig.GenericDriverCommands.InitializationSequence =
-            graphicDriver[GraphicDriver::FIELD___initializationSequence].DereferenceArray();
-        displayConfig.GenericDriverCommands.MemoryWrite =
-            graphicDriver[GraphicDriver::FIELD___memoryWrite].NumericByRef().u1;
-        displayConfig.GenericDriverCommands.SetColumnAddress =
-            graphicDriver[GraphicDriver::FIELD___setColumnAddress].NumericByRef().u1;
-        displayConfig.GenericDriverCommands.SetRowAddress =
-            graphicDriver[GraphicDriver::FIELD___setRowAddress].NumericByRef().u1;
-        displayConfig.GenericDriverCommands.PowerModeNormal =
-            graphicDriver[GraphicDriver::FIELD___powerModeNormal].DereferenceArray();
-        displayConfig.GenericDriverCommands.PowerModeSleep =
-            graphicDriver[GraphicDriver::FIELD___powerModeSleep].DereferenceArray();
-        displayConfig.GenericDriverCommands.OrientationPortrait =
-            graphicDriver[GraphicDriver::FIELD___orientationPortrait].DereferenceArray();
-        displayConfig.GenericDriverCommands.OrientationPortrait180 =
-            graphicDriver[GraphicDriver::FIELD___orientationPortrait180].DereferenceArray();
-        displayConfig.GenericDriverCommands.OrientationLandscape =
-            graphicDriver[GraphicDriver::FIELD___orientationLandscape].DereferenceArray();
-        displayConfig.GenericDriverCommands.OrientationLandscape180 =
-            graphicDriver[GraphicDriver::FIELD___orientationLandscape180].DereferenceArray();
-        displayConfig.GenericDriverCommands.Clear = graphicDriver[GraphicDriver::FIELD___clear].DereferenceArray();
-        displayConfig.GenericDriverCommands.Brightness =
-            graphicDriver[GraphicDriver::FIELD___brightness].NumericByRef().u1;
-        displayConfig.GenericDriverCommands.DefaultOrientation =
-            (CLR_UINT8)graphicDriver[GraphicDriver::FIELD___defaultOrientation].NumericByRef().s4;
-        displayConfig.GenericDriverCommands.SetWindowType =
-            (CLR_UINT8)graphicDriver[GraphicDriver::FIELD___setWindowType].NumericByRef().s4;
-    }
+    //if (graphicDriver != NULL)
+    //{
+    //    displayConfig.GenericDriverCommands.Width = graphicDriver[GraphicDriver::FIELD___width].NumericByRef().u4;
+    //    displayConfig.GenericDriverCommands.Height = graphicDriver[GraphicDriver::FIELD___height].NumericByRef().u4;
+    //    displayConfig.GenericDriverCommands.BitsPerPixel =
+    //        graphicDriver[GraphicDriver::FIELD___initializationSequence].NumericByRef().u1;
+    //    displayConfig.GenericDriverCommands.InitializationSequence =
+    //        graphicDriver[GraphicDriver::FIELD___initializationSequence].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.MemoryWrite =
+    //        graphicDriver[GraphicDriver::FIELD___memoryWrite].NumericByRef().u1;
+    //    displayConfig.GenericDriverCommands.SetColumnAddress =
+    //        graphicDriver[GraphicDriver::FIELD___setColumnAddress].NumericByRef().u1;
+    //    displayConfig.GenericDriverCommands.SetRowAddress =
+    //        graphicDriver[GraphicDriver::FIELD___setRowAddress].NumericByRef().u1;
+    //    displayConfig.GenericDriverCommands.PowerModeNormal =
+    //        graphicDriver[GraphicDriver::FIELD___powerModeNormal].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.PowerModeSleep =
+    //        graphicDriver[GraphicDriver::FIELD___powerModeSleep].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.OrientationPortrait =
+    //        graphicDriver[GraphicDriver::FIELD___orientationPortrait].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.OrientationPortrait180 =
+    //        graphicDriver[GraphicDriver::FIELD___orientationPortrait180].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.OrientationLandscape =
+    //        graphicDriver[GraphicDriver::FIELD___orientationLandscape].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.OrientationLandscape180 =
+    //        graphicDriver[GraphicDriver::FIELD___orientationLandscape180].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.Clear = graphicDriver[GraphicDriver::FIELD___clear].DereferenceArray();
+    //    displayConfig.GenericDriverCommands.Brightness =
+    //        graphicDriver[GraphicDriver::FIELD___brightness].NumericByRef().u1;
+    //    displayConfig.GenericDriverCommands.DefaultOrientation =
+    //        (CLR_UINT8)graphicDriver[GraphicDriver::FIELD___defaultOrientation].NumericByRef().s4;
+    //    displayConfig.GenericDriverCommands.SetWindowType =
+    //        (CLR_UINT8)graphicDriver[GraphicDriver::FIELD___setWindowType].NumericByRef().s4;
+    //}
 
-    g_DisplayInterface.Initialize(displayConfig);
-    g_DisplayDriver.Initialize();
+    //g_DisplayInterface.Initialize(displayConfig);
+    //g_DisplayDriver.Initialize();
 
-    // TODO for touch
-    // g_TouchInterface.Initialize();
-    // g_TouchDevice.Initialize();
+    //// TODO for touch
+    //// g_TouchInterface.Initialize();
+    //// g_TouchDevice.Initialize();
 
-    PalEvent_Initialize();
+    //PalEvent_Initialize();
 
-    // TODO for touch
-    // Gesture_Initialize();
-    // Ink_Initialize();
+    //// TODO for touch
+    //// Gesture_Initialize();
+    //// Ink_Initialize();
 
-    g_DisplayDriver.SetDefaultOrientation();
-    g_DisplayDriver.Clear();
+    //g_DisplayDriver.SetDefaultOrientation();
+    //g_DisplayDriver.Clear();
 
-    stack.SetResult_U4(g_GraphicsMemoryHeap.GetMaxBuffer());
+    //stack.SetResult_U4(g_GraphicsMemoryHeap.GetMaxBuffer());
 
     NANOCLR_NOCLEANUP_NOLABEL();
 }

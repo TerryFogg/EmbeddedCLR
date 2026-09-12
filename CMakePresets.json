@@ -27,21 +27,90 @@
             }
         },
         {
-            "name": "DEBUG",
-            "description": "This is non-optimized and contains all the debug symbols",
+            "name": "debug_less_v3",
+            "description": "This is non_optimized and contains all the debug symbols",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ESP32P4_REVISION": "PRE_V3"
             }
         },
         {
-            "name": "RELEASE",
+            "name": "debug_greater_v3",
+            "description": "This is non-optimized and contains all the debug symbols",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ESP32P4_REVISION": "V3_PLUS"
+            }
+        },
+        {
+            "name": "release_less_v3",
             "description": "This is optimized for speed without debugging symbols and with asserts disabled.",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "ESP32P4_REVISION": "PRE_V3"
             }
         },
+        {
+            "name": "release_greater_v3",
+            "description": "This is optimized for speed without debugging symbols and with asserts disabled.",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ESP32P4_REVISION": "V3_PLUS"
+            }
+        },
+        {
+            "name": "NANOCLR_TRACE_ON",
+            "description": "All of the trace options are enabled",
+            "hidden": true,
+            "cacheVariables": {
+                "NANOCLR_GC_VERBOSE": "ON",
+                "NANOCLR_TRACE_CALLS": "ON",
+                "NANOCLR_TRACE_DEFAULT": "ON",
+                "NANOCLR_TRACE_EARLYCOLLECTION": "ON",
+                "NANOCLR_TRACE_ERRORS": "ON",
+                "NANOCLR_TRACE_EXCEPTIONS": "ON",
+                "NANOCLR_TRACE_HRESULT": "ON",
+                "NANOCLR_TRACE_INSTRUCTIONS": "ON",
+                "NANOCLR_TRACE_MALLOC": "ON",
+                "NANOCLR_TRACE_MEMORY_STATS": "ON",
+                "NANOCLR_TRACE_MEMORY_STATS_EXTRA_SIZE": "ON",
+                "NANOCLR_TRACE_PERSISTENCE": "ON",
+                "NANOCLR_TRACE_PROFILER_MESSAGES": "ON",
+                "NANOCLR_TRACE_STAC": "ON",
+                "NANOCLR_TRACE_STACK": "ON",
+                "NANOCLR_TRACE_STACK_HEAVY": "ON",
+                "NANOCLR_TRACE_SYSTEMEVENTWAIT": "ON"
+            }
+        },
+        {
+            "name": "NANOCLR_TRACE_OFF",
+            "description": "All of the trace options are disabled",
+            "hidden": true,
+            "cacheVariables": {
+                "NANOCLR_GC_VERBOSE": "OFF",
+                "NANOCLR_TRACE_CALLS": "OFF",
+                "NANOCLR_TRACE_DEFAULT": "OFF",
+                "NANOCLR_TRACE_EARLYCOLLECTION": "OFF",
+                "NANOCLR_TRACE_ERRORS": "OFF",
+                "NANOCLR_TRACE_EXCEPTIONS": "OFF",
+                "NANOCLR_TRACE_HRESULT": "OFF",
+                "NANOCLR_TRACE_INSTRUCTIONS": "OFF",
+                "NANOCLR_TRACE_MALLOC": "OFF",
+                "NANOCLR_TRACE_MEMORY_STATS": "OFF",
+                "NANOCLR_TRACE_MEMORY_STATS_EXTRA_SIZE": "OFF",
+                "NANOCLR_TRACE_PERSISTENCE": "OFF",
+                "NANOCLR_TRACE_PROFILER_MESSAGES": "OFF",
+                "NANOCLR_TRACE_STAC": "OFF",
+                "NANOCLR_TRACE_STACK": "OFF",
+                "NANOCLR_TRACE_STACK_HEAVY": "OFF",
+                "NANOCLR_TRACE_SYSTEMEVENTWAIT": "OFF"
+            }
+        },
+
         {
             "name": "ESP32_P4_WIFI6",
             "inherits": [
@@ -58,9 +127,9 @@
                 "TARGET_NAME": "WaveShare ESP32-WIFI6-Touch",
                 "TARGET_FAMILY": "Esp32",
                 "TARGET_BOARD": "ESP32_P4",
-                "TARGET_RTOS": "ESP-IDF",
+                "TARGET_SERIES": "esp32p4",
                 "VENDOR": "Espressif",
-                "PARTITION_SIZE":"32MB",
+                "PARTITION_SIZE": "32MB",
 
                 "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
                 "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
@@ -69,39 +138,41 @@
                 "NF_INTEROP_ASSEMBLIES": null,
                 "BUILD_VERSION": "0.9.99.999",
                 "BUILD_VERBOSE": "OFF",
-                "NF_FEATURE_HAS_CONFIG_BLOCK": false,
-                "NF_FEATURE_BINARY_SERIALIZATION": true,
-                "NF_FEATURE_SUPPORT_REFLECTION": true,
-                "ENABLED_CORE_FEATURES": "Collections;Hashing;Mathematics;Graphics;ResourceManager;RuntimeEvents;RuntimeSerialization;Text;WireProtocol",
-                "ENABLED_IO_FEATURES": "CoreIO",
+                "CORE_FEATURES": "ConfigBlock=OFF;Collections=ON;Cryptography=OFF;FileSystem=OFF;Graphics=ON;Hashing=ON;Network=OFF;Mathematics=ON;Reflection=ON;ResourceManager=ON;RuntimeEvents=ON;RuntimeSerialization=ON;Text=ON;WireProtocol=ON",
+                "IO_FEATURES": "CoreIO=OFF;CAN=OFF;OneWire=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
+                "FEATURE_DEFINES": "GRAPHICSTOUCH=ON;MATHEMATICS_EMULATION=OFF;Bluetooth=OFF;Ethernet=OFF;SNTP=OFF;Thread=OFF;WiFi=OFF",
                 "NF_SECURITY_MBEDTLS": true,
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "NF_TRACE_TO_STDIO": false
             }
         },
+
+        // Build Presets for ESP32_P4_WIFI6
         {
-            "name": "ESP32_P4_WIFI6_DEBUG",
+            "name": "ESP32_P4_WIFI6_DEBUG_LESS_3",
             "inherits": [
                 "ESP32_P4_WIFI6",
-                "DEBUG"
+                "debug_less_v3",
+                "NANOCLR_TRACE_OFF"
             ]
         },
         {
-            "name": "ESP32_P4_WIFI6_RELEASE",
+            "name": "ESP32_P4_WIFI6_RELEASE_LESS_3",
             "inherits": [
                 "ESP32_P4_WIFI6",
-                "RELEASE"
+                "release_less_v3",
+                "NANOCLR_TRACE_OFF"
             ]
         }
     ],
     "buildPresets": [
         {
-            "name": "ESP32_P4_WIFI6_DEBUG",
-            "configurePreset": "ESP32_P4_WIFI6_DEBUG"
+            "name": "build_ESP32_P4_WIFI6_debug_less_3",
+            "configurePreset": "ESP32_P4_WIFI6_DEBUG_LESS_3"
         },
         {
-            "name": "ESP32_P4_WIFI6_RELEASE",
-            "configurePreset": "ESP32_P4_WIFI6_RELEASE"
+            "name": "build_ESP32_P4_WIFI6_release_less_3",
+            "configurePreset": "ESP32_P4_WIFI6_RELEASE_LESS_3"
         }
     ]
 }

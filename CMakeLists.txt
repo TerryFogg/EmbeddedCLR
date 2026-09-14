@@ -58,6 +58,11 @@ target_sources(nanoCLR PUBLIC
 target_compile_definitions(nanoCLR PRIVATE "CONFIG_RTOS=1" )
 
 
+add_compile_options(
+    -march=rv32imafc_zicsr_zifencei_xesppie
+    -mabi=ilp32f
+)
+
     add_custom_command(TARGET nanoCLR POST_BUILD
       COMMAND ${CMAKE_OBJCOPY}           $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.elf
       COMMAND ${CMAKE_OBJCOPY} -Oihex    $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.hex

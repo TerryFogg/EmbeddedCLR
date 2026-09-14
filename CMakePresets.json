@@ -27,7 +27,7 @@
             }
         },
         {
-            "name": "debug_less_v3",
+            "name": "debug",
             "description": "This is non_optimized and contains all the debug symbols",
             "hidden": true,
             "cacheVariables": {
@@ -36,30 +36,12 @@
             }
         },
         {
-            "name": "debug_greater_v3",
-            "description": "This is non-optimized and contains all the debug symbols",
-            "hidden": true,
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "ESP32P4_REVISION": "V3_PLUS"
-            }
-        },
-        {
-            "name": "release_less_v3",
+            "name": "release",
             "description": "This is optimized for speed without debugging symbols and with asserts disabled.",
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "ESP32P4_REVISION": "PRE_V3"
-            }
-        },
-        {
-            "name": "release_greater_v3",
-            "description": "This is optimized for speed without debugging symbols and with asserts disabled.",
-            "hidden": true,
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "ESP32P4_REVISION": "V3_PLUS"
             }
         },
         {
@@ -118,7 +100,7 @@
                 "HIGH_SURROGATE_START" :"ON",
                 "NANANOCLR_EMULATED_FLOATINGPOINT" :"ON",
                 "NANOCLR_APPDOMAINS" :"ON",
-                "NANOCLR_DELEGATE_PRESERVE_STACK" :"ON"
+                "NANOCLR_DELEGATE_PRESERVE_STACK" :"ON",
                 "NANOCLR_ENABLE_SOURCELEVELDEBUGGING" :"ON",
                 "NANOCLR_FILL_MEMORY_WITH_DIRTY_PATTERN" :"ON",
                 "NANOCLR_NO_ASSEMBLY_STRINGS" :"ON",
@@ -145,12 +127,13 @@
                 "ESP_IDF_VERSION": "5.5"
             },
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
                 "TARGET_NAME": "WaveShare ESP32-WIFI6-Touch",
                 "TARGET_FAMILY": "Esp32",
                 "TARGET_BOARD": "ESP32_P4",
                 "TARGET_SERIES": "esp32p4",
+                "ESP32P4_REVISION": "V1.3",
                 "VENDOR": "Espressif",
+                "PSRAM": true,
                 "PARTITION_SIZE": "32MB",
 
                 "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
@@ -171,30 +154,30 @@
 
         // Build Presets for ESP32_P4_WIFI6
         {
-            "name": "ESP32_P4_WIFI6_DEBUG_LESS_3",
+            "name": "ESP32_P4_WIFI6_DEBUG",
             "inherits": [
                 "ESP32_P4_WIFI6",
-                "debug_less_v3",
+                "debug",
                 "NANOCLR_TRACE_OFF"
             ]
         },
         {
-            "name": "ESP32_P4_WIFI6_RELEASE_LESS_3",
+            "name": "ESP32_P4_WIFI6_RELEASE",
             "inherits": [
                 "ESP32_P4_WIFI6",
-                "release_less_v3",
+                "release",
                 "NANOCLR_TRACE_OFF"
             ]
         }
     ],
     "buildPresets": [
         {
-            "name": "build_ESP32_P4_WIFI6_debug_less_3",
-            "configurePreset": "ESP32_P4_WIFI6_DEBUG_LESS_3"
+            "name": "build_ESP32_P4_WIFI6_debug",
+            "configurePreset": "ESP32_P4_WIFI6_DEBUG"
         },
         {
-            "name": "build_ESP32_P4_WIFI6_release_less_3",
-            "configurePreset": "ESP32_P4_WIFI6_RELEASE_LESS_3"
+            "name": "build_ESP32_P4_WIFI6_release",
+            "configurePreset": "ESP32_P4_WIFI6_RELEASE"
         }
     ]
 }

@@ -5,7 +5,7 @@
 
 #include "TouchInterface.h"
 //#include "Device.IO.h"
-#include <driver/i2c_master.h>
+//#include <driver/i2c_master.h>
 
 //#include <esp_lcd_touch.h>
 //#include "esp_lcd_touch_gt911.h"

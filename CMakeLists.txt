@@ -20,8 +20,8 @@ include(ExternalProject)
 include(CMakeToolsHelpers OPTIONAL)
 nf_check_path_limits()
 
-include(${TARGET_FAMILY})
-include(nf-Interpreter)
+
+# Include features and set CONFIG_SUPPORT_* names for later use
 
 foreach(FEATURE IN LISTS FEATURE_DEFINES)
     string(REPLACE "=" ";" RESULT "${FEATURE}")
@@ -43,15 +43,17 @@ foreach(FEATURE IN LISTS CORE_FEATURES  IO_FEATURES)
     endif()
 endforeach()
 
+
+include(nf-Interpreter)
+include(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_FAMILY}.cmake)
+
+
 include(CommonBuild)
 target_sources(nanoCLR PUBLIC
                ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Startup/app_main.c
                ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Configuration/CLR_RT_InteropAssembliesTable.cpp
 )
 nf_generate_build_output_files(nanoCLR)
-
-
-                option("NF_SECURITY_MBEDTLS": true)
 
 # Strange define for the check of an include file
 target_compile_definitions(nanoCLR PRIVATE "CONFIG_RTOS=1" )

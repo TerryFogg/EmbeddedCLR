@@ -53,37 +53,37 @@
 #pragma GCC diagnostic ignored "-Wformat"
 #endif
 
-#include <driver/spi_master.h>
-#include <driver/gpio.h>
-#include <driver/i2c.h>
-
-#include <driver/i2s.h>
+//#include <driver/spi_master.h>
+//#include <driver/gpio.h>
+//#include <driver/i2c.h>
+//#include <driver/ledc.h>
+//
+//#include <driver/i2s.h>
 #include <soc/i2s_reg.h>
 // #include <driver/i2s_std.h>
 // #include <driver/i2s_pdm.h>
 
 #include <driver/uart.h>
-#include <driver/ledc.h>
 
 #if defined(CONFIG_IDF_TARGET_ESP32)
 // Use legacy ADC driver for ESP32 for now as the new one also requires the new I2S driver due to dependency because of
 // internal DAC other ESP32 variants don't have DAC so use the new ADC driver
 #include <driver/adc.h>
 #else
-#include <esp_adc/adc_oneshot.h>
+//#include <esp_adc/adc_oneshot.h>
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
 #include <driver/dac_oneshot.h>
 #endif
 
-#include <driver/gptimer.h>
-#include <driver/pulse_cnt.h>
+//#include <driver/gptimer.h>
+//#include <driver/pulse_cnt.h>
 
 #include <soc/uart_channel.h>
 #include <esp_rom_crc.h>
 #include <esp_rom_caps.h>
-#include <esp_pm.h>
+//#include <esp_pm.h>
 
 // Touch pad supported only on those platforms
 #if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3)

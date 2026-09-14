@@ -1,4 +1,4 @@
-# EditorConfig for Visual Studio 2022: https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022
+﻿# EditorConfig for Visual Studio 2022: https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022
 
 # This is a top-most .editorconfig file
 root = true
@@ -18,7 +18,6 @@ charset = utf-8-bom
 spelling_languages = en-us
 spelling_checkable_types = strings,identifiers,comments
 spelling_error_severity = information
-spelling_exclusion_path = spelling_exclusion.dic
 
 #=====================================================
 #

@@ -170,10 +170,6 @@ if(CONFIG_SUPPORT_WIFI)
     )
 endif()
 
-
-target_include_directories(nanoCLR PUBLIC 
-                                   ${IDF_INCLUDES}
-)   
 # Let the IDF build system handle the build of the IDF core and components used by nanoCLR
 include(${ESP32_IDF_PATH}/tools/cmake/idf.cmake)
 idf_build_process(esp32p4
@@ -181,6 +177,13 @@ idf_build_process(esp32p4
                      ${ADDITIONAL_IDF_COMPONENTS}
                   SDKCONFIG_DEFAULTS
                     ${SDKCONFIG_OVERRIDES_FILE}
+                  PROJECT_NAME
+                     "nanoCLR"
+                  PROJECT_VER
+                       ${BUILD_VERSION}
+                  PROJECT_DIR
+                       ${CMAKE_SOURCE_DIR}
+
 )
 foreach(component ${ADDITIONAL_IDF_COMPONENTS})
      list(APPEND IDF_LIBRARIES_TO_ADD

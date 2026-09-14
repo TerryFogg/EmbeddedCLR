@@ -167,7 +167,6 @@ list(APPEND Core_Includes
 
             ${TARGET_BASE_LOCATION}
             ${TARGET_BASE_LOCATION}/nanoCLR
-            ${CMAKE_SOURCE_DIR}/targets/common
 )
 
 if(NF_TRACE_TO_STDIO)

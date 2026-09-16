@@ -144,7 +144,7 @@
                 "BUILD_VERSION": "0.9.99.999",
                 "BUILD_VERBOSE": "OFF",
                 "CORE_FEATURES": "ConfigBlock=OFF;Collections=ON;Cryptography=OFF;FileSystem=OFF;Graphics=ON;Hashing=ON;Network=OFF;Mathematics=ON;Reflection=ON;ResourceManager=ON;RuntimeEvents=ON;RuntimeSerialization=ON;Text=ON;WireProtocol=ON",
-                "IO_FEATURES": "CoreIO=OFF;CAN=OFF;OneWire=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
+                "IO_FEATURES": "CAN=OFF;OneWire=OFF;InterSound=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
                 "FEATURE_DEFINES": "GRAPHICSTOUCH=ON;MATHEMATICS_EMULATION=OFF;Bluetooth=OFF;Ethernet=OFF;SNTP=OFF;Thread=OFF;WiFi=OFF",
                 "NF_SECURITY_MBEDTLS": true,
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,

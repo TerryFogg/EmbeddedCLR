@@ -6,6 +6,7 @@ include(binutils.common)
 include(FetchContent)
 
 list(APPEND ESP32_Sources
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/DeviceIO.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Device_BlockStorage.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp
@@ -91,17 +92,17 @@ set( ADDITIONAL_IDF_COMPONENTS
       esp_event
       nvs_flash
       vfs
+      # CoreIO
+#      esp_adc
+#      esp_driver_gpio
+#      esp_driver_i2c
+#      esp_driver_ledc
+#      esp_driver_spi
 )
 
-if(CONFIG_SUPPORT_COREIO)
-    # Components to add to the build for COREIO support, ledc quite often used for PWM, so we add it here as well
+if( CONFIG_SUPPORT_INTERSOUND)
     list(APPEND ADDITIONAL_IDF_COMPONENTS
-                esp_driver_adc
-                esp_driver_gpio
-                esp_driver_i2c
                 esp_driver_i2s
-                esp_driver_ledc
-                esp_driver_spi
     )
 endif()
 

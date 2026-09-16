@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.30)
 
 string(TIMESTAMP BUILD_TIMESTAMP UTC)
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
-add_executable(nanoCLR)
+add_executable(nanoCLR.elf)
 
 list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/CMake"
@@ -29,7 +29,7 @@ foreach(FEATURE IN LISTS FEATURE_DEFINES)
     list(GET RESULT 1 enabled)
     string(TOUPPER ${name} NAME_UPPER)
     set(CONFIG_SUPPORT_${NAME_UPPER} ${enabled})
-    target_compile_definitions(nanoCLR PRIVATE CONFIG_SUPPORT_${NAME_UPPER}=$<BOOL:${enabled}> )
+    target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_${NAME_UPPER}=$<BOOL:${enabled}> )
 endforeach()
 
 foreach(FEATURE IN LISTS CORE_FEATURES  IO_FEATURES)
@@ -49,18 +49,18 @@ include(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_FAMILY}.cmake)
 
 
 include(CommonBuild)
-target_sources(nanoCLR PUBLIC
+target_sources(nanoCLR.elf PUBLIC
                ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Startup/app_main.c
                ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Configuration/CLR_RT_InteropAssembliesTable.cpp
 )
 
 # Strange define for the check of an include file
-target_compile_definitions(nanoCLR PRIVATE "CONFIG_RTOS=1" )
+target_compile_definitions(nanoCLR.elf PRIVATE "CONFIG_RTOS=1" )
 
 
-    add_custom_command(TARGET nanoCLR POST_BUILD
-      COMMAND ${CMAKE_OBJCOPY}           $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.elf
-      COMMAND ${CMAKE_OBJCOPY} -Oihex    $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.hex
-      COMMAND ${CMAKE_OBJCOPY} -Obinary  $<TARGET_FILE:nanoCLR>   ${CMAKE_BINARY_DIR}/nanoCLR.bin
-      COMMAND ${CMAKE_OBJDUMP} -d -EL -S $<TARGET_FILE:nanoCLR> > ${CMAKE_BINARY_DIR}/nanoCLR.lst
+    add_custom_command(TARGET nanoCLR.elf POST_BUILD
+    #  COMMAND ${CMAKE_OBJCOPY}           $<TARGET_FILE:nanoCLR.elf>   ${CMAKE_BINARY_DIR}/nanoCLR.elf
+      COMMAND ${CMAKE_OBJCOPY} -Oihex    $<TARGET_FILE:nanoCLR.elf>   ${CMAKE_BINARY_DIR}/nanoCLR.hex
+      COMMAND ${CMAKE_OBJCOPY} -Obinary  $<TARGET_FILE:nanoCLR.elf>   ${CMAKE_BINARY_DIR}/nanoCLR.bin
+      COMMAND ${CMAKE_OBJDUMP} -d -EL -S $<TARGET_FILE:nanoCLR.elf> > ${CMAKE_BINARY_DIR}/nanoCLR.lst
     )

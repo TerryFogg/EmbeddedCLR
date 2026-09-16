@@ -13,5 +13,5 @@ list(APPEND ResourceManager_Includes
             ${CMAKE_SOURCE_DIR}/src/nanoFramework.ResourceManager
 )
 
-target_sources(nanoCLR PUBLIC ${ResourceManager_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${ResourceManager_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${ResourceManager_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${ResourceManager_Includes} )   

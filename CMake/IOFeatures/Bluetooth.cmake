@@ -44,5 +44,5 @@ list(APPEND Bluetooth_Includes
             ${NIMBLE_COMPONENT_PATH}/nimble/nimble/transport/include
 )
 
-target_sources(nanoCLR PUBLIC ${Bluetooth_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Bluetooth_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Bluetooth_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Bluetooth_Includes} )   

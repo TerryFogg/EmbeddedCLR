@@ -15,8 +15,8 @@ list(APPEND Reflection_Sources
             ${CMAKE_SOURCE_DIR}/src/CLR/CorLib/corlib_native_System_Reflection_RuntimeMethodInfo.cpp
     )
 
-target_sources(nanoCLR PUBLIC ${Reflection_Sources} )
+target_sources(nanoCLR.elf PUBLIC ${Reflection_Sources} )
 
 
-target_compile_definitions(nanoCLR PRIVATE CONFIG_NF_FEATURE_SUPPORT_REFLECTION=1)
+target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_NF_FEATURE_SUPPORT_REFLECTION=1)
 

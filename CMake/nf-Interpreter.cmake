@@ -182,7 +182,7 @@ if(NOT USE_SECURITY_MBEDTLS_OPTION)
 endif()
 
 
-target_sources(nanoCLR PUBLIC ${Core_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Core_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Core_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Core_Includes} )   
 
 

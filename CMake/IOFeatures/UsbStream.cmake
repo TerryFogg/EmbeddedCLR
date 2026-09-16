@@ -12,5 +12,5 @@ list(APPEND UsbStream_Includes
             ${CMAKE_SOURCE_DIR}/src/System.Device.UsbStream
 )
 
-target_sources(nanoCLR PUBLIC ${UsbStream_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${UsbStream_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${UsbStream_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${UsbStream_Includes} )   

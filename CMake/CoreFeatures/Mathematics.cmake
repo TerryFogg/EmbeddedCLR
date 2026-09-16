@@ -11,13 +11,13 @@ list(APPEND Mathematics_Includes
             ${CMAKE_SOURCE_DIR}/src/CLR/System.Math
 )
 
-target_sources(nanoCLR PUBLIC ${Mathematics_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Mathematics_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Mathematics_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Mathematics_Includes} )   
 
 if(CONFIG_SUPPORT_MATHEMATICS_EMULATION) 
-  target_compile_definitions(nanoCLR PRIVATE NANOCLR_EMULATED_FLOATINGPOINT)
+  target_compile_definitions(nanoCLR.elf PRIVATE NANOCLR_EMULATED_FLOATINGPOINT)
   else()
-  target_compile_definitions(nanoCLR PRIVATE CONFIG_NF_ENABLE_DOUBLE_PRECISION_FP)
+  target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_NF_ENABLE_DOUBLE_PRECISION_FP)
 endif()
 
 

@@ -17,7 +17,7 @@
             "serverStarted": "Listening on port 3333 for gdb connections",
             "setupCommands": [
                 { "text": "set architecture riscv:rv32" }
- ],
+            ],
             "postRemoteConnectCommands": [
                 { "text": "target extended-remote localhost:3333" },
                 {

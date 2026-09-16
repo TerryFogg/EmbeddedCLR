@@ -13,7 +13,7 @@ list(APPEND Runtime_Serialization_Includes
 )
 
 
-target_sources(nanoCLR PUBLIC ${Runtime_Serialization_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Runtime_Serialization_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Runtime_Serialization_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Runtime_Serialization_Includes} )   
 
- target_compile_definitions(nanoCLR PRIVATE NF_FEATURE_BINARY_SERIALIZATION=1 )
+ target_compile_definitions(nanoCLR.elf PRIVATE NF_FEATURE_BINARY_SERIALIZATION=1 )

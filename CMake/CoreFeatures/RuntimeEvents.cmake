@@ -20,10 +20,10 @@ list(APPEND Runtime_Includes
             ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events
 )
 
-target_sources(nanoCLR PUBLIC
+target_sources(nanoCLR.elf PUBLIC
                ${Runtime_Sources}
 )
-target_include_directories(nanoCLR PUBLIC 
+target_include_directories(nanoCLR.elf PUBLIC 
                            ${Runtime_Includes}
 )   
 

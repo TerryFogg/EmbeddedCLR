@@ -75,8 +75,8 @@ list(APPEND IDF_INCLUDES
             ${IDF_PATH}/components/soc/esp32p4/include
             ${IDF_PATH}/components/vfs/include
 )
-target_sources(nanoCLR PUBLIC ${ESP32_Sources} )
-target_include_directories(nanoCLR PUBLIC
+target_sources(nanoCLR.elf PUBLIC ${ESP32_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC
                            ${ESP32_Includes}
                            ${IDF_INCLUDES}
 )
@@ -165,7 +165,7 @@ idf_build_process(esp32p4
                   SDKCONFIG_DEFAULTS
                     ${SDKCONFIG_OVERRIDES_FILE}
                   PROJECT_NAME
-                     "nanoCLR"
+                     "nanoCLR.elf"
                   PROJECT_VER
                        ${BUILD_VERSION}
                   PROJECT_DIR
@@ -177,9 +177,9 @@ foreach(component ${ADDITIONAL_IDF_COMPONENTS})
                  idf::${component}
      )
 endforeach()
-target_link_libraries(nanoCLR ${IDF_LIBRARIES_TO_ADD})
-target_link_options(nanoCLR PUBLIC "-Wl,--no-warn-rwx-segments")
-idf_build_executable(nanoCLR)
+target_link_libraries(nanoCLR.elf ${IDF_LIBRARIES_TO_ADD})
+target_link_options(nanoCLR.elf PUBLIC "-Wl,--no-warn-rwx-segments")
+idf_build_executable(nanoCLR.elf)
 
 # Configuration
 configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_os.h.in       ${CMAKE_BINARY_DIR}/target_os.h @ONLY)

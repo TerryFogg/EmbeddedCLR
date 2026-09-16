@@ -10,7 +10,7 @@ list(APPEND ConfigBlock_Sources
             ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager.c
 )
 
-target_sources(nanoCLR PUBLIC ${ConfigBlock_Sources} )
-target_compile_definitions(nanoCLR PRIVATE CONFIG_SUPPORT_CONFIGBLOCK=1)
+target_sources(nanoCLR.elf PUBLIC ${ConfigBlock_Sources} )
+target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_CONFIGBLOCK=1)
 
 # ${CMAKE_SOURCE_DIR}/src/HAL/nanoHAL_ConfigurationManager_stubs.c

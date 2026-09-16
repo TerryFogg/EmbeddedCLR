@@ -105,14 +105,14 @@ if (HAL_USE_THREAD_OPTION)
               ${CMAKE_CURRENT_SOURCE_DIR}/NF_ESP32_OpenThread.cpp)
 endif()
 
-target_sources(nanoCLR PUBLIC ${Network_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Network_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Network_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Network_Includes} )   
 
 
-target_compile_definitions(nanoCLR PRIVATE LWIP_IPV6=0)
-target_compile_definitions(nanoCLR PRIVATE PLATFORM_ESP32=0)
-target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIFI_SUPPORTED=0)
-target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIRELESS_HOST_SUPPORTED=0)
+target_compile_definitions(nanoCLR.elf PRIVATE LWIP_IPV6=0)
+target_compile_definitions(nanoCLR.elf PRIVATE PLATFORM_ESP32=0)
+target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SOC_WIFI_SUPPORTED=0)
+target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SOC_WIRELESS_HOST_SUPPORTED=0)
 
 
 
@@ -151,7 +151,7 @@ target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIRELESS_HOST_SUPPORTED=0)
 ###        # get list of include directories for lwIP
 ###        get_target_property(IDF_LWIP_INCLUDE_DIRECTORIES __idf_lwip INCLUDE_DIRECTORIES)
 ###   
-###        # add nanoCLR include path to lwIP so our lwipots are taken instead of the IDF ones
+###        # add nanoCLR.elf include path to lwIP so our lwipots are taken instead of the IDF ones
 ###        list(INSERT 
 ###            IDF_LWIP_INCLUDE_DIRECTORIES 0
 ###                ${CMAKE_SOURCE_DIR}/targets/ESP32/_include
@@ -169,7 +169,7 @@ target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIRELESS_HOST_SUPPORTED=0)
 ###            ${IDF_LWIP_INCLUDE_DIRECTORIES}
 ###        )
 ###   
-###        # add nanoCLR compile definitions to lwIP
+###        # add nanoCLR.elf compile definitions to lwIP
 ###        list(APPEND 
 ###            IDF_LWIP_COMPILE_DEFINITIONS 
 ###                PLATFORM_ESP32
@@ -189,13 +189,13 @@ target_compile_definitions(nanoCLR PRIVATE CONFIG_SOC_WIRELESS_HOST_SUPPORTED=0)
 ###    # get list of include directories for FATFS
 ###    get_target_property(IDF_FATFS_INCLUDE_DIRECTORIES __idf_fatfs INCLUDE_DIRECTORIES)
 ###
-###    # add nanoCLR include path to FATFS so our lwipots are taken instead of the IDF ones
+###    # add nanoCLR.elf include path to FATFS so our lwipots are taken instead of the IDF ones
 ###    list(APPEND
 ###        IDF_FATFS_INCLUDE_DIRECTORIES
 ###        ${CMAKE_BINARY_DIR}/targets/ESP32/ESP32_P4/
 ###    )
 ###
-###    # add nanoCLR include path to FATFS so our lwipots are taken instead of the IDF ones
+###    # add nanoCLR.elf include path to FATFS so our lwipots are taken instead of the IDF ones
 ###    list(APPEND
 ###        IDF_FATFS_INCLUDE_DIRECTORIES
 ###            ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4

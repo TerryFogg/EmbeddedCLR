@@ -13,10 +13,10 @@ list(APPEND OneWire_Includes
             ${CMAKE_SOURCE_DIR}/targets/ESP32/ESP32_P4/
 )
 
-target_sources(nanoCLR PUBLIC
+target_sources(nanoCLR.elf PUBLIC
                ${OneWire_Sources}
 )
 
-target_include_directories(nanoCLR PUBLIC 
+target_include_directories(nanoCLR.elf PUBLIC 
                            ${OneWire_Includes}
 )   

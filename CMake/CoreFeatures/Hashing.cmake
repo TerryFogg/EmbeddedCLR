@@ -12,6 +12,6 @@ list(APPEND Hashing_Includes
             ${CMAKE_SOURCE_DIR}/src/nanoFramework.System.IO.Hashing
             ${CMAKE_SOURCE_DIR}/targets/Espressif/common/nanoFramework.System.IO.Hashing
 )
-target_sources(nanoCLR PUBLIC ${Hashing_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Hashing_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Hashing_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Hashing_Includes} )   
 

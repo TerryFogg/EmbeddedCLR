@@ -33,5 +33,5 @@
         ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol/WireProtocol_App_Interface.c
     )
 
-    target_sources(nanoCLR PUBLIC  ${WireProtocol_SRCS} )
-    target_include_directories(nanoCLR PUBLIC  ${WireProtocol_INCLUDE_DIRS} )   
+    target_sources(nanoCLR.elf PUBLIC  ${WireProtocol_SRCS} )
+    target_include_directories(nanoCLR.elf PUBLIC  ${WireProtocol_INCLUDE_DIRS} )   

@@ -116,18 +116,18 @@ if(CONFIG_SUPPORT_GRAPHICSTOUCH)
 endif()
 
 
-    target_sources(nanoCLR PUBLIC
+    target_sources(nanoCLR.elf PUBLIC
                    ${GRAPHICS_SOURCES}
                    ${TOUCH_SOURCES}
     )
-    target_include_directories(nanoCLR PUBLIC 
+    target_include_directories(nanoCLR.elf PUBLIC 
      ${GRAPHICS_INCLUDES}
      ${TOUCH_INCLUDES}
 )
-target_compile_definitions(nanoCLR PRIVATE CONFIG_SUPPORT_GRAPHICS=1)
-target_compile_definitions(nanoCLR PRIVATE NANOCLR_GRAPHICS=1)
+target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_GRAPHICS=1)
+target_compile_definitions(nanoCLR.elf PRIVATE NANOCLR_GRAPHICS=1)
 
 
 if(CONFIG_SUPPORT_GRAPHICSTOUCH)
- target_compile_definitions(nanoCLR PRIVATE CONFIG_SUPPORT_GRAPHICSTOUCH=1)
+ target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_GRAPHICSTOUCH=1)
 endif()

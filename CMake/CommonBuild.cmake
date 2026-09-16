@@ -1,6 +1,6 @@
 ﻿
 
-target_compile_options( nanoCLR PUBLIC
+target_compile_options( nanoCLR.elf PUBLIC
     -Wall
     -Wextra
     -Werror
@@ -16,20 +16,20 @@ target_compile_options( nanoCLR PUBLIC
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(nanoCLR PRIVATE
+    target_compile_options(nanoCLR.elf PRIVATE
                            -Og
                            -g3
                            -fno-omit-frame-pointer
                            -fno-inline
                            -fno-optimize-sibling-calls
     )
-    target_compile_definitions( nanoCLR PRIVATE
+    target_compile_definitions( nanoCLR.elf PRIVATE
                                 NANOCLR_ENABLE_SOURCELEVELDEBUGGING
                                 DEBUG
     )
 endif()
 
-target_compile_definitions( nanoCLR PRIVATE
+target_compile_definitions( nanoCLR.elf PRIVATE
                             ESP_PLATFORM
                             F_GETPATH=20
                             I_AM_NANOCLR
@@ -59,7 +59,7 @@ add_compile_definitions(NANOCLR_NO_IL_INLINE=0)
 endif()
 
 if(ADVANCED_PROFILING)
-     target_compile_definitions(nanoCLR PRIVATE
+     target_compile_definitions(nanoCLR.elf PRIVATE
                                 PLATFORM_NO_CLR_TRACE=0
                                 NANOCLR_PROFILE_NEW_CALLS=1
                                 PROFILE_NEW_ALLOCATIONS=1
@@ -69,15 +69,15 @@ endif()
 
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-   target_compile_definitions(nanoCLR PRIVATE BUILD_RTM)
+   target_compile_definitions(nanoCLR.elf PRIVATE BUILD_RTM)
 endif()
 
 if(CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
-      target_compile_definitions(nanoCLR PRIVATE CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
+      target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
 endif()
 
 
- target_compile_options(nanoCLR PRIVATE
+ target_compile_options(nanoCLR.elf PRIVATE
                         $<$<CONFIG:Debug>:-Og -g>
                         $<$<CONFIG:Release>:-O3>
                         $<$<CONFIG:MinSizeRel>:-Os>

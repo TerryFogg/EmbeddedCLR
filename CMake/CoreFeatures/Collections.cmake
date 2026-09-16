@@ -15,7 +15,7 @@ list(APPEND Collections_Includes
             "${CMAKE_SOURCE_DIR}/src/nanoFramework.System.Collections"
 )
 
-target_sources(nanoCLR PUBLIC ${Collections_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Collections_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Collections_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Collections_Includes} )   
 
-    target_compile_definitions(nanoCLR PRIVATE "CONFIG_API_NANOFRAMEWORK_SYSTEM_COLLECTIONS=1" )
+    target_compile_definitions(nanoCLR.elf PRIVATE "CONFIG_API_NANOFRAMEWORK_SYSTEM_COLLECTIONS=1" )

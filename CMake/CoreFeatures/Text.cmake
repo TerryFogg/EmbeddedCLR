@@ -12,5 +12,5 @@ list(APPEND Text_Sources
     ${CMAKE_SOURCE_DIR}/src/nanoFramework.System.Text/nf_system_text_System_Text_UTF8Encoding.cpp
     ${CMAKE_SOURCE_DIR}/src/nanoFramework.System.Text/nf_system_text.cpp
 )
-target_sources(nanoCLR PUBLIC ${Text_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${Text_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${Text_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${Text_Includes} )   

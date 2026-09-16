@@ -22,7 +22,7 @@ list(APPEND FileSystem_Sources
 list(APPEND FileSystem_Includes
             ${CMAKE_SOURCE_DIR}/src/System.IO.FileSystem)
 
-target_sources(nanoCLR PUBLIC ${FileSystem_Sources} )
-target_include_directories(nanoCLR PUBLIC  ${FileSystem_Includes} )   
+target_sources(nanoCLR.elf PUBLIC ${FileSystem_Sources} )
+target_include_directories(nanoCLR.elf PUBLIC  ${FileSystem_Includes} )   
 
 #define SDC_MAX_OPEN_FILES 5

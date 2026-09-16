@@ -134,7 +134,7 @@
                 "ESP32P4_REVISION": "V1.3",
                 "VENDOR": "Espressif",
                 "PSRAM": true,
-                "PARTITION_SIZE": "32MB",
+                "FLASH_SIZE": "32MB",
 
                 "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
                 "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",

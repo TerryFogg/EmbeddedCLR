@@ -54,3 +54,4 @@ x64/
 *.tmp
 *.temp
 `*
+/sdkconfig

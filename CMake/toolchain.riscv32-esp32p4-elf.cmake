@@ -7,6 +7,9 @@ include(CMakeForceCompiler)
 
 # the name of the operating system for which CMake is to build
 set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_C_FLAGS " -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -Wno-frame-address" CACHE STRING "C Compiler Base Flags")
+set(CMAKE_CXX_FLAGS " -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -Wno-frame-address -Wno-literal-suffix" CACHE STRING "C++ Compiler Base Flags")
+set(CMAKE_ASM_FLAGS "-march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f ${CMAKE_ASM_FLAGS}" CACHE STRING "Asm Compiler Base Flags" FORCE)
 
 
 set(ESP_TOOLCHAIN_DIR

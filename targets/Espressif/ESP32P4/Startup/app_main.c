@@ -54,7 +54,7 @@ void app_main()
     vTaskPrioritySet(NULL, taskPriority);
 
     // start receiver task pinned to core 0
-    xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
+    //xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
 
     // start the CLR main task pinned to core 1
     xTaskCreatePinnedToCore(&main_task, "main_task", 15000, NULL, taskPriority, NULL, 1);

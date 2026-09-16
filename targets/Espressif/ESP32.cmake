@@ -12,7 +12,6 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/platform_heap.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_Rtos.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_StorageOperation.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_Time.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL.c 
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL_Events.cpp

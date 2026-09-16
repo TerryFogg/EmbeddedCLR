@@ -1,14 +1,12 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
 
 #include <nanoHAL_Types.h>
 #include <nanoPAL_BlockStorage.h>
-
 #include <esp32_idf.h>
 #include <esp_partition.h>
-
 #include <Target_BlockStorage_Esp32FlashDriver.h>
 
 // the block ranges mirror the partition table

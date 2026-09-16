@@ -2,9 +2,6 @@
 # Copyright (c) .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 #
-include(binutils.common)
-include(FetchContent)
-
 list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/DeviceIO.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Device_BlockStorage.c

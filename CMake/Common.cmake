@@ -3,9 +3,6 @@
 # See LICENSE file in the project root for full license information.
 #
 
-
-
-# function to check the path limit in Windows
 function(nf_check_path_limits)
 
     # only need to check in Windows
@@ -20,3 +17,4 @@ function(nf_check_path_limits)
     endif()
 endfunction()
 
+nf_check_path_limits()

@@ -18,4 +18,4 @@ list(APPEND Collections_Includes
 target_sources(nanoCLR.elf PUBLIC ${Collections_Sources} )
 target_include_directories(nanoCLR.elf PUBLIC  ${Collections_Includes} )   
 
-    target_compile_definitions(nanoCLR.elf PRIVATE "CONFIG_API_NANOFRAMEWORK_SYSTEM_COLLECTIONS=1" )
+target_compile_definitions(nanoCLR.elf PRIVATE "CONFIG_API_NANOFRAMEWORK_SYSTEM_COLLECTIONS=1" )

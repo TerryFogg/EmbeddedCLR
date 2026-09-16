@@ -12,8 +12,7 @@ set(CMAKE_CXX_FLAGS " -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -Wno-
 set(CMAKE_ASM_FLAGS "-march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f ${CMAKE_ASM_FLAGS}" CACHE STRING "Asm Compiler Base Flags" FORCE)
 
 
-set(ESP_TOOLCHAIN_DIR
-    "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin")
+set(ESP_TOOLCHAIN_DIR "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin")
 
 set(CMAKE_C_COMPILER   "${ESP_TOOLCHAIN_DIR}/riscv32-esp-elf-gcc.exe")
 set(CMAKE_CXX_COMPILER "${ESP_TOOLCHAIN_DIR}/riscv32-esp-elf-g++.exe")

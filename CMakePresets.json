@@ -11,11 +11,6 @@
                 "value": "unspecified",
                 "strategy": "external"
             },
-            "vendor": {
-                "microsoft.com/VisualStudioSettings/CMake/1.0": {
-                    "intelliSenseMode": "linux-gcc-arm"
-                }
-            },
             "warnings": {
                 "deprecated": true,
                 "dev": true,
@@ -23,7 +18,7 @@
                 "unusedCli": false
             },
             "environment": {
-                "CMAKE_BUILD_PARALLEL_LEVEL": "16"
+                "CMAKE_BUILD_PARALLEL_LEVEL": "24"
             }
         },
         {
@@ -42,77 +37,6 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
                 "ESP32P4_REVISION": "PRE_V3"
-            }
-        },
-        {
-            "name": "NANOCLR_TRACE_ON",
-            "description": "All of the trace options are enabled",
-            "hidden": true,
-            "cacheVariables": {
-                "NANOCLR_GC_VERBOSE": "ON",
-                "NANOCLR_TRACE_CALLS": "ON",
-                "NANOCLR_TRACE_DEFAULT": "ON",
-                "NANOCLR_TRACE_EARLYCOLLECTION": "ON",
-                "NANOCLR_TRACE_ERRORS": "ON",
-                "NANOCLR_TRACE_EXCEPTIONS": "ON",
-                "NANOCLR_TRACE_HRESULT": "ON",
-                "NANOCLR_TRACE_INSTRUCTIONS": "ON",
-                "NANOCLR_TRACE_MALLOC": "ON",
-                "NANOCLR_TRACE_MEMORY_STATS": "ON",
-                "NANOCLR_TRACE_MEMORY_STATS_EXTRA_SIZE": "ON",
-                "NANOCLR_TRACE_PERSISTENCE": "ON",
-                "NANOCLR_TRACE_PROFILER_MESSAGES": "ON",
-                "NANOCLR_TRACE_STAC": "ON",
-                "NANOCLR_TRACE_STACK": "ON",
-                "NANOCLR_TRACE_STACK_HEAVY": "ON",
-                "NANOCLR_TRACE_SYSTEMEVENTWAIT": "ON"
-            }
-        },
-        {
-            "name": "NANOCLR_TRACE_OFF",
-            "description": "All of the trace options are disabled",
-            "hidden": true,
-            "cacheVariables": {
-                "NANOCLR_GC_VERBOSE": "OFF",
-                "NANOCLR_TRACE_CALLS": "OFF",
-                "NANOCLR_TRACE_DEFAULT": "OFF",
-                "NANOCLR_TRACE_EARLYCOLLECTION": "OFF",
-                "NANOCLR_TRACE_ERRORS": "OFF",
-                "NANOCLR_TRACE_EXCEPTIONS": "OFF",
-                "NANOCLR_TRACE_HRESULT": "OFF",
-                "NANOCLR_TRACE_INSTRUCTIONS": "OFF",
-                "NANOCLR_TRACE_MALLOC": "OFF",
-                "NANOCLR_TRACE_MEMORY_STATS": "OFF",
-                "NANOCLR_TRACE_MEMORY_STATS_EXTRA_SIZE": "OFF",
-                "NANOCLR_TRACE_PERSISTENCE": "OFF",
-                "NANOCLR_TRACE_PROFILER_MESSAGES": "OFF",
-                "NANOCLR_TRACE_STAC": "OFF",
-                "NANOCLR_TRACE_STACK": "OFF",
-                "NANOCLR_TRACE_STACK_HEAVY": "OFF",
-                "NANOCLR_TRACE_SYSTEMEVENTWAIT": "OFF"
-            }
-        },
-        {
-            "name": "nanoCLR_Runtime.h #ifdef",
-            "hidden": true,
-            "cacheVariables": {
-                "ENABLE_NATIVE_PROFILER" :"ON",
-                "HIGH_SURROGATE_START" :"ON",
-                "NANANOCLR_EMULATED_FLOATINGPOINT" :"ON",
-                "NANOCLR_APPDOMAINS" :"ON",
-                "NANOCLR_DELEGATE_PRESERVE_STACK" :"ON",
-                "NANOCLR_ENABLE_SOURCELEVELDEBUGGING" :"ON",
-                "NANOCLR_FILL_MEMORY_WITH_DIRTY_PATTERN" :"ON",
-                "NANOCLR_NO_ASSEMBLY_STRINGS" :"ON",
-                "NANOCLR_NO_IL_INLINE" :"ON",
-                "NANOCLR_OPCODE_NAMES" :"ON",
-                "NANOCLR_OPCODE_PARSER" :"ON",
-                "NANOCLR_OPCODE_STACKCHANGES" :"ON",
-                "NANOCLR_PROFILE_HANDLER" :"ON",
-                "NANOCLR_USE_AVLTREE_FOR_METHODLOOKUP" :"ON",
-                "NANOCLR_VALIDATE_APPDOMAIN_ISOLATION" :"ON",
-                "NOCLR_PROFILE_NEW_CALLS" :"ON",
-                "PLATFORM_WINDOWS_EMULATOR" :"ON"
             }
         },
         {
@@ -139,15 +63,16 @@
                 "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
                 "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
                 "ESP_TOOLCHAIN_DIR": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/CMake/toolchain.riscv32-esp32p4-elf.cmake",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/targets/Espressif/ESP32P4/Configuration/toolchain.riscv32-esp32p4-elf.cmake",
                 "NF_INTEROP_ASSEMBLIES": null,
                 "BUILD_VERSION": "0.9.99.999",
                 "BUILD_VERBOSE": "OFF",
                 "CORE_FEATURES": "ConfigBlock=OFF;Collections=ON;Cryptography=OFF;FileSystem=OFF;Graphics=ON;Hashing=ON;Network=OFF;Mathematics=ON;Reflection=ON;ResourceManager=ON;RuntimeEvents=ON;RuntimeSerialization=ON;Text=ON;WireProtocol=ON",
                 "IO_FEATURES": "CAN=OFF;OneWire=OFF;InterSound=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
                 "FEATURE_DEFINES": "GRAPHICSTOUCH=ON;MATHEMATICS_EMULATION=OFF;Bluetooth=OFF;Ethernet=OFF;SNTP=OFF;Thread=OFF;WiFi=OFF",
+                "ADVANCED_DEBUGGING": "TRACE=OFF",
                 "NF_SECURITY_MBEDTLS": true,
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true, 
                 "NF_TRACE_TO_STDIO": false
             }
         },
@@ -157,16 +82,14 @@
             "name": "ESP32_P4_WIFI6_DEBUG",
             "inherits": [
                 "ESP32_P4_WIFI6",
-                "debug",
-                "NANOCLR_TRACE_OFF"
+                "debug"
             ]
         },
         {
             "name": "ESP32_P4_WIFI6_RELEASE",
             "inherits": [
                 "ESP32_P4_WIFI6",
-                "release",
-                "NANOCLR_TRACE_OFF"
+                "release"
             ]
         }
     ],

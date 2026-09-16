@@ -12,10 +12,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-#if defined(CONFIG_IDF_TARGET_ESP32C3)
-#include <stddef.h>
-#endif
-
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/timers.h>
@@ -25,14 +21,6 @@
 #include <nvs_flash.h>
 #include <sdkconfig.h>
  
-// network
-#if defined (NETWORK_INTERFACE)
-  #include <esp_wifi.h>
-  #include <esp_eth.h>
-  #include <esp_event.h>
-  #include <esp_netif_lwip_internal.h>
-#endif
-
 #include <esp_timer.h>
 #include <esp_sleep.h>
 
@@ -53,43 +41,11 @@
 #pragma GCC diagnostic ignored "-Wformat"
 #endif
 
-//#include <driver/spi_master.h>
-//#include <driver/gpio.h>
-//#include <driver/i2c.h>
-//#include <driver/ledc.h>
-//
-//#include <driver/i2s.h>
 #include <soc/i2s_reg.h>
-// #include <driver/i2s_std.h>
-// #include <driver/i2s_pdm.h>
-
 #include <driver/uart.h>
-
-#if defined(CONFIG_IDF_TARGET_ESP32)
-// Use legacy ADC driver for ESP32 for now as the new one also requires the new I2S driver due to dependency because of
-// internal DAC other ESP32 variants don't have DAC so use the new ADC driver
-#include <driver/adc.h>
-#else
-//#include <esp_adc/adc_oneshot.h>
-#endif
-
-#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
-#include <driver/dac_oneshot.h>
-#endif
-
-//#include <driver/gptimer.h>
-//#include <driver/pulse_cnt.h>
-
 #include <soc/uart_channel.h>
 #include <esp_rom_crc.h>
 #include <esp_rom_caps.h>
-//#include <esp_pm.h>
-
-// Touch pad supported only on those platforms
-#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3)
-#include <driver/touch_sensor.h>
-#include <driver/touch_pad.h>
-#endif
 
 #if HAL_USE_THREAD == TRUE
 #include "esp_openthread.h"
@@ -97,9 +53,6 @@
 #include "esp_vfs_eventfd.h"
 #endif
 
-#if CONFIG_MBEDTLS_DEBUG
-#include <mbedtls/esp_debug.h>
-#endif
 
 #ifdef __cplusplus
 extern "C"
@@ -112,8 +65,5 @@ extern "C"
 }
 
 #endif
-
-// Uncomment to support Ethernet
-// #define ESP32_ETHERNET_SUPPORT
 
 #endif // ESP32_IDF_H

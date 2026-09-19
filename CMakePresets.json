@@ -11,6 +11,11 @@
                 "value": "unspecified",
                 "strategy": "external"
             },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "intelliSenseMode": "linux-gcc-arm"
+                }
+            },
             "warnings": {
                 "deprecated": true,
                 "dev": true,
@@ -67,12 +72,12 @@
                 "NF_INTEROP_ASSEMBLIES": null,
                 "BUILD_VERSION": "0.9.99.999",
                 "BUILD_VERBOSE": "OFF",
-                "CORE_FEATURES": "ConfigBlock=OFF;Collections=ON;Cryptography=OFF;FileSystem=OFF;Graphics=ON;Hashing=ON;Network=OFF;Mathematics=ON;Reflection=ON;ResourceManager=ON;RuntimeEvents=ON;RuntimeSerialization=ON;Text=ON;WireProtocol=ON",
-                "IO_FEATURES": "CAN=OFF;OneWire=OFF;InterSound=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
-                "FEATURE_DEFINES": "GRAPHICSTOUCH=ON;MATHEMATICS_EMULATION=OFF;Bluetooth=OFF;Ethernet=OFF;SNTP=OFF;Thread=OFF;WiFi=OFF",
-                "ADVANCED_DEBUGGING": "TRACE=OFF",
+                "CORE_FEATURES": "Collections=ON;ConfigBlock=OFF;Cryptography=OFF;FileSystem=OFF;Graphics=ON;Hashing=ON;Mathematics=ON;Network=OFF;Reflection=ON;ResourceManager=ON;RuntimeEvents=ON;RuntimeSerialization=ON;Text=ON;WireProtocol=ON",
+                "IO_FEATURES": "Bluetooth=OFF;CAN=OFF;InterSound=OFF;OneWire=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
+                "FEATURE_DEFINES": "ConfigBlock=OFF;GraphicsTouch=ON;Bluetooth=OFF;Ethernet=OFF;SNTP=OFF;Thread=OFF;WiFi=OFF",
+                "ADVANCED_DEBUGGING": "Trace=OFF",
                 "NF_SECURITY_MBEDTLS": true,
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true, 
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "NF_TRACE_TO_STDIO": false
             }
         },

@@ -3,19 +3,20 @@
 # See LICENSE file in the project root for full license information.
 #
 list(APPEND ESP32_Sources
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/DeviceIO.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/CoreIO.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Device_BlockStorage.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoSupport_CRC32.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/CLR_Startup_Thread.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.cpp
 
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/platform_heap.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_Rtos.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_Time.cpp
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL.c 
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL_Events.cpp
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL_Time.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL_Timer.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Target_BlockStorage_ESP32FlashDriver.c
 
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_HAL_Interface.c
@@ -26,8 +27,6 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_common.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/Memory.cpp
 
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Startup/CLR_Startup_Thread.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Startup/targetHAL.cpp
 
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/targetHAL_Power.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/targetRandom.cpp
@@ -40,37 +39,49 @@ list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/include
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Startup
+
+            ${CMAKE_BINARY_DIR}/config
+
 )
 list(APPEND IDF_INCLUDES
-            ${IDF_PATH}/components/bt/include
-            ${IDF_PATH}/components/bt/common/include
-            ${IDF_PATH}/components/bt/host/nimble/nimble/include
-            ${IDF_PATH}/components/bt/host/nimble/nimble/nimble/controller/include
-            ${IDF_PATH}/components/bt/host/nimble/nimble/nimble/host/include
-            ${IDF_PATH}/components/bt/host/nimble/port/includeendif()
-            ${IDF_PATH}/components/esp_adc/include
-            ${IDF_PATH}/components/esp_adc/interface
-            ${IDF_PATH}/components/esp_common/include
-            ${IDF_PATH}/components/esp_driver_gpio/include
-            ${IDF_PATH}/components/esp_driver_i2s/include
-            ${IDF_PATH}/components/esp_driver_ledc/include
-            ${IDF_PATH}/components/esp_driver_spi/include
-            ${IDF_PATH}/components/esp_partition/include
-            ${IDF_PATH}/components/esp_driver_uart/include
-            ${IDF_PATH}/components/esp_system/include
-            ${IDF_PATH}/components/freertos/config/include
-            ${IDF_PATH}/components/freertos/config/riscv/include 
-            ${IDF_PATH}/components/freertos/esp_additions/include
-            ${IDF_PATH}/components/freertos/FreeRTOS-Kernel/include
-            ${IDF_PATH}/components/hal/include
-            ${IDF_PATH}/components/hal/esp32p4/include
-            ${IDF_PATH}/components/heap/include
-            ${IDF_PATH}/components/nvs_flash/include
-            ${IDF_PATH}/components/partition_table/include
-            ${IDF_PATH}/components/soc/include
-            ${IDF_PATH}/components/soc/esp32p4/include
-            ${IDF_PATH}/components/vfs/include
+            ${ESP32_IDF_PATH}/components/bt/include
+            ${ESP32_IDF_PATH}/components/bt/common/include
+            ${ESP32_IDF_PATH}/components/bt/host/nimble/nimble/include
+            ${ESP32_IDF_PATH}/components/bt/host/nimble/nimble/nimble/controller/include
+            ${ESP32_IDF_PATH}/components/bt/host/nimble/nimble/nimble/host/include
+            ${ESP32_IDF_PATH}/components/bt/host/nimble/port/include
+            ${ESP32_IDF_PATH}/components/esp_additions/include
+            ${ESP32_IDF_PATH}/components/esp_adc/include
+            ${ESP32_IDF_PATH}/components/esp_adc/interface
+            ${ESP32_IDF_PATH}/components/esp_common/include
+            ${ESP32_IDF_PATH}/components/esp_driver_gpio/include
+            ${ESP32_IDF_PATH}/components/esp_hw_support/include
+
+            ${ESP32_IDF_PATH}/components/esp_driver_i2c
+            ${ESP32_IDF_PATH}/components/esp_driver_i2c/include
+            ${ESP32_IDF_PATH}/components/esp_driver_i2s/include
+            ${ESP32_IDF_PATH}/components/esp_driver_ledc/include
+            ${ESP32_IDF_PATH}/components/esp_driver_spi/include
+            ${ESP32_IDF_PATH}/components/esp_partition/include
+            ${ESP32_IDF_PATH}/components/esp_driver_uart/include
+            ${ESP32_IDF_PATH}/components/esp_rom/include
+            ${ESP32_IDF_PATH}/components/esp_system/include
+            ${ESP32_IDF_PATH}/components/freertos/config/include
+            ${ESP32_IDF_PATH}/components/freertos/config/riscv/include 
+            ${ESP32_IDF_PATH}/components/freertos/esp_additions/include
+            ${ESP32_IDF_PATH}/components/freertos/FreeRTOS-Kernel/include
+            ${ESP32_IDF_PATH}/components/hal/include
+            ${ESP32_IDF_PATH}/components/heap/include
+            ${ESP32_IDF_PATH}/components/nvs_flash/include
+            ${ESP32_IDF_PATH}/components/partition_table/include
+            ${ESP32_IDF_PATH}/components/soc/include
+            ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
+            ${ESP32_IDF_PATH}/components/vfs/include
+            ${ESP32_IDF_PATH}/components/hal/${TARGET_SERIES}/include
+            ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
+            ${ESP32_IDF_PATH}/components/esp_driver_i2c//include
 )
+
 target_sources(nanoCLR.elf PUBLIC ${ESP32_Sources} )
 target_include_directories(nanoCLR.elf PUBLIC
                            ${ESP32_Includes}
@@ -78,7 +89,6 @@ target_include_directories(nanoCLR.elf PUBLIC
 )
 
 set(SDKCONFIG_OVERRIDES_FILE ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/sdkconfig.defaults.esp32p4 )
-
 
 # Create a list of IDF components to add to the build based on the options selected in the CMakeLists.txt file
 set( ADDITIONAL_IDF_COMPONENTS
@@ -89,11 +99,12 @@ set( ADDITIONAL_IDF_COMPONENTS
       nvs_flash
       vfs
       # CoreIO
-#      esp_adc
-#      esp_driver_gpio
+      esp_hw_support
+      esp_adc
+      esp_driver_gpio
 #      esp_driver_i2c
-#      esp_driver_ledc
-#      esp_driver_spi
+      esp_driver_ledc
+      esp_driver_spi
 )
 
 if( CONFIG_SUPPORT_INTERSOUND)

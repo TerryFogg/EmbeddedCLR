@@ -1,3 +1,3 @@
 ﻿//
-// Empty to support official build system
+// Empty but file required to support official build system
 //

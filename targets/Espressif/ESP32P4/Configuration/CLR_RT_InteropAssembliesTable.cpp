@@ -11,8 +11,7 @@ extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtim
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events;
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events_EventSink_DriverProcs;
 #endif
-
-#if CONFIG_SUPPORT_RESOURCEMANAGER
+#ifdef CONFIG_SUPPORT_RESOURCEMANAGER
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_ResourceManager;
 #endif
 #if CONFIG_SUPPORT_COLLECTIONS
@@ -50,10 +49,10 @@ extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_IO_FileSystem
 #if CONFIG_SUPPORT_GRAPHICS
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Graphics;
 #endif
-#if (CONFIG_SUPPORT_NETWORK)
+#if CONFIG_SUPPORT_NETWORK
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Net;
 #endif
-#if (CONFIG_SUPPORT_WIFI)
+#if CONFIG_SUPPORT_WIFI
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Device_Wifi;
 #endif
 //  extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Networking_Sntp;
@@ -87,8 +86,6 @@ const CLR_RT_NativeAssemblyData *g_CLR_InteropAssembliesNativeData[] = {
     &g_CLR_AssemblyNative_nanoFramework_System_Text,
 #endif
 
-#if CONFIG_SUPPORT_GPIO
-#endif
 #if CONFIG_SUPPORT_SERIALPORTS
     &g_CLR_AssemblyNative_System_IO_Ports,
 #endif

@@ -8,7 +8,7 @@ string(TIMESTAMP BUILD_TIMESTAMP UTC)
 
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 add_executable(nanoCLR.elf 
-               ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Startup/app_main.c
+               ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/app_main.c
                ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Configuration/CLR_RT_InteropAssembliesTable.cpp
 )
 
@@ -21,8 +21,7 @@ include(Common)
 include(ExternalProject)
 include(CMakeToolsHelpers OPTIONAL)
 
-# Include features and set CONFIG_SUPPORT_* names for later use
-
+# Include feature defines first maybe used in the following core and io features for additonal options
 foreach(FEATURE IN LISTS FEATURE_DEFINES ADVANCED_DEBUGGING)
     string(REPLACE "=" ";" RESULT "${FEATURE}")
     list(GET RESULT 0 name)
@@ -38,8 +37,9 @@ foreach(FEATURE IN LISTS CORE_FEATURES  IO_FEATURES)
     list(GET RESULT 1 enabled)
     string(TOUPPER ${name} NAME_UPPER)
     set(CONFIG_SUPPORT_${NAME_UPPER} ${enabled})
-    if( CONFIG_SUPPORT_${NAME_UPPER} )
-        include(${name})
+    target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_${NAME_UPPER}=$<BOOL:${enabled}> )
+    if(CONFIG_SUPPORT_${NAME_UPPER}) 
+     include(${name})
     endif()
 endforeach()
 

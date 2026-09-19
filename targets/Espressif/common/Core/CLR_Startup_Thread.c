@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -11,9 +11,7 @@
 void CLRStartupThread(void const *argument)
 {
     CLR_SETTINGS *clrSettings = (CLR_SETTINGS *)argument;
-
     nanoHAL_Initialize_C();
-
     ClrStartup(*clrSettings);
 
     // nothing to deinitialize or cleanup, so it's safe to return

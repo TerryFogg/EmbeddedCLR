@@ -1,6 +1,3 @@
 ﻿//
-// Copyright (c) .NET Foundation and Contributors
-// See LICENSE file in the project root for full license information.
+// Empty but file required to support official build system
 //
-
-// Not Used

@@ -28,11 +28,11 @@
 #define TOTAL_SPIRAM                33554430
 #define ESP_IDF                     500000
 #define nanoFrameworkDeploymentsize 16777215
+#define FrameBufferSize             2048000
 #define RotationBufferSize          FrameBufferSize
 #define GraphicsMemoryReserve                                                                                          \
     (TOTAL_SPIRAM - ESP_IDF - nanoFrameworkDeploymentsize - FrameBufferSize - RotationBufferSize)
 
-#define FrameBufferSize 2048000
 
 uint16_t *graphicsRotationBuffer;
 

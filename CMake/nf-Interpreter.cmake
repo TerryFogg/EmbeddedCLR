@@ -38,7 +38,7 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/GarbageCollector_ComputeReachabilityGraph.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/GarbageCollector_Info.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/Interpreter.cpp
-#           ${CMAKE_SOURCE_DIR}/src/CLR/Core/nanoSupport_CRC32.cpp
+            #${CMAKE_SOURCE_DIR}/src/CLR/Core/nanoSupport_CRC32.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/Random.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/Streams.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/StringTable.cpp
@@ -58,7 +58,7 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/CLR/Diagnostics/Profile.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Diagnostics/Profiler.cpp
 
-           #${CMAKE_SOURCE_DIR}/src/CLR/Core/RPC/CLR_RT_HeapBlock_EndPoint.cpp
+            #${CMAKE_SOURCE_DIR}/src/CLR/Core/RPC/CLR_RT_HeapBlock_EndPoint.cpp
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/RPC/RPC_stub.cpp
 
             ${CMAKE_SOURCE_DIR}/src/CLR/Core/Serialization/BinaryFormatter.cpp
@@ -140,8 +140,7 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/PAL/FileSystem/nanoPAL_FileSystem_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/nanoPAL_Network_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/Profiler/nanoPAL_PerformanceCounters_stubs.cpp
-
-    )
+)
 
 list(APPEND Core_Includes
             ${CMAKE_SOURCE_DIR}/src/CLR/Core

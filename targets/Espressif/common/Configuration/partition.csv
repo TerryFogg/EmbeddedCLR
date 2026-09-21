@@ -1,6 +1,6 @@
 ﻿## Consistent partition data for the start of flash for all esp32 series
 #  PHY Init, usually radio parameters, but keep for all series as it is only 4Kb
-#  factory app to always start at 0x10000 for consistency and ..., calculate the size in other code
+#  factory app to always start at 0x10000 for consistency
 
 # Layout
 #

@@ -64,6 +64,9 @@ list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/esp_driver_spi/include
             ${ESP32_IDF_PATH}/components/esp_partition/include
             ${ESP32_IDF_PATH}/components/esp_driver_uart/include
+            ${ESP32_IDF_PATH}/components/esp_hw_support/include
+            ${ESP32_IDF_PATH}/components/esp_hw_support/dma/include
+            ${ESP32_IDF_PATH}/components/esp_hw_support/include/soc
             ${ESP32_IDF_PATH}/components/esp_rom/include
             ${ESP32_IDF_PATH}/components/esp_system/include
             ${ESP32_IDF_PATH}/components/freertos/config/include

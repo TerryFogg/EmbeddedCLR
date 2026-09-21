@@ -153,9 +153,9 @@ void nanoHAL_Initialize()
 #endif
 
 #if (CONFIG_SUPPORT_GRAPHICSTOUCH == TRUE)
-    g_TouchInterface.Initialize();
-    g_TouchDevice.Initialize();
-    g_TouchPanel.Initialize();
+ //   g_TouchInterface.Initialize();
+ //   g_TouchDevice.Initialize();
+ //   g_TouchPanel.Initialize();
 #endif
 }
 

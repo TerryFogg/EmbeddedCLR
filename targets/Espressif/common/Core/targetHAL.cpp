@@ -83,11 +83,7 @@ void nanoHAL_Initialize()
     FixUpBlockRegionInfo();
 
     BlockStorageList_Initialize();
-
-    // initialize block storage devices
     BlockStorage_AddDevices();
-
-    // required to setup flash partitions memory mapping
     BlockStorageList_InitializeDevices();
 
     FS_Initialize();
@@ -101,45 +97,9 @@ void nanoHAL_Initialize()
 
     ::HeapLocation(heapStart, heapSize);
     memset(heapStart, 0, heapSize);
-
-    #ifdef CONFIG_SUPPORT_CONFIGBLOCK
-        ConfigurationManager_Initialize();
-    #endif
-
     Events_Initialize();
-
-    Storage_Initialize();
-
-   // CPU_GPIO_Initialize();
-
-#if (HAL_USE_SPI == TRUE)
-    nanoSPI_Initialize();
-#endif
-
-//#if (HAL_USE_UART == TRUE)
-//
-//    memset(&Uart0_PAL, 0, sizeof(Uart0_PAL));
-//    memset(&Uart1_PAL, 0, sizeof(Uart1_PAL));
-//#if defined(UART_NUM_2)
-//    memset(&Uart2_PAL, 0, sizeof(Uart2_PAL));
-//#endif
-//
-//#endif
-
-    // no PAL events required until now
     PalEvent_Initialize();
-
-    // Init Networking
     Network_Initialize();
-
-    // Start Network Debugger
-    // SOCKETS_DbgInitialize( 0 );
-
-#if (NANOCLR_ESP32_BLE == TRUE)
-    // Bluetooth test code
-    // blehr_start();  // Heart rate monitor device test
-    // ibeacon_start();  // Ibeacon test code
-#endif
 
 #if (CONFIG_SUPPORT_GRAPHICS == TRUE)
     if (!rebootinprogress)
@@ -176,20 +136,10 @@ void nanoHAL_Uninitialize(bool isPoweringDown)
         }
     }
 
-    Storage_Uninitialize();
-
-    SOCKETS_CloseConnections();
-
     Network_Uninitialize();
-
     FileSystemVolumeList::UninitializeVolumes();
-
     // required to remove flash partitions memory mapping
     BlockStorageList_UnInitializeDevices();
-
-#if (HAL_USE_SPI == TRUE)
-    nanoSPI_Uninitialize();
-#endif
 
 //    CPU_GPIO_Uninitialize();
 
@@ -200,8 +150,4 @@ void nanoHAL_Uninitialize(bool isPoweringDown)
     HAL_CONTINUATION::Uninitialize();
     HAL_COMPLETION ::Uninitialize();
 }
-
-// Just in case storage is not configured
-__nfweak void Storage_Initialize() {};
-__nfweak void Storage_Uninitialize() {};
 

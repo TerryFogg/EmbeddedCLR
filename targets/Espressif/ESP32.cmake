@@ -22,10 +22,10 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_HAL_Interface.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_ReceiverThread.c
 
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/platform_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_common.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/Memory.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/platform_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Memory.cpp
 
 
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/targetHAL_Power.c
@@ -37,11 +37,9 @@ list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/Network
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/include
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Startup
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}
 
             ${CMAKE_BINARY_DIR}/config
-
 )
 list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/bt/include
@@ -82,16 +80,15 @@ list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/vfs/include
             ${ESP32_IDF_PATH}/components/hal/${TARGET_SERIES}/include
             ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
-            ${ESP32_IDF_PATH}/components/esp_driver_i2c//include
+            ${ESP32_IDF_PATH}/components/esp_driver_i2c/include
 )
-
 target_sources(nanoCLR.elf PUBLIC ${ESP32_Sources} )
 target_include_directories(nanoCLR.elf PUBLIC
                            ${ESP32_Includes}
                            ${IDF_INCLUDES}
 )
 
-set(SDKCONFIG_OVERRIDES_FILE ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/sdkconfig.defaults.esp32p4 )
+set(SDKCONFIG_OVERRIDES_FILE ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/sdkconfig.defaults.esp32p4 )
 
 # Create a list of IDF components to add to the build based on the options selected in the CMakeLists.txt file
 set( ADDITIONAL_IDF_COMPONENTS
@@ -192,17 +189,17 @@ target_link_options(nanoCLR.elf PUBLIC "-Wl,--no-warn-rwx-segments")
 idf_build_executable(nanoCLR.elf)
 
 # Configuration
-configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_os.h.in       ${CMAKE_BINARY_DIR}/target_os.h @ONLY)
-configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_platform.h.in ${CMAKE_BINARY_DIR}/target_platform.h @ONLY)
-configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_common.h.in   ${CMAKE_BINARY_DIR}/target_common.h @ONLY)
-configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/target_board.h.in    ${CMAKE_BINARY_DIR}/target_board.h @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_os.h.in       ${CMAKE_BINARY_DIR}/target_os.h @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_platform.h.in ${CMAKE_BINARY_DIR}/target_platform.h @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.h.in   ${CMAKE_BINARY_DIR}/target_common.h @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_board.h.in    ${CMAKE_BINARY_DIR}/target_board.h @ONLY)
 
 add_custom_target(generate_partition ALL
                   COMMAND
                   "python"
                   ${ESP32_IDF_PATH}/components/partition_table/gen_esp32part.py 
                   --flash-size  ${FLASH_SIZE} 
-                  ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Configuration/partition_${FLASH_SIZE}.csv
+                  ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/Core/partition.csv
                   ${CMAKE_BINARY_DIR}/partitions_${FLASH_SIZE}.bin
                   COMMENT
                   "Generate selected partition table size of  flash"

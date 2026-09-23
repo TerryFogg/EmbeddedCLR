@@ -65,10 +65,9 @@
                 "PSRAM": true,
                 "FLASH_SIZE": "32MB",
 
-                "NF_TARGET_DEFCONFIG": "targets/Espressif/ESP32P4/Configuration/ESP32_P4_UART_REV_LESS3_defconfig",
                 "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
                 "ESP_TOOLCHAIN_DIR": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
-                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/targets/Espressif/ESP32P4/Configuration/toolchain.riscv32-esp32p4-elf.cmake",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/targets/Espressif/ESP32P4/toolchain.riscv32-esp32p4-elf.cmake",
                 "NF_INTEROP_ASSEMBLIES": null,
                 "BUILD_VERSION": "0.9.99.999",
                 "BUILD_VERBOSE": "OFF",

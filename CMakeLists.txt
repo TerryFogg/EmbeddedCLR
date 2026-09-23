@@ -9,7 +9,7 @@ string(TIMESTAMP BUILD_TIMESTAMP UTC)
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 add_executable(nanoCLR.elf 
                ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/app_main.c
-               ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/Configuration/CLR_RT_InteropAssembliesTable.cpp
+               ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/CLR_RT_InteropAssembliesTable.cpp
 )
 
 list(APPEND CMAKE_MODULE_PATH 

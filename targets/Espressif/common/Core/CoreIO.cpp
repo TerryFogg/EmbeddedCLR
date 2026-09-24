@@ -211,57 +211,54 @@ bool PwmIO::Stop(int PwmChannel, PinNameValue pinNumber, bool OutputHigh)
 
 #pragma region SerialIO
 
-bool SerialIO::Initialize(
-    int usartDeviceNumber,
-    PinNameValue pinTX,
-    PinNameValue pinRX,
-    int baudrate,
-    int dataBits,
-    int parity,
-    int stopBits,
-    int flowControl)
+bool SerialIO::Initialize(SerialIOPort serialSetup)
 {
     uart_config_t uart_config = {
-        .baud_rate = baudrate,
-        .data_bits = (uart_word_length_t)dataBits,
-        .parity = (uart_parity_t)parity,
-        .stop_bits = (uart_stop_bits_t)stopBits,
-        .flow_ctrl = (uart_hw_flowcontrol_t)flowControl,
+        .baud_rate = serialSetup.baudrate,
+        .data_bits = (uart_word_length_t)serialSetup.dataBits,
+        .parity = (uart_parity_t)serialSetup.parity,
+        .stop_bits = (uart_stop_bits_t)serialSetup.stopBits,
+        .flow_ctrl = (uart_hw_flowcontrol_t)serialSetup.flowControl,
         .rx_flow_ctrl_thresh = 122,
         .source_clk = UART_SCLK_DEFAULT,
         .flags = {.allow_pd = 0, .backup_before_sleep = 0}};
 
-    uart_driver_install((uart_port_t)usartDeviceNumber, 1024, 1024, 0, NULL, 0);
+    uart_driver_install((uart_port_t)serialSetup.usartDeviceNumber, 1024, 1024, 0, NULL, 0);
+    uart_param_config((uart_port_t)serialSetup.usartDeviceNumber, &uart_config);
 
-    uart_param_config((uart_port_t)usartDeviceNumber, &uart_config);
-
-    uart_set_pin((uart_port_t)usartDeviceNumber, pinTX, pinRX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+    uart_set_pin(
+        (uart_port_t)serialSetup.usartDeviceNumber,
+        serialSetup.pinTX,
+        serialSetup.pinRX,
+        UART_PIN_NO_CHANGE,
+        UART_PIN_NO_CHANGE);
 
     return true;
 }
-bool SerialIO::Write(int usartDeviceNumber, unsigned char *data, int dataLength)
+int SerialIO::Write(int usartDeviceNumber, unsigned char *data, int dataLength)
 {
     int datalentransmitted = uart_write_bytes((uart_port_t)usartDeviceNumber, data, dataLength);
-    return (datalentransmitted == dataLength);
+    return datalentransmitted;
 }
-
-bool SerialIO::Read(int usartDeviceNumber, unsigned char *data, int maxdataLength)
+int SerialIO::Read(int usartDeviceNumber, unsigned char *data, int maxdataLength, int timeoutInMilliseconds)
 {
-    esp_err_t result = uart_read_bytes((uart_port_t)usartDeviceNumber, data, maxdataLength, pdMS_TO_TICKS(100) * 100);
-    return (result == ESP_OK);
+    int result = uart_read_bytes((uart_port_t)usartDeviceNumber, data, maxdataLength, pdMS_TO_TICKS(100) * 100);
+    return result;
 }
 #pragma endregion
 
+
+
 #pragma region SPI
 
-int SpiIO::Initialize(int spi_bus_number, PinNameValue pinMosi, PinNameValue pinMiso, PinNameValue pinChipSelect)
+int SpiIO::Initialize(SpiBus spiBusSetup)
 {
     const spi_host_device_t buses[2] = {spi_host_device_t::SPI1_HOST, spi_host_device_t::SPI2_HOST};
-    spi_host_device_t spi_internal_bus_number = buses[spi_bus_number - 1];
+    spi_host_device_t spi_internal_bus_number = buses[spiBusSetup.spi_bus_number - 1];
 
     spi_bus_config_t buscfg = {
-        .mosi_io_num = pinMosi,
-        .miso_io_num = pinMiso,
+        .mosi_io_num = spiBusSetup.pinMosi,
+        .miso_io_num = spiBusSetup.pinMiso,
         .sclk_io_num = -1,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
@@ -289,7 +286,7 @@ int SpiIO::Initialize(int spi_bus_number, PinNameValue pinMosi, PinNameValue pin
         .clock_speed_hz = 10000000,
         .input_delay_ns = 0,
         .sample_point = spi_sampling_point_t::SPI_SAMPLING_POINT_PHASE_1,
-        .spics_io_num = pinChipSelect,
+        .spics_io_num = spiBusSetup.pinChipSelect,
         .flags = 0, ///< Bitwise OR of SPI_DEVICE_* flags
         .queue_size = 4,
         .pre_cb = (transaction_cb_t)NULL,

@@ -3,7 +3,6 @@
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
-
 #include <stddef.h>
 #include <stdint.h>
 
@@ -69,7 +68,6 @@ enum PinMode
 {
     MODE_INPUT,
     MODE_OUTPUT,
-
 };
 enum GpioBias
 {
@@ -85,11 +83,30 @@ enum GPIO_INTERRUPT_EDGE
     GPIO_INTERRUPT_EDGE_BOTH = 3,
 };
 
+struct SerialIOPort
+{
+    int usartDeviceNumber;
+    enum PinNameValue pinTX;
+    enum PinNameValue pinRX;
+    int baudrate;
+    int dataBits;
+    int parity;
+    int stopBits;
+    int flowControl;
+};
+
+struct SpiBus
+{
+    int spi_bus_number;
+    enum PinNameValue pinMosi;
+    enum PinNameValue pinMiso;
+    enum PinNameValue pinChipSelect;
+};
+
 class GpioIO
 {
   private:
   public:
-    GpioIO();
     static bool InitializePin(PinNameValue pin, PinMode mode, GpioBias Bias);
     static bool Read(PinNameValue pinNumber);
     static bool Write(PinNameValue pinNumber, bool pinState);
@@ -98,7 +115,6 @@ class GpioIO
     static bool InterruptDisable(PinNameValue pinNumber);
     static bool InterruptRemove(PinNameValue pinNumber);
 };
-
 class AdcIO
 {
   private:
@@ -107,7 +123,6 @@ class AdcIO
     static bool AddChannel(int channelNumber);
     static bool Read(int channelNumber, int *data);
 };
-
 class DacIO
 {
   private:
@@ -115,7 +130,6 @@ class DacIO
     static bool Initialize();
     static bool Write(PinNameValue PinNumber, int value);
 };
-
 class I2cIO
 {
   private:
@@ -132,7 +146,6 @@ class I2cIO
         unsigned char *readBuffer,
         int readSize);
 };
-
 class PwmIO
 {
   private:
@@ -144,29 +157,19 @@ class PwmIO
     static bool Stop(int PwmChannel, PinNameValue pinNumber, bool OutputHigh);
     static bool Start(int PwmChannel, PinNameValue pinNumber);
 };
-
 class SerialIO
 {
   private:
   public:
-    static bool Initialize(
-        int usartDeviceNumber,
-        PinNameValue pinTX,
-        PinNameValue pinRX,
-        int baudrate,
-        int dataBits,
-        int parity,
-        int stopBits,
-        int flowControl);
-    static bool Write(int usartDeviceNumber, unsigned char *data, int dataLength);
-    static bool Read(int usartDeviceNumber, unsigned char *data, int maxdataLength);
+    static bool Initialize(SerialIOPort serialSetup);
+    static int Write(int usartDeviceNumber, unsigned char *data, int dataLength);
+    static int Read(int usartDeviceNumber, unsigned char *data, int maxdataLength, int timeoutInMilliseconds);
 };
-
 class SpiIO
 {
   private:
   public:
-    static int Initialize(int spi_bus_number, PinNameValue pinMosi, PinNameValue pinMiso, PinNameValue pinSclk);
+    static int Initialize(SpiBus spiSetup);
     static bool Write(int spiInstance, unsigned char *writeData, int writeDataSize);
     static int Read(int spiInstance, unsigned char *readData, int maxReadData);
 };

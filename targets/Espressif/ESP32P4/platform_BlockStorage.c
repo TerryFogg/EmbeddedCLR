@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -6,7 +6,7 @@
 #include <nanoPAL_BlockStorage.h>
 #include <Target_BlockStorage_Esp32FlashDriver.h>
 
-// map here the Block Storage Interface to the ESP32 driver
+// map here the Block Storage Interface to the ESP-IDF flash
 IBlockStorageDevice ESP32Flash_BlockStorageInterface = {
     &Esp32FlashDriver_InitializeDevice,
     &Esp32FlashDriver_UninitializeDevice,

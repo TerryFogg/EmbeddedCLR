@@ -19,17 +19,16 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL_Timer.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Target_BlockStorage_ESP32FlashDriver.c
 
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_HAL_Interface.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_ReceiverThread.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_HAL_Interface.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/WireProtocol/WireProtocol_ReceiverThread.cpp
 
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/platform_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_BlockStorage.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/board.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/Memory.cpp
-
-
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/platform_BlockStorage.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/targetHAL_Power.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/targetRandom.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_BlockStorage.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.c
 )
 list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/Core

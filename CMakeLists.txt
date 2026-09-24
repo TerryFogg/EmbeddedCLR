@@ -10,7 +10,7 @@ project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 add_executable(nanoCLR.elf 
                ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/app_main.c
                ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/CLR_RT_InteropAssembliesTable.cpp
-)
+ )
 
 list(APPEND CMAKE_MODULE_PATH 
     "${CMAKE_SOURCE_DIR}/CMake"
@@ -21,7 +21,7 @@ include(Common)
 include(ExternalProject)
 include(CMakeToolsHelpers OPTIONAL)
 
-# Include feature defines first maybe used in the following core and io features for additonal options
+# Include feature defines, these can be used in the following core and io features for additonal options
 foreach(FEATURE IN LISTS FEATURE_DEFINES ADVANCED_DEBUGGING)
     string(REPLACE "=" ";" RESULT "${FEATURE}")
     list(GET RESULT 0 name)
@@ -43,7 +43,6 @@ foreach(FEATURE IN LISTS CORE_FEATURES  IO_FEATURES)
     endif()
 endforeach()
 
-
 include(nf-Interpreter)
-include(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_FAMILY}.cmake)
+include(${TARGET_FAMILY})
 include(CommonBuild)

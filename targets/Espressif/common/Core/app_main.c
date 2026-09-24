@@ -8,6 +8,7 @@
 #include <target_os.h>
 #include <WireProtocol_ReceiverThread.h>
 #include <string.h>
+#include "board.h"
 
 extern void CLRStartupThread(void const *argument);
 TaskHandle_t ReceiverTask;
@@ -50,6 +51,8 @@ void app_main()
     esp_log_level_set("*", ESP_LOG_NONE);
 
     ESP_ERROR_CHECK(nvs_flash_init());
+
+    InitializeBoard();
 
     vTaskPrioritySet(NULL, taskPriority);
 

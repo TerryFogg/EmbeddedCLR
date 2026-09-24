@@ -5,7 +5,8 @@
 //
 #include "hal/uart_types.h"
 
-#define WIRE_PROTOCOL_UART UART_NUM_0
+#define WIRE_PROTOCOL_UART ((uart_port_t)UART_NUM_0)
+
 
 #ifdef __cplusplus
 extern "C"

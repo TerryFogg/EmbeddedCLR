@@ -9,9 +9,11 @@
 #include <WireProtocol_ReceiverThread.h>
 #include <string.h>
 #include "board.h"
+typedef int COM_HANDLE;
 
 extern void CLRStartupThread(void const *argument);
 TaskHandle_t ReceiverTask;
+extern bool WP_Initialise(COM_HANDLE port);
 
 
 void receiver_task(void *pvParameter)

@@ -213,26 +213,20 @@ bool PwmIO::Stop(int PwmChannel, PinNameValue pinNumber, bool OutputHigh)
 
 bool SerialIO::Initialize(SerialIOPort serialSetup)
 {
+    uart_port_t serialPort = (uart_port_t)serialSetup.usartDeviceNumber;
     uart_config_t uart_config = {
         .baud_rate = serialSetup.baudrate,
         .data_bits = (uart_word_length_t)serialSetup.dataBits,
         .parity = (uart_parity_t)serialSetup.parity,
         .stop_bits = (uart_stop_bits_t)serialSetup.stopBits,
         .flow_ctrl = (uart_hw_flowcontrol_t)serialSetup.flowControl,
-        .rx_flow_ctrl_thresh = 122,
-        .source_clk = UART_SCLK_DEFAULT,
-        .flags = {.allow_pd = 0, .backup_before_sleep = 0}};
-
-    uart_driver_install((uart_port_t)serialSetup.usartDeviceNumber, 1024, 1024, 0, NULL, 0);
-    uart_param_config((uart_port_t)serialSetup.usartDeviceNumber, &uart_config);
-
-    uart_set_pin(
-        (uart_port_t)serialSetup.usartDeviceNumber,
-        serialSetup.pinTX,
-        serialSetup.pinRX,
-        UART_PIN_NO_CHANGE,
-        UART_PIN_NO_CHANGE);
-
+        .rx_flow_ctrl_thresh = 0,
+        .source_clk = (uart_sclk_t)0,
+        .flags = {.allow_pd = 0, .backup_before_sleep = 0}
+    };
+    uart_param_config(serialPort, &uart_config);
+    uart_set_pin(serialPort, serialSetup.pinTX, serialSetup.pinRX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+    uart_driver_install(serialPort, 256, 256, 0, NULL, ESP_INTR_FLAG_IRAM);
     return true;
 }
 int SerialIO::Write(int usartDeviceNumber, unsigned char *data, int dataLength)
@@ -246,8 +240,6 @@ int SerialIO::Read(int usartDeviceNumber, unsigned char *data, int maxdataLength
     return result;
 }
 #pragma endregion
-
-
 
 #pragma region SPI
 

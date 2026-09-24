@@ -7,29 +7,26 @@
 #include "hal/uart_types.h"
 #include <nanoHAL_v2.h>
 #include <WireProtocol_HAL_Interface.h>
-#include <board.h>
 
 void WP_ReceiveBytes(uint8_t **ptr, uint32_t *size)
 {
     uint32_t requestedSize = *size;
     if (*size)
     {
-        size_t read = uart_read_bytes(WIRE_PROTOCOL_UART, *ptr, (uint32_t)requestedSize, pdMS_TO_TICKS(250));
+        size_t read = uart_read_bytes(0, *ptr, (uint32_t)requestedSize, pdMS_TO_TICKS(250));
         *ptr += read;
         *size -= read;
     }
 }
 uint8_t WP_TransmitMessage(WP_Message *message)
 {
-    if (uart_write_bytes(WIRE_PROTOCOL_UART, (const char *)&message->m_header, sizeof(message->m_header)) !=
-        sizeof(message->m_header))
+    if (uart_write_bytes(0, (const char *)&message->m_header, sizeof(message->m_header)) != sizeof(message->m_header))
     {
         return false;
     }
     if (message->m_header.m_size && message->m_payload)
     {
-        if (uart_write_bytes(WIRE_PROTOCOL_UART, (const char *)message->m_payload, message->m_header.m_size) !=
-            (int)message->m_header.m_size)
+        if (uart_write_bytes(UART_NUM_0, (const char *)message->m_payload, message->m_header.m_size) != (int)message->m_header.m_size)
         {
             return false;
         }

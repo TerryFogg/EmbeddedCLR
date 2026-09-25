@@ -13,36 +13,60 @@
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
 #include "esp_adc/adc_oneshot.h"
+#include "esp_attr.h"
 #include "esp_err.h"
 #include "esp_types.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
+#include "freertos/task.h"
 #include "hal/adc_types.h"
 #include "hal/uart_types.h"
-
 #include "soc/soc_caps.h"
 
 #pragma region Gpio
+void GpioIO::Initialize()
+{
+    // Do this once during startup:
+    gpio_install_isr_service(0);
+}
 bool GpioIO::InitializePin(PinNameValue pinNameValue, PinMode mode, GpioBias bias)
 {
     int pinNumber = pinNameValue;
     gpio_config_t io_conf = {
         .pin_bit_mask = (1ULL << pinNumber),
-        .mode = (mode == PinMode::MODE_INPUT) ? GPIO_MODE_INPUT : GPIO_MODE_OUTPUT,
-        .pull_up_en = GPIO_PULLUP_DISABLE,
-        .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_DISABLE,
-        .hys_ctrl_mode = GPIO_HYS_SOFT_DISABLE};
-
+        .mode = gpio_mode_t::GPIO_MODE_DISABLE,
+        .pull_up_en = gpio_pullup_t::GPIO_PULLUP_DISABLE,
+        .pull_down_en = gpio_pulldown_t::GPIO_PULLDOWN_DISABLE,
+        .intr_type = gpio_int_type_t::GPIO_INTR_DISABLE,
+        .hys_ctrl_mode = gpio_hys_ctrl_mode_t::GPIO_HYS_SOFT_DISABLE};
+    switch (mode)
+    {
+        case PinMode::NONE:
+            io_conf.mode = gpio_mode_t::GPIO_MODE_DISABLE;
+            break;
+        case PinMode::MODE_INPUT:
+            io_conf.mode = gpio_mode_t::GPIO_MODE_INPUT;
+            break;
+        case PinMode::MODE_OUTPUT:
+            io_conf.mode = gpio_mode_t::GPIO_MODE_OUTPUT;
+            break;
+        case PinMode::MODE_OUTPUT_OPEN_DRAIN:
+            io_conf.mode = gpio_mode_t::GPIO_MODE_OUTPUT_OD;
+            break;
+    }
     switch (bias)
     {
-        case GpioBias::None:
+        case GpioBias::NOBIAS:
+            io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_DISABLE;
+            io_conf.pull_down_en = gpio_pulldown_t::GPIO_PULLDOWN_DISABLE;
             break;
-
         case GpioBias::PullUp:
-            io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+            io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_ENABLE;
+            io_conf.pull_down_en = gpio_pulldown_t::GPIO_PULLDOWN_DISABLE;
             break;
-
         case GpioBias::PullDown:
-            io_conf.pull_down_en = GPIO_PULLDOWN_ENABLE;
+            io_conf.pull_up_en = gpio_pullup_t::GPIO_PULLUP_DISABLE;
+            io_conf.pull_down_en = gpio_pulldown_t::GPIO_PULLDOWN_ENABLE;
             break;
     }
     gpio_config(&io_conf);
@@ -80,9 +104,9 @@ bool GpioIO::InterruptAdd(PinNameValue pinNameValue, GPIO_INTERRUPT_EDGE events,
             edge_events = GPIO_INTR_ANYEDGE;
             break;
     }
-    gpio_set_intr_type(pinNumber, edge_events);
     if (interruptRoutine != NULL)
     {
+        gpio_set_intr_type(pinNumber, edge_events);
         gpio_isr_handler_add(pinNumber, (gpio_isr_t)interruptRoutine, NULL);
     }
     return enable;
@@ -96,7 +120,6 @@ bool GpioIO::InterruptDisable(PinNameValue pinNameValue)
 bool GpioIO::InterruptRemove(PinNameValue pinNameValue)
 {
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
-
     GpioIO::InterruptDisable(pinNameValue);
     gpio_isr_handler_remove(pinNumber);
     return true;
@@ -123,11 +146,9 @@ bool AdcIO::AddChannel(int channelNumber)
         .atten = ADC_ATTEN_DB_12,
         .bitwidth = ADC_BITWIDTH_DEFAULT,
     };
-
     adc_oneshot_config_channel(adc1_handle, (adc_channel_t)channelNumber, &chan_cfg);
     return true;
 }
-
 bool AdcIO::Read(int channelNumber, int *data)
 {
     return adc_oneshot_read(adc1_handle, (adc_channel_t)channelNumber, data);
@@ -146,28 +167,27 @@ bool DacIO::Write(PinNameValue PinNumber, int DacWrite)
 #pragma endregion
 
 #pragma region PWM
-bool PwmIO::Initialize(int PwmChannel, PinNameValue pinNumber, int Frequency)
+bool PwmIO::Initialize(int Frequency)
 {
-
-#define PWM_FREQ_HZ    1000
-#define PWM_RESOLUTION LEDC_TIMER_10_BIT
-
     // Configure timer
     ledc_timer_config_t timer_cfg = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
-        .duty_resolution = PWM_RESOLUTION,
+        .duty_resolution = LEDC_TIMER_10_BIT,
         .timer_num = LEDC_TIMER_0,
         .freq_hz = (unsigned int)Frequency,
         .clk_cfg = LEDC_AUTO_CLK,
         .deconfigure = false};
 
-    ledc_timer_config(&timer_cfg);
-
+    esp_err_t result = ledc_timer_config(&timer_cfg);
+    return (result == ESP_OK);
+}
+bool PwmIO::AttachGpio(PinNameValue pinNumber, int PwmChannel, int Frequency)
+{
     // Configure channel
     ledc_channel_config_t chan_cfg = {
         .gpio_num = pinNumber,
         .speed_mode = LEDC_LOW_SPEED_MODE,
-        .channel = (ledc_channel_t)PwmChannel,
+        .channel = (ledc_channel_t)LEDC_CHANNEL_0,
         .intr_type = LEDC_INTR_DISABLE,
         .timer_sel = LEDC_TIMER_0,
         .duty = 0,
@@ -175,16 +195,15 @@ bool PwmIO::Initialize(int PwmChannel, PinNameValue pinNumber, int Frequency)
         .sleep_mode = ledc_sleep_mode_t::LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
         .flags = {.output_invert = 0}};
 
-    ledc_channel_config(&chan_cfg);
-    return true;
+    esp_err_t result = ledc_channel_config(&chan_cfg);
+    return (result == ESP_OK);
 }
-
 bool PwmIO::SetDutyCycle(int PwmChannel, float percent)
 {
     int duty = (4095 * percent) / 100.0f;
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, (ledc_channel_t)PwmChannel, duty);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, (ledc_channel_t)PwmChannel);
-    return true;
+    esp_err_t result = ledc_set_duty(LEDC_LOW_SPEED_MODE, (ledc_channel_t)PwmChannel, duty);
+    result = ledc_update_duty(LEDC_LOW_SPEED_MODE, (ledc_channel_t)PwmChannel);
+    return (result == ESP_OK);
 }
 bool PwmIO::SetFrequency(int PwmChannel, int desiredFrequency)
 {
@@ -222,8 +241,7 @@ bool SerialIO::Initialize(SerialIOPort serialSetup)
         .flow_ctrl = (uart_hw_flowcontrol_t)serialSetup.flowControl,
         .rx_flow_ctrl_thresh = 0,
         .source_clk = (uart_sclk_t)0,
-        .flags = {.allow_pd = 0, .backup_before_sleep = 0}
-    };
+        .flags = {.allow_pd = 0, .backup_before_sleep = 0}};
     uart_param_config(serialPort, &uart_config);
     uart_set_pin(serialPort, serialSetup.pinTX, serialSetup.pinRX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
     uart_driver_install(serialPort, 256, 256, 0, NULL, ESP_INTR_FLAG_IRAM);
@@ -242,15 +260,11 @@ int SerialIO::Read(int usartDeviceNumber, unsigned char *data, int maxdataLength
 #pragma endregion
 
 #pragma region SPI
-
-int SpiIO::Initialize(SpiBus spiBusSetup)
+bool SpiIO::Initialize(int spiBusNumber, PinNameValue pinMosi, PinNameValue pinMiso, PinNameValue pinSCLK)
 {
-    const spi_host_device_t buses[2] = {spi_host_device_t::SPI1_HOST, spi_host_device_t::SPI2_HOST};
-    spi_host_device_t spi_internal_bus_number = buses[spiBusSetup.spi_bus_number - 1];
-
     spi_bus_config_t buscfg = {
-        .mosi_io_num = spiBusSetup.pinMosi,
-        .miso_io_num = spiBusSetup.pinMiso,
+        .mosi_io_num = pinMosi,
+        .miso_io_num = pinMiso,
         .sclk_io_num = -1,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
@@ -262,10 +276,13 @@ int SpiIO::Initialize(SpiBus spiBusSetup)
         .max_transfer_sz = 4096,
         .flags = 0,
         .isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO,
-        .intr_flags = 0
+        .intr_flags = 0};
 
-    };
-
+    esp_err_t result = spi_bus_initialize((spi_host_device_t)spiBusNumber, &buscfg, spi_common_dma_t::SPI_DMA_CH_AUTO);
+    return (result == ESP_OK);
+}
+bool SpiIO::AttachDevice(int spiBusNumber, PinNameValue pinChipSelect)
+{
     spi_device_interface_config_t devcfg = {
         .command_bits = 0,
         .address_bits = 0,
@@ -278,47 +295,37 @@ int SpiIO::Initialize(SpiBus spiBusSetup)
         .clock_speed_hz = 10000000,
         .input_delay_ns = 0,
         .sample_point = spi_sampling_point_t::SPI_SAMPLING_POINT_PHASE_1,
-        .spics_io_num = spiBusSetup.pinChipSelect,
+        .spics_io_num = pinChipSelect,
         .flags = 0, ///< Bitwise OR of SPI_DEVICE_* flags
         .queue_size = 4,
         .pre_cb = (transaction_cb_t)NULL,
         .post_cb = (transaction_cb_t)NULL};
     spi_device_handle_t handle;
-    spi_bus_initialize(spi_internal_bus_number, &buscfg, spi_common_dma_t::SPI_DMA_CH_AUTO);
-    esp_err_t result = spi_bus_add_device(spi_internal_bus_number, &devcfg, &handle);
-    if (result == ESP_OK)
-    {
-        return (int)handle;
-    }
-    else
-    {
-        return -1;
-    }
+    esp_err_t result = spi_bus_add_device((spi_host_device_t)spiBusNumber, &devcfg, &handle);
+    return (result == ESP_OK);
 }
 bool SpiIO::Write(int spi_internal_bus_number, unsigned char *writeData, int writeDataSize)
 {
     spi_transaction_t transaction =
         {.flags = 0, .cmd = 0, .addr = 0, .length = 0, .rxlength = 0, .user = 0, .tx_buffer = NULL, .rx_buffer = NULL};
-    spi_device_transmit((spi_device_handle_t)spi_internal_bus_number, &transaction);
-    return false;
+    esp_err_t result = spi_device_transmit((spi_device_handle_t)spi_internal_bus_number, &transaction);
+    return (result == ESP_OK);
 }
 int SpiIO::Read(int spi_internal_bus_number, unsigned char *readData, int maxReadData)
 {
     spi_transaction_t transaction =
         {.flags = 0, .cmd = 0, .addr = 0, .length = 0, .rxlength = 0, .user = 0, .tx_buffer = NULL, .rx_buffer = NULL};
-    spi_device_transmit((spi_device_handle_t)spi_internal_bus_number, &transaction);
-    return false;
+    esp_err_t result = spi_device_transmit((spi_device_handle_t)spi_internal_bus_number, &transaction);
+    return (result == ESP_OK);
 }
-
 #pragma endregion
 
 #pragma region I2C
 static i2c_master_dev_handle_t dev_handle;
-static i2c_master_bus_handle_t *ret_bus_handle;
+static i2c_master_bus_handle_t i2c_handle = NULL;
 
 bool I2cIO::Initialize(int i2c_bus, int pinSDA, int pinSCL)
 {
-
     i2c_master_bus_config_t bus_cfg = {
         .i2c_port = i2c_bus,
         .sda_io_num = (gpio_num_t)pinSDA,
@@ -328,7 +335,7 @@ bool I2cIO::Initialize(int i2c_bus, int pinSDA, int pinSCL)
         .intr_priority = 1,
         .trans_queue_depth = 0,
         .flags = {.enable_internal_pullup = true, .allow_pd = 0}};
-    esp_err_t result = i2c_new_master_bus(&bus_cfg, ret_bus_handle);
+    esp_err_t result = i2c_new_master_bus(&bus_cfg, &i2c_handle);
     return (result == ESP_OK);
 }
 int I2cIO::AddSlave(int i2c_bus, int I2C_speed, int slaveAddress)

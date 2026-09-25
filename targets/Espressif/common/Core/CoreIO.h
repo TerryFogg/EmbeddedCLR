@@ -66,12 +66,14 @@ enum PinNameValue
 };
 enum PinMode
 {
+    NONE,
     MODE_INPUT,
     MODE_OUTPUT,
+    MODE_OUTPUT_OPEN_DRAIN,
 };
 enum GpioBias
 {
-    None,
+    NOBIAS,
     PullUp,
     PullDown
 };
@@ -95,18 +97,12 @@ struct SerialIOPort
     int flowControl;
 };
 
-struct SpiBus
-{
-    int spi_bus_number;
-    enum PinNameValue pinMosi;
-    enum PinNameValue pinMiso;
-    enum PinNameValue pinChipSelect;
-};
 
 class GpioIO
 {
   private:
   public:
+    static void Initialize();
     static bool InitializePin(PinNameValue pin, PinMode mode, GpioBias Bias);
     static bool Read(PinNameValue pinNumber);
     static bool Write(PinNameValue pinNumber, bool pinState);
@@ -150,7 +146,8 @@ class PwmIO
 {
   private:
   public:
-    static bool Initialize(int PwmChannel, PinNameValue pinNumber, int Frequency);
+    static bool Initialize(int Frequency);
+    static bool AttachGpio(PinNameValue pinNumber, int PwmChannel, int Frequency);
     static bool SetDutyCycle(int PwmChannel, float percent);
     static bool Start(PinNameValue pinNumber, int timerId);
     static bool SetFrequency(int PwmChannel, int desiredFrequency);
@@ -169,7 +166,8 @@ class SpiIO
 {
   private:
   public:
-    static int Initialize(SpiBus spiSetup);
+    static bool Initialize(int spiBusNumber, PinNameValue pinMosi, PinNameValue pinMiso, PinNameValue pinSCLK);
+    static bool AttachDevice(int spiBusNumber,PinNameValue pinChipSelect);
     static bool Write(int spiInstance, unsigned char *writeData, int writeDataSize);
     static int Read(int spiInstance, unsigned char *readData, int maxReadData);
 };

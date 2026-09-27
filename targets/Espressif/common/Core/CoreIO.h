@@ -126,7 +126,7 @@ class I2cIO
   private:
   public:
     static bool Initialize(int i2c_bus, int pinSDA, int pinSCL);
-    static bool AddDevice(int I2C_deviceId, int I2C_speed, int slaveAddress);
+    static bool AddDevice(int I2C_deviceId, int I2C_speed, unsigned short slaveAddress);
     static bool Probe(int i2c_bus, int slaveAddress, int timeout);
     static bool Write( int slaveAddress, unsigned char *writeBuffer, int writeSize);
     static bool Read( int slaveAddress, unsigned char *readBuffer, int maxReadSize);

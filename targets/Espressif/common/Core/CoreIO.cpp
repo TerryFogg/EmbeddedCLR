@@ -341,12 +341,12 @@ bool I2cIO::Initialize(int i2c_bus_number_number, int pinSDA, int pinSCL)
     esp_err_t result = i2c_new_master_bus(&bus_cfg, &i2c_handle[i2c_bus_number_number]);
     return (result == ESP_OK);
 }
-bool I2cIO::AddDevice(int i2c_bus_number, int I2C_speed, int slaveAddress)
+bool I2cIO::AddDevice(int i2c_bus_number, int I2C_speed, unsigned short slaveAddress)
 {
     i2c_master_dev_handle_t dev_handle;
     i2c_device_config_t dev_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-        .device_address = 0x68,
+        .device_address = slaveAddress,
         .scl_speed_hz = (unsigned int)I2C_speed,
         .scl_wait_us = 0,
         .flags = {0}};

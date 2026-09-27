@@ -1,4 +1,6 @@
 ﻿{
+
+
     "version": "0.2.1",
     "configurations": [
         {
@@ -19,12 +21,6 @@
             "setupCommands": [
                 { "text": "set architecture riscv:rv32" },
                 { "text": "set remotetimeout 30" }
-            ],
-            "postRemoteConnectCommands": [
-                {
-                    "text": "monitor halt",
-                    "ignoreFailures": true
-                }
             ],
             "launchCompleteCommand": "None",
             "filterStderr": true,

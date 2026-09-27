@@ -229,3 +229,70 @@ endforeach()
 
 
 
+## GT911
+[GT911 - Capacitive Touch Controller](https://www.crystalfontz.com/controllers/datasheet-viewer.php?id=478)
+
+# Pin jumper allocations
+
+| Pin    | Jumper J8 |
+| ------ | --------- |
+| GPIO37 | 7         |
+| GPIO2  | 8         |
+| GPIO38 | 9         |
+| GPIO5  | 11        |
+| GPIO3  | 12        |
+| GPIO4  | 14        |
+| GPIO21 | 15        |
+| GPIO28 | 16        |
+| GPIO22 | 17        |
+| GPIO29 | 20        |
+| GPIO30 | 22        |
+| GPIO31 | 24        |
+| GPIO34 | 28        |
+| GPIO32 | 31        |
+| GPIO49 | 32        |
+| GPIO50 | 34        |
+| GPIO46 | 35        |
+| GPIO51 | 36        |
+| GPIO47 | 37        |
+| GPIO52 | 38        |
+| GPIO48 | 39        |
+
+
+# Internal Connections
+
+| GPIO35 | Boot              | 30   |
+| ------ | ----------------- | ---- |
+| GPIO7  | I2CSDA            | 4    |
+| GPIO8  | I2CSCL            | 6    |
+| GPIO0  | 32.768Khz         |      |
+| GPIO1  | 32.768Khz         |      |
+| GPIO6  | Wifi(Reserved)    |      |
+| GPIO9  | I2S(Reserved)     |      |
+| GPIO10 | I2S(Reserved)     |      |
+| GPIO11 | I2S(Reserved)     |      |
+| GPIO12 | I2S(Reserved)     |      |
+| GPIO13 | I2S(Reserved)     |      |
+| GPIO14 | Wifi(Reserved)    |      |
+| GPIO15 | Wifi(Reserved)    |      |
+| GPIO16 | Wifi(Reserved)    |      |
+| GPIO17 | Wifi(Reserved)    |      |
+| GPIO18 | Wifi(Reserved)    |      |
+| GPIO19 | Wifi(Reserved)    |      |
+| GPIO20 | BATTERY           |      |
+| GPIO23 | TouchReset        |      |
+| GPIO24 | USB1_N (JTAG)     |      |
+| GPIO25 | USB1_P (JTAG)     |      |
+| GPIO26 | LCDBacklight(PWM) |      |
+| GPIO27 | LCD_RST           |      |
+| GPIO33 | TouchInterrupt    |      |
+| GPIO36 | Pullup (Strapping)|      |
+| GPIO39 | SD(Reserved)      |      |
+| GPIO40 | SD(Reserved)      |      |
+| GPIO41 | SD(Reserved)      |      |
+| GPIO42 | SD(Reserved)      |      |
+| GPIO43 | SD(Reserved)      |      |
+| GPIO44 | SD(Reserved)      |      |
+| GPIO45 | SD(Reserved)      |      |
+| GPIO53 | PACTRL            |      |
+| GPIO54 | Wifi(Reserved)    |      |

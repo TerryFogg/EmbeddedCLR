@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -11,11 +11,10 @@
 
 struct TouchInterface
 {
-public:
+  public:
     bool Initialize();
-    CLR_UINT8* Write_Read(CLR_UINT8* valuesToSend, CLR_UINT16 numberOfValuesToSend, CLR_UINT16 numberValuesExpected);
+    bool Initialize(int i2c_bus_number, int slaveAddress);
+    CLR_UINT8 *Write_Read(CLR_UINT8 *valuesToSend, CLR_UINT16 numberOfValuesToSend, CLR_UINT16 numberValuesExpected);
 };
 
 #endif // TOUCHINTERFACE_H
-
-

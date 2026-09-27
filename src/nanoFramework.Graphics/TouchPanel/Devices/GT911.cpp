@@ -1,140 +1,97 @@
-﻿// Copyright (c) .NET Foundation and Contributors
+﻿//
+// Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 
 #include "TouchDevice.h"
 #include "TouchInterface.h"
-//#include "DevicePin.h"
-//#include "Device.IO.h"
-#include "freertos/FreeRTOS.h"
+#include "CoreIO.h"
 #include "freertos/task.h"
 #include "esp_err.h"
-//#include "esp_lcd_touch_gt911.h"
+#include "board.h"
+
+// +------------------------------------+
+// | Timing for Write Operation to GT911|
+// +------------------------------------+
+//  After setting the starting register address for Write operation, it is allowed to write one or more bytes at a time.
+//  GT911 will automatically increase the address of register and store the data bytes in sequence.
+
+//  +-----+---------+---+----------+---+----------+---+------+---+------------+---+--------------+
+//  |Start|Address_W|ACK|Register_H|ACK|Register_L|ACK|Data_1|ACK|..... Data_n|ACK|Stop Condition|
+//  +-----+---------+---+----------+---+----------+---+------+---+------------+---+--------------+
 
 struct TouchDevice g_TouchDevice;
-// extern TouchInterface g_TouchInterface;
-// static int m_TouchInterruptPin;
-// static int m_TouchWidth;
-// static int m_TouchHeight;
-// static int m_TouchInvertX;
-// static int m_TouchInvertY;
 
-// GT911 registers
-#define ESP_LCD_TOUCH_IO_I2C_GT911_ADDRESS (0x5D)
-#define ESP_LCD_TOUCH_GT911_READ_KEY_REG   (0x8093)
-#define ESP_LCD_TOUCH_GT911_READ_XY_REG    (0x814E)
-#define ESP_LCD_TOUCH_GT911_CONFIG_REG     (0x8047)
-#define ESP_LCD_TOUCH_GT911_PRODUCT_ID_REG (0x8140)
-#define ESP_LCD_TOUCH_GT911_ENTER_SLEEP    (0x8040)
-
+enum GT911 : uint16_t
+{
+    LCD_TOUCH_GT911_READ_KEY_REG = 0x8093,
+    LCD_TOUCH_GT911_READ_XY_REG = 0x814E,
+    LCD_TOUCH_GT911_CONFIG_REG = 0x8047,
+    LCD_TOUCH_GT911_PRODUCT_ID_REG = 0x8140,
+    LCD_TOUCH_GT911_ENTER_SLEEP = 0x8040,
+    GT911_TOUCH_MAX_BUTTONS = 4
+};
 #define ESP_GT911_TOUCH_MAX_BUTTONS (4)
 
-//esp_err_t esp_lcd_touch_register_interrupt_callback_with_data(
-//    esp_lcd_touch_handle_t tp,
-//    esp_lcd_touch_interrupt_callback_t callback,
-//    void *user_data)
-//{
-//    return ESP_OK;
-//}
+//static PinNameValue TouchResetPin = TOUCH_RESET_PIN; // Shared with LCD reset on ESP32P4-WIFI6 (Waveshare)
+static PinNameValue TouchInterruptPin = TOUCH_INTERRUPT_PIN;
+static int TouchWidth;
+static int TouchHeight;
+// static bool TouchMirrorX = false;
+// static bool TouchMirrorY = false;
+// static bool TouchSwapXY = false;
+// static bool TouchRotation = false;
+// static int TouchTearAvoidMode = 4; // Triple buffering with partial refresh
+int control_phase_bytes = 1;
+int lcd_cmd_bits = 16;
+int scl_speed_hz = 100000;
+int disable_control_phase = 1;
 
-#define ESP_LCD_TOUCH_IO_I2C_GT911_CONFIG()                                                                            \
-    {                                                                                                                  \
-        .scl_speed_hz = 100000, .dev_addr = ESP_LCD_TOUCH_IO_I2C_GT911_ADDRESS, .control_phase_bytes = 1,              \
-        .dc_bit_offset = 0, .lcd_cmd_bits = 16, .flags = {                                                             \
-            .disable_control_phase = 1,                                                                                \
-        }                                                                                                              \
-    }
-
-static GPIO_INTERRUPT_SERVICE_ROUTINE touchInterrupt = NULL;
-void gpio_callback(uint32_t gpio, uint32_t events)
-{
-    // The interrupt edge (from pinState) can be used for the Touch Down(falling edge) and Touch Up(Rising edge)
-    bool pinState = (events == 4) ? true : false;
-    if (touchInterrupt != NULL)
-    {
-        touchInterrupt(gpio, pinState, NULL);
-    }
-}
 bool TouchDevice::Initialize()
 {
-    // -- int TouchInterruptPin, int TouchWidth, int TouchHeight, int TouchInvertX, int TouchInvertY
-    // m_TouchInterruptPin = TouchInterruptPin;
-    // m_TouchWidth = TouchWidth;
-    // m_TouchHeight = TouchHeight;
-    // m_TouchInvertX = TouchInvertX;
-    // m_TouchInvertY = TouchInvertY;
+    uint8_t RegisterStart[2] = {0x81, 0x46};
+    uint8_t buf[4];
 
-    // Time of starting to report point after resetting minimum time ?? milliseconds
-    // // ??????????????????????????
-    // PLATFORM_DELAY(310);
-    // // ??????????????????????????
+    // Check the device is answering to the default primary address
+    if (!I2cIO::Probe(INTERNAL_SHARED_I2C_MASTER_BUS, LCD_TOUCH_GT911_ADDRESS, 100))
+    {
+        return false;
+    }
 
-    // Check device type correct
+    I2cIO::WriteRead(INTERNAL_SHARED_I2C_MASTER_BUS, LCD_TOUCH_GT911_ADDRESS, RegisterStart, 2, buf, 9);
 
-    // CLR_UINT8 registerCommand = FT6X06_CMD::FOCALTECH_ID;
-    // CLR_UINT8 *id = g_TouchInterface.Write_Read(&registerCommand, 1, 1);
+    TouchHeight = ((uint16_t)buf[0] << 8) | (uint16_t)buf[1];
+    TouchWidth = ((uint16_t)buf[2] << 8) | (uint16_t)buf[3];
 
-    // if (*id == ID_VALUE)
-    //{
-    //     // Configured to interrupt on touch down and up but not each controller sampling period
-    //     uint8_t set_interrupt_mode[2]{FT6X06_CMD::G_MODE, FT6X06_VALUES::G_MODE_INTERRUPT_POLLING};
-    //     g_TouchInterface.Write_Read(set_interrupt_mode, 2, 0);
-    // }
-    // else
-    //{
-    //     return false;
-    // }
-    // DevicePin::ReservePin((PinNameValue)m_TouchInterruptPin);
-    // GpioIO::InitializePin((PinNameValue)m_TouchInterruptPin);
-    // DevicePin::RegisterPinMode((PinNameValue)m_TouchInterruptPin, PinMode_Input);
-    // GpioIO::SetMode((PinNameValue)m_TouchInterruptPin, PinMode_Input);
-
-    // GpioCallbackParameter *newGpioParameter =
-    //     (GpioCallbackParameter *)platform_malloc(sizeof(GpioCallbackParameter));
-    // memset(newGpioParameter, 0, sizeof(GpioCallbackParameter));
-    // DevicePin::AddPinCallbackParameter((PinNameValue)m_TouchInterruptPin, newGpioParameter);
-    // newGpioParameter->callBack = true;
-    // newGpioParameter->edgeTrigger = GPIO_INT_EDGE_HIGH;
-
+    // GT911 INT ==> High->idle INT ==> Low->touch data available
+    // The touch controller is run in interrupt mode
+    GpioIO::InitializePin(TouchInterruptPin, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
     return true;
 }
-bool TouchDevice::Enable(GPIO_INTERRUPT_SERVICE_ROUTINE touchIsrProc)
+bool TouchDevice::Enable(GPIO_INTERRUPT touchIsrProc)
 {
-    // touchInterrupt = touchIsrProc;
-    // GpioIO::InterruptEnable((PinNameValue)m_TouchInterruptPin, GPIO_INT_EDGE_BOTH, (void *)gpio_callback);
+    GpioIO::EnableInterrupt(TouchInterruptPin, GPIO_INTERRUPT_EDGE::GPIO_INTERRUPT_EDGE_LOW, touchIsrProc);
     return TRUE;
 }
 bool TouchDevice::Disable()
 {
-    // GpioIO::InterruptDisable((PinNameValue)m_TouchInterruptPin);
+    GpioIO::DisableInterrupt(TouchInterruptPin);
     return true;
 }
 TouchPointDevice TouchDevice::GetPoint()
 {
-    // The FT6x06 touch controller does its own processing, averaging etc
-    // CLR_UINT8 registerCommand = FT6X06_CMD::DEV_MODE;
-    // CLR_UINT8 *touchValues = g_TouchInterface.Write_Read(&registerCommand, 1, 7);
+    TouchPointDevice tp = {.x = 0, .y = 0, .touch_down = false};
+    uint8_t RegisterStart[2] = {0x81, 0x4E};
+    uint8_t buf[9];
+    uint8_t status = buf[0] = {};
 
-    // CLR_INT16 touchx1 = ((touchValues[3] & 0x0F) << 8) | touchValues[4];
-    // CLR_INT16 touchy1 = ((touchValues[5] & 0x0F) << 8) | (touchValues[6]);
+    I2cIO::WriteRead(INTERNAL_SHARED_I2C_MASTER_BUS, LCD_TOUCH_GT911_ADDRESS, RegisterStart, 2, buf, 9);
+    uint8_t touch_count = status & 0x0F;
+    tp.x = ((uint16_t)buf[3] << 8) | (uint16_t)buf[2];
+    tp.y = ((uint16_t)buf[5] << 8) | (uint16_t)buf[4];
+    tp.touch_down = (touch_count > 0);
 
-    TouchPointDevice tp;
-    // if (m_TouchInvertX == true)
-    //{
-    //     tp.x = m_TouchWidth - touchx1;
-    // }
-    // else
-    //{
-    //     tp.x = touchx1;
-    // }
-    // if (m_TouchInvertY == true)
-    //{
-    //     tp.y = m_TouchHeight - touchy1;
-    // }
-    // else
-    //{
-    //     tp.y = touchy1;
-    // }
-    tp.x = 0;
-    tp.y = 0;
+    // clear MSB/LSB/Status
+    uint8_t clear_status[3] = {0x81, 0x4E, 0x00};
+    I2cIO::Write(LCD_TOUCH_GT911_ADDRESS, clear_status, 3);
     return tp;
 }

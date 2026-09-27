@@ -31,6 +31,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     )
 endif()
 
+target_compile_options(nanoCLR.elf PUBLIC
+                       $<$<CONFIG:Debug>:-Og -g>
+                       $<$<CONFIG:Release>:-O3>
+                       $<$<CONFIG:MinSizeRel>:-Os>
+                       $<$<CONFIG:RelWithDebInfo>:-Os -g>
+)
+
 target_compile_definitions( nanoCLR.elf PUBLIC
                             ESP_PLATFORM
                             F_GETPATH=20
@@ -75,12 +82,6 @@ if(CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
       target_compile_definitions(nanoCLR.elf PUBLIC CONFIG_NF_FEATURE_HAS_CONFIG_BLOCK)
 endif()
 
-target_compile_options(nanoCLR.elf PUBLIC
-                       $<$<CONFIG:Debug>:-Og -g>
-                       $<$<CONFIG:Release>:-O3>
-                       $<$<CONFIG:MinSizeRel>:-Os>
-                       $<$<CONFIG:RelWithDebInfo>:-Os -g>
-)
 
 set_source_files_properties(
     ${CMAKE_SOURCE_DIR}/src/CLR/Core/CLR_RT_Interop.cpp

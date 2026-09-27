@@ -13,15 +13,6 @@
 #include <nanoHAL_StorageOperation.h>
 #include <nanoHAL_Graphics.h>
 
-#if (CONFIG_SUPPORT_GRAPHICSTOUCH == TRUE)
-#include "TouchPanel.h"
-#include "TouchInterface.h"
-#include "TouchDevice.h"
-extern TouchPanel g_TouchPanel;
-extern TouchInterface g_TouchInterface;
-extern TouchDevice g_TouchDevice;
-#endif
-
 void Storage_Initialize();
 void Storage_Uninitialize();
 
@@ -33,7 +24,7 @@ extern void blehr_start();
 extern void ibeacon_start();
 
 
-static bool rebootinprogress = false;
+//static bool rebootinprogress = false;
 
 //
 //  Reboot handlers clean up on reboot
@@ -100,23 +91,6 @@ void nanoHAL_Initialize()
     Events_Initialize();
     PalEvent_Initialize();
     Network_Initialize();
-
-#if (CONFIG_SUPPORT_GRAPHICS == TRUE)
-    if (!rebootinprogress)
-    {
-        DisplayInterfaceConfig displayConfig;
-        g_GraphicsMemoryHeap.Initialize(6000000);
-        g_DisplayInterface.Initialize(displayConfig);
-        g_DisplayDriver.Initialize();
-        rebootinprogress = true;
-    }
-#endif
-
-#if (CONFIG_SUPPORT_GRAPHICSTOUCH == TRUE)
- //   g_TouchInterface.Initialize();
- //   g_TouchDevice.Initialize();
- //   g_TouchPanel.Initialize();
-#endif
 }
 
 void nanoHAL_Uninitialize(bool isPoweringDown)

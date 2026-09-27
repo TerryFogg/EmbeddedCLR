@@ -7,7 +7,7 @@
 #include "TouchPanel.h"
 #include "TouchDevice.h"
 
-#include "TouchDevice.h"
+#include "board.h"
 #include "TouchInterface.h"
 #include <nanoPAL_Events.h>
 
@@ -175,18 +175,19 @@ TouchPoint *TouchPanel::AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time
 
     return &point;
 }
-// When a falling or rising edge interrupt is detected
-// (Usually, touch down, touch up)
-// This routine is called to set the states and immediately queue
-// a call back to the PollTouch Routine
-void TouchPanel::TouchIsrProc(GPIO_PIN pin, bool touchStateDown, void *pArg)
-{
-    (void)pin;
-    (void)pArg;
 
+// This routine is called to set the states and immediately queue
+// a callback to the PollTouch Routine
+void TouchPanel::TouchIsrProc(void *arg)
+{
+    (void)arg;
     GLOBAL_LOCK();
     {
-        if (touchStateDown)
+        // Read current touch state from the touch device and update flags.
+        // Some platforms invoke the ISR without providing the pin state so
+        // query the device to determine if touch is present.
+        TouchPointDevice devicePoint = g_TouchDevice.GetPoint();
+        if (devicePoint.touch_down)
         {
             g_TouchPanel.m_InternalFlags |= Contact_Down;
         }

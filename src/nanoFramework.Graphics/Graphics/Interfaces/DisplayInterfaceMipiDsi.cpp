@@ -4,10 +4,10 @@
 //
 #include "DisplayInterface.h"
 #include "DisplayInterfaceMipiDsi.h"
-#include <nanoPAL.h>
 #include "esp_lcd_types.h"
 #include "esp_lcd_mipi_dsi.h"
 #include <esp_ldo_regulator.h>
+#include "board.h"
 
 #define BSP_MIPI_DSI_PHY_PWR_LDO_CHAN       (3) // LDO_VO3 is connected to VDD_MIPI_DPHY
 #define BSP_MIPI_DSI_PHY_PWR_LDO_VOLTAGE_MV (2500)
@@ -22,14 +22,8 @@ struct DisplayInterface g_DisplayInterface;
 DisplayInterfaceConfig g_DisplayInterfaceConfig;
 
 // Display Interface
-void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
+void DisplayInterface::Initialize()
 {
-    // Ignore the input config for now, as the MIPI DSI configuration is mostly fixed for a specific panel, and we can
-    // define the configuration in code directly, or we can read some parameters from the config if needed in the future
-    //g_DisplayInterfaceConfig.Screen.width = 800;
-    //g_DisplayInterfaceConfig.Screen.height = 1280;
-
-
     // Turn on the power for MIPI DSI PHY, so it can go from "No Power" state to "Shutdown" state
     esp_ldo_channel_handle_t phy_pwr_chan = NULL;
     esp_ldo_channel_config_t ldo_cfg = {
@@ -44,7 +38,7 @@ void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
     };
     esp_ldo_acquire_channel(&ldo_cfg, &phy_pwr_chan);
 
-    // create MIPI DSI bus first, it will initialize the DSI PHY as well
+    // Create MIPI DSI bus first, this call will also initialize the DSI PHY
     esp_lcd_dsi_bus_config_t bus_config = {
         .bus_id = 0,
         .num_data_lanes = BSP_LCD_MIPI_DSI_LANE_NUM,
@@ -62,68 +56,5 @@ void DisplayInterface::Initialize(DisplayInterfaceConfig &config)
     };
     esp_lcd_new_panel_io_dbi(mipi_dsi_bus, &dbi_config, &io_handle);
 
-    DisplayBacklight(true);
-
     return;
-}
-void DisplayInterface::GetTransferBuffer(CLR_UINT8 *&TransferBuffer, CLR_UINT32 &TransferBufferSize)
-{
-    // For MIPI DSI, we can directly write data to the framebuffer, and the driver will read data from the framebuffer
-    // and send it to the panel, so we don't need a separate transfer buffer
-    TransferBuffer = NULL;
-    TransferBufferSize = 0;
-}
-void DisplayInterface::ClearFrameBuffer()
-{
-    // memset(framebuffer, 0x00, FRAMEBUFFER_SIZE);
-    // esp_lcd_panel_draw_bitmap(g_GfxIfHandles.panel_io, 0, 0, Attributes.Width, height, framebuffer);
-}
-void DisplayInterface::WriteToFrameBuffer(
-    CLR_UINT8 command,
-    CLR_UINT8 data[],
-    CLR_UINT32 dataCount,
-    CLR_UINT32 frameOffset)
-{
-    (void)command;
-    (void)data;
-    (void)dataCount;
-    (void)frameOffset;
-
-    // For MIPI DSI, the command and data are sent together through the DBI IO, so we can directly call
-    // esp_lcd_panel_draw_bitmap in the display controller code to send data to the panel
-    return;
-}
-void DisplayInterface::SendCommand(CLR_UINT8 arg_count, ...)
-{
-    // Not used in MIPI DSI, as the command is sent together with data in WriteToFrameBuffer
-}
-void DisplayInterface::DisplayBacklight(bool on) // true = on
-{
-}
-void SendCommandBytes(CLR_UINT8 *data, CLR_UINT32 length)
-{
-    // Not used in MIPI DSI, as the command is sent together with data in WriteToFrameBuffer
-}
-void SendDataBytes(CLR_UINT8 *data, CLR_UINT32 length)
-{
-    // Not used in MIPI DSI as the data is streamed to the panel through the framebuffer, and the driver will read from
-    // the framebuffer and send data to the panel automatically
-}
-
-bool bsp_enable_dsi_phy_power(void)
-{
-    // Turn on the power for MIPI DSI PHY, so it can go from "No Power" state to "Shutdown" state
-    esp_ldo_channel_handle_t phy_pwr_chan = NULL;
-    esp_ldo_channel_config_t ldo_cfg = {
-        .chan_id = BSP_MIPI_DSI_PHY_PWR_LDO_CHAN,
-        .voltage_mv = BSP_MIPI_DSI_PHY_PWR_LDO_VOLTAGE_MV,
-        .flags =
-            {
-                .adjustable = false,
-                .owned_by_hw = false,
-                .bypass = 0 // deprecated, set to 0 for compatibility with older IDF versions
-            },
-    };
-    esp_ldo_acquire_channel(&ldo_cfg, &phy_pwr_chan);
-    return true;
 }

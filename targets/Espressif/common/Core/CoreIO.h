@@ -5,6 +5,7 @@
 //
 #include <stddef.h>
 #include <stdint.h>
+#include <board.h>
 
 enum PinNameValue
 {
@@ -64,7 +65,12 @@ enum PinNameValue
     GPIO53 = 53,
     GPIO54 = 54
 };
-enum PinMode
+enum GpioPinLevel
+{
+    LOW,
+    HIGH
+};
+enum GpioPinMode
 {
     NONE,
     MODE_INPUT,
@@ -85,31 +91,20 @@ enum GPIO_INTERRUPT_EDGE
     GPIO_INTERRUPT_EDGE_BOTH = 3,
 };
 
-struct SerialIOPort
-{
-    int usartDeviceNumber;
-    enum PinNameValue pinTX;
-    enum PinNameValue pinRX;
-    int baudrate;
-    int dataBits;
-    int parity;
-    int stopBits;
-    int flowControl;
-};
-
-
+typedef void (*GPIO_INTERRUPT)(void *pArg);
 class GpioIO
 {
   private:
   public:
     static void Initialize();
-    static bool InitializePin(PinNameValue pin, PinMode mode, GpioBias Bias);
-    static bool Read(PinNameValue pinNumber);
-    static bool Write(PinNameValue pinNumber, bool pinState);
-    static bool InterruptAdd(PinNameValue pinNumber, GPIO_INTERRUPT_EDGE events, void *interruptRoutine = NULL);
-    static bool InterruptEnable(PinNameValue pinNumber);
-    static bool InterruptDisable(PinNameValue pinNumber);
-    static bool InterruptRemove(PinNameValue pinNumber);
+    static bool InitializePin(PinNameValue pin, GpioPinMode mode, GpioBias Bias);
+    static GpioPinLevel ReadLevel(PinNameValue pinNumber);
+    static bool SetLevel(PinNameValue pinNumber, GpioPinLevel pinState);
+    static bool EnableInterrupt(
+        PinNameValue pinNumber,
+        GPIO_INTERRUPT_EDGE events,
+        GPIO_INTERRUPT interruptRoutine);
+    static bool DisableInterrupt(PinNameValue pinNumber);
 };
 class AdcIO
 {
@@ -131,9 +126,10 @@ class I2cIO
   private:
   public:
     static bool Initialize(int i2c_bus, int pinSDA, int pinSCL);
-    static int AddSlave(int I2C_deviceId, int I2C_speed, int slaveAddress);
-    static bool Write(int I2C_deviceId, int slaveAddress, unsigned char *writeBuffer, int writeSize);
-    static bool Read(int I2C_deviceId, int slaveAddress, unsigned char *readBuffer, int maxReadSize);
+    static bool AddDevice(int I2C_deviceId, int I2C_speed, int slaveAddress);
+    static bool Probe(int i2c_bus, int slaveAddress, int timeout);
+    static bool Write( int slaveAddress, unsigned char *writeBuffer, int writeSize);
+    static bool Read( int slaveAddress, unsigned char *readBuffer, int maxReadSize);
     static bool WriteRead(
         int I2C_deviceId,
         int slaveAddress,
@@ -158,7 +154,15 @@ class SerialIO
 {
   private:
   public:
-    static bool Initialize(SerialIOPort serialSetup);
+    static bool Initialize(
+        int usartDeviceNumber,
+        enum PinNameValue TX,
+        enum PinNameValue RX,
+        int baud,
+        int databits,
+        int parity,
+        int stopbits,
+        int flowcontrol);
     static int Write(int usartDeviceNumber, unsigned char *data, int dataLength);
     static int Read(int usartDeviceNumber, unsigned char *data, int maxdataLength, int timeoutInMilliseconds);
 };
@@ -167,7 +171,7 @@ class SpiIO
   private:
   public:
     static bool Initialize(int spiBusNumber, PinNameValue pinMosi, PinNameValue pinMiso, PinNameValue pinSCLK);
-    static bool AttachDevice(int spiBusNumber,PinNameValue pinChipSelect);
+    static bool AttachDevice(int spiBusNumber, PinNameValue pinChipSelect);
     static bool Write(int spiInstance, unsigned char *writeData, int writeDataSize);
     static int Read(int spiInstance, unsigned char *readData, int maxReadData);
 };

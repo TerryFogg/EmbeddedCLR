@@ -50,7 +50,7 @@ class TouchPanel
     static SimpleTouchGesture GestureDetect(CLR_INT16 x, CLR_INT16 y);
 
   private:
-    static void TouchIsrProc(GPIO_PIN pin, bool pinState, void *pArg);
+    static void TouchIsrProc(void *arg);
     static void TouchCompletion(void *arg);
     void PollTouchPoint();
     TouchPoint *AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time);

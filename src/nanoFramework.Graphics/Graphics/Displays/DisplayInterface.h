@@ -73,6 +73,7 @@ struct DisplayInterfaceConfig
 
 struct DisplayInterface
 {
+    void Initialize();
     void Initialize(DisplayInterfaceConfig &config);
     void GetTransferBuffer(CLR_UINT8 *&BufferAddress, CLR_UINT32 &sizeInBytes);
     void ClearFrameBuffer();

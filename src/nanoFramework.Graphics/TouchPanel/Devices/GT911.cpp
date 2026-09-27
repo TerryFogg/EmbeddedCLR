@@ -56,9 +56,8 @@ bool TouchDevice::Initialize()
     {
         return false;
     }
-
+    I2cIO::AddDevice(INTERNAL_SHARED_I2C_MASTER_BUS, 40000, LCD_TOUCH_GT911_ADDRESS);
     I2cIO::WriteRead(INTERNAL_SHARED_I2C_MASTER_BUS, LCD_TOUCH_GT911_ADDRESS, RegisterStart, 2, buf, 9);
-
     TouchHeight = ((uint16_t)buf[0] << 8) | (uint16_t)buf[1];
     TouchWidth = ((uint16_t)buf[2] << 8) | (uint16_t)buf[3];
 

@@ -51,8 +51,8 @@ void InitializeBoard()
     InitializeSpi();
     InitializeWireProtocol();
 
-    //InitializeLcdTouchPanel();
     InitializeGraphics();
+    InitializeLcdTouchPanel();
 }
 void InitializeGpio()
 {

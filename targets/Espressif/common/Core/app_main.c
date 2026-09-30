@@ -2,65 +2,41 @@
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
-
 #include <targetHAL.h>
 #include <nanoCLR_Application.h>
-#include <target_os.h>
 #include <WireProtocol_ReceiverThread.h>
-#include <string.h>
 #include "board.h"
-typedef int COM_HANDLE;
 
 extern void CLRStartupThread(void const *argument);
-TaskHandle_t ReceiverTask;
-extern bool WP_Initialise(COM_HANDLE port);
-
 
 void receiver_task(void *pvParameter)
 {
     (void)pvParameter;
-
     ReceiverThread(0);
-
     vTaskDelete(NULL);
 }
-
-// Main task start point
 void main_task(void *pvParameter)
 {
     (void)pvParameter;
-
-    // CLR settings to launch CLR thread
-    CLR_SETTINGS clrSettings;
-    (void)memset(&clrSettings, 0, sizeof(CLR_SETTINGS));
-
-    clrSettings.MaxContextSwitches = 50;
-    clrSettings.WaitForDebugger = false;
-    clrSettings.EnterDebuggerLoopAfterExit = true;
-
+    CLR_SETTINGS clrSettings = {
+        .EnterDebuggerLoopAfterExit = true,
+        .MaxContextSwitches = 50,
+        .RevertToBooterOnFault = false,
+        .WaitForDebugger = false};
     CLRStartupThread(&clrSettings);
-
     vTaskDelete(NULL);
 }
-
-// App_main
-// Called from Esp32 IDF start up code before scheduler starts
+// App_main called from Esp32 IDF start up code
 void app_main()
 {
     UBaseType_t taskPriority = 5;
-
     // Switch off logging so as not to interfere with WireProtocol over Uart0
     esp_log_level_set("*", ESP_LOG_NONE);
-
     ESP_ERROR_CHECK(nvs_flash_init());
-
     InitializeBoard();
-
     vTaskPrioritySet(NULL, taskPriority);
-
     // start receiver task pinned to core 0
     xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
-
     // start the CLR main task pinned to core 1
     xTaskCreatePinnedToCore(&main_task, "main_task", 15000, NULL, taskPriority, NULL, 1);
 }

@@ -3,12 +3,6 @@
 # See LICENSE file in the project root for full license information.
 #
 
-SET(DISPLAY_DRIVER  "DisplayControllerJD9365.cpp")
-SET(DISPLAY_INTERFACE  "DisplayInterfaceMipiDsi.cpp")
-SET(TOUCH_INTERFACE_CONTROLLER  "GT911.cpp")
-SET(TOUCH_INTERFACE_DRIVER  "I2c_To_TouchPanel.cpp")
-
-
  list(APPEND GRAPHICS_INCLUDES 
              ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core
              ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Core/Support/Gif
@@ -107,6 +101,7 @@ if(CONFIG_SUPPORT_GRAPHICSTOUCH)
                 ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Devices
      )
     list(APPEND TOUCH_SOURCES
+                ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_Touch.cpp
                 ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/Graphics/Native/nanoFramework_Graphics_nanoFramework_UI_TouchEventProcessor.cpp
                 ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Core/TouchPanel.cpp
 

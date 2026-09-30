@@ -12,24 +12,20 @@
             "program": "C:/repos/TerryFogg/EmbeddedCLR/build/nanoCLR.elf",
             "cwd": "${workspaceRoot}",
             "MIMode": "gdb",
-            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
+            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/16.3_20250913/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
             "miDebuggerServerAddress": "localhost:3333",
-            "stopAtEntry": true,
-            "debugServerPath": "C:/Users/Terry/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/bin/openocd.exe",
-            "debugServerArgs": " -f interface/esp_usb_jtag.cfg -f board/esp32p4-builtin.cfg -c \"adapter speed 150000\" -c \"gdb port 3333\" -c \"init\" -c \"reset halt\" -c \"gdb breakpoint_override\"",
+            "stopAtEntry": false,
+            "debugServerPath": "C:/Users/Terry/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260304/openocd-esp32/bin/openocd.exe",
+
+            "debugServerArgs": "-f board/esp32p4-builtin.cfg -c \"adapter speed 24000\" -c \"gdb port 3333\" -c \"init\" -c \"reset halt\"",
             "serverStarted": "Listening on port 3333 for gdb connections",
             "setupCommands": [
                 { "text": "set architecture riscv:rv32" },
-                { "text": "set remotetimeout 30" }
+                { "text": "set remotetimeout 30" },
+                { "text": "flushregs" }
             ],
-            "launchCompleteCommand": "None",
             "filterStderr": true,
-            "filterStdout": true,
-            "logging": {
-                "engineLogging": true,
-                "trace": true,
-                "traceResponse": true
-            }
+            "filterStdout": true
         }
     ]
 }

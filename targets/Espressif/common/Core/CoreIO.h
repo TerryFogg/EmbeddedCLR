@@ -91,7 +91,6 @@ enum GPIO_INTERRUPT_EDGE
     GPIO_INTERRUPT_EDGE_BOTH = 3,
 };
 
-typedef void (*GPIO_INTERRUPT)(void *pArg);
 class GpioIO
 {
   private:
@@ -99,11 +98,13 @@ class GpioIO
     static void Initialize();
     static bool InitializePin(PinNameValue pin, GpioPinMode mode, GpioBias Bias);
     static GpioPinLevel ReadLevel(PinNameValue pinNumber);
+    static bool SetDirection(PinNameValue pinNameValue, GpioPinMode pinMode);
     static bool SetLevel(PinNameValue pinNumber, GpioPinLevel pinState);
     static bool EnableInterrupt(
         PinNameValue pinNumber,
         GPIO_INTERRUPT_EDGE events,
-        GPIO_INTERRUPT interruptRoutine);
+        GPIO_INTERRUPT interruptRoutine,
+        void *argumentPointer);
     static bool DisableInterrupt(PinNameValue pinNumber);
 };
 class AdcIO
@@ -128,10 +129,9 @@ class I2cIO
     static bool Initialize(int i2c_bus, int pinSDA, int pinSCL);
     static bool AddDevice(int I2C_deviceId, int I2C_speed, unsigned short slaveAddress);
     static bool Probe(int i2c_bus, int slaveAddress, int timeout);
-    static bool Write( int slaveAddress, unsigned char *writeBuffer, int writeSize);
-    static bool Read( int slaveAddress, unsigned char *readBuffer, int maxReadSize);
+    static bool Write(int slaveAddress, unsigned char *writeBuffer, int writeSize);
+    static bool Read(int slaveAddress, unsigned char *readBuffer, int maxReadSize);
     static bool WriteRead(
-        int I2C_deviceId,
         int slaveAddress,
         unsigned char *writeBuffer,
         int writeSize,

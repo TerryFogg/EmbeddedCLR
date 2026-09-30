@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
@@ -64,13 +64,13 @@ typedef enum __nfpack TouchCaptureMode
     TouchCaptureMode_SubTree = 2,
 } TouchCaptureMode;
 
-/*
 typedef enum __nfpack RoutedEventArgs_Flags
 {
     RoutedEventArgs_Flags_Handled = 1,
     RoutedEventArgs_Flags_InvokingHandler = 2,
 } RoutedEventArgs_Flags;
 
+/* moved to Display.h for convenience
 typedef enum __nfpack SetWindowType
 {
     SetWindowType_NoWindowing = 0,
@@ -1015,6 +1015,10 @@ struct Library_nanoFramework_Graphics_nanoFramework_UI_Threading_DispatcherTimer
 struct Library_nanoFramework_Graphics_nanoFramework_UI_Touch
 {
     static const int FIELD_STATIC___initialized = 33;
+
+    NANOCLR_NATIVE_DECLARE(InitializeInternal___STATIC__VOID);
+    NANOCLR_NATIVE_DECLARE(Enable___STATIC__VOID);
+    NANOCLR_NATIVE_DECLARE(Disable___STATIC__VOID);
 
     //--//
 };

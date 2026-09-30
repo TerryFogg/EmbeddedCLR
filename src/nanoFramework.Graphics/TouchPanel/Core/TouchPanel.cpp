@@ -37,10 +37,11 @@ static CLR_UINT16 touch_move_count = 0;
 
 HRESULT TouchPanel::Initialize()
 {
-    g_TouchPanel.m_InternalFlags = 0;
-    g_TouchPanel.m_head = 0;
-    g_TouchPanel.m_tail = 0;
-
+    Enable();
+    return S_OK;
+}
+HRESULT TouchPanel::Enable()
+{
     if (!g_TouchDevice.Enable(TouchIsrProc))
     {
         return CLR_E_FAIL;
@@ -48,7 +49,7 @@ HRESULT TouchPanel::Initialize()
     g_TouchPanel.m_touchCompletion.InitializeForISR(TouchPanel::TouchCompletion, NULL);
     return S_OK;
 }
-HRESULT TouchPanel::Uninitialize()
+HRESULT TouchPanel::Disable()
 {
     if (g_TouchPanel.m_touchCompletion.IsLinked())
     {
@@ -67,11 +68,20 @@ void TouchPanel::PollTouchPoint()
     CLR_INT32 x = 0;
     CLR_INT32 y = 0;
     TouchPoint *point = NULL;
-
     CLR_INT64 time = 0;
-    TouchPointDevice devicePoint = g_TouchDevice.GetPoint();
-    x = devicePoint.x;
-    y = devicePoint.y;
+
+    TouchPointDevice touchPoint = g_TouchDevice.GetPoint();
+    x = touchPoint.x;
+    y = touchPoint.y;
+
+    if (touchPoint.touchStatus == TouchStatus::TouchDown)
+    {
+        m_InternalFlags |= Contact_Down;
+    }
+    else
+    {
+        m_InternalFlags &= ~Contact_Down;
+    }
 
     bool ContactDown = m_InternalFlags & Contact_Down;
     bool ContactWasDown = m_InternalFlags & Contact_WasDown;
@@ -146,7 +156,6 @@ void TouchPanel::PollTouchPoint()
         }
     }
 }
-
 TouchPoint *TouchPanel::AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time)
 {
 
@@ -175,27 +184,13 @@ TouchPoint *TouchPanel::AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time
 
     return &point;
 }
-
-// This routine is called to set the states and immediately queue
-// a callback to the PollTouch Routine
 void TouchPanel::TouchIsrProc(void *arg)
 {
+    // This routine is called to set the states and immediately queue
+    // a callback to the PollTouch Routine
     (void)arg;
     GLOBAL_LOCK();
     {
-        // Read current touch state from the touch device and update flags.
-        // Some platforms invoke the ISR without providing the pin state so
-        // query the device to determine if touch is present.
-        TouchPointDevice devicePoint = g_TouchDevice.GetPoint();
-        if (devicePoint.touch_down)
-        {
-            g_TouchPanel.m_InternalFlags |= Contact_Down;
-        }
-        else
-        {
-            g_TouchPanel.m_InternalFlags &= ~Contact_Down;
-        }
-
         if (g_TouchPanel.m_touchCompletion.IsLinked())
         {
             g_TouchPanel.m_touchCompletion.Abort();
@@ -207,7 +202,6 @@ void TouchPanel::TouchIsrProc(void *arg)
 #pragma endregion
 
 #pragma region Gesture Detection
-
 SimpleTouchGesture TouchPanel::GestureDetect(CLR_INT16 x, CLR_INT16 y)
 {
     bool diagonal = false;
@@ -236,31 +230,31 @@ SimpleTouchGesture TouchPanel::GestureDetect(CLR_INT16 x, CLR_INT16 y)
             if (dx > 0)
             {
                 if (dy > 0)
-                    dir = SimpleTouchGesture::DownRight; // SE.
+                    dir = SimpleTouchGesture::DownRight;
                 else
-                    dir = SimpleTouchGesture::UpRight; // NE.
+                    dir = SimpleTouchGesture::UpRight;
             }
             else
             {
                 if (dy > 0)
-                    dir = SimpleTouchGesture::DownLeft; // SW
+                    dir = SimpleTouchGesture::DownLeft;
                 else
-                    dir = SimpleTouchGesture::UpLeft; // NW.
+                    dir = SimpleTouchGesture::UpLeft;
             }
         }
         else if (adx > ady)
         {
             if (dx > 0)
-                dir = SimpleTouchGesture::Right; // E.
+                dir = SimpleTouchGesture::Right;
             else
-                dir = SimpleTouchGesture::Left; // W.
+                dir = SimpleTouchGesture::Left;
         }
         else
         {
             if (dy > 0)
-                dir = SimpleTouchGesture::Down; // S.
+                dir = SimpleTouchGesture::Down;
             else
-                dir = SimpleTouchGesture::Up; // N.
+                dir = SimpleTouchGesture::Up;
         }
         return dir;
     }

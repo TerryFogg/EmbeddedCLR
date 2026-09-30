@@ -118,27 +118,19 @@ if(CONFIGURE_SUPPORT_TRACE)
 endif()
 
 
-##        {
-##            "name": "nanoCLR_Runtime.h #ifdef",
-##            "hidden": true,
-##            "cacheVariables": {
-##                "ENABLE_NATIVE_PROFILER" :"ON",
-##                "HIGH_SURROGATE_START" :"ON",
-##                "NANANOCLR_EMULATED_FLOATINGPOINT" :"ON",
-##                "NANOCLR_APPDOMAINS" :"ON",
-##                "NANOCLR_DELEGATE_PRESERVE_STACK" :"ON",
-##                "NANOCLR_ENABLE_SOURCELEVELDEBUGGING" :"ON",
-##                "NANOCLR_FILL_MEMORY_WITH_DIRTY_PATTERN" :"ON",
-##                "NANOCLR_NO_ASSEMBLY_STRINGS" :"ON",
-##                "NANOCLR_NO_IL_INLINE" :"ON",
-##                "NANOCLR_OPCODE_NAMES" :"ON",
-##                "NANOCLR_OPCODE_PARSER" :"ON",
-##                "NANOCLR_OPCODE_STACKCHANGES" :"ON",
-##                "NANOCLR_PROFILE_HANDLER" :"ON",
-##                "NANOCLR_USE_AVLTREE_FOR_METHODLOOKUP" :"ON",
-##                "NANOCLR_VALIDATE_APPDOMAIN_ISOLATION" :"ON",
-##                "NOCLR_PROFILE_NEW_CALLS" :"ON",
-##                "PLATFORM_WINDOWS_EMULATOR" :"ON"
-##            }
-##        },
-##
+## Found in  "nanoCLR_Runtime.h #ifdef"
+##     --------------------------------
+##     ENABLE_NATIVE_PROFILER
+##     HIGH_SURROGATE_START
+##     NANOCLR_DELEGATE_PRESERVE_STACK
+##     NANOCLR_FILL_MEMORY_WITH_DIRTY_PATTERN
+##     NANOCLR_NO_ASSEMBLY_STRINGS
+##     NANOCLR_NO_IL_INLINE
+##     NANOCLR_OPCODE_NAMES
+##     NANOCLR_OPCODE_PARSER
+##     NANOCLR_OPCODE_STACKCHANGES
+##     NANOCLR_PROFILE_HANDLER
+##     NANOCLR_USE_AVLTREE_FOR_METHODLOOKUP
+##     NANOCLR_VALIDATE_APPDOMAIN_ISOLATION
+##     NOCLR_PROFILE_NEW_CALLS
+##     PLATFORM_WINDOWS_EMULATOR

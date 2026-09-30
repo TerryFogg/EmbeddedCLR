@@ -20,6 +20,6 @@ bool TouchInterface::Initialize(int i2c_bus_number, int slaveAddress)
 }
 CLR_UINT8 *TouchInterface::Write_Read(uint8_t *writeBuffer, uint16_t writeSize, CLR_UINT16 readSize)
 {
-    I2cIO::WriteRead(m_TouchI2cBus, m_TouchI2cSlaveAddress, writeBuffer, writeSize, I2C_READ_BUFFER, readSize);
+    I2cIO::WriteRead( m_TouchI2cSlaveAddress, writeBuffer, writeSize, I2C_READ_BUFFER, readSize);
     return I2C_READ_BUFFER;
 }

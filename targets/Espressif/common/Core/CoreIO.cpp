@@ -23,12 +23,13 @@
 #include "hal/uart_types.h"
 #include "soc/soc_caps.h"
 #include "board.h"
+#include "esp_log.h"
 
 #pragma region Gpio
 void GpioIO::Initialize()
 {
     // Do this once during startup:
-    gpio_install_isr_service(0);
+    ESP_ERROR_CHECK(gpio_install_isr_service(0));
 }
 bool GpioIO::InitializePin(PinNameValue pinNameValue, GpioPinMode mode, GpioBias bias)
 {
@@ -78,13 +79,23 @@ GpioPinLevel GpioIO::ReadLevel(PinNameValue pinNameValue)
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
     return (GpioPinLevel)gpio_get_level(pinNumber);
 }
+
+bool GpioIO::SetDirection(PinNameValue pinNameValue, GpioPinMode pinMode)
+{
+    gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
+    gpio_set_direction(pinNumber, (gpio_mode_t)pinMode);
+    return true;
+}
+
 bool GpioIO::SetLevel(PinNameValue pinNameValue, GpioPinLevel pinState)
 {
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
     gpio_set_level(pinNumber, (uint32_t)pinState);
     return true;
 }
-bool GpioIO::EnableInterrupt(PinNameValue pinNameValue, GPIO_INTERRUPT_EDGE events, GPIO_INTERRUPT interruptRoutine)
+bool GpioIO::EnableInterrupt(
+    PinNameValue pinNameValue,
+    GPIO_INTERRUPT_EDGE events, GPIO_INTERRUPT interruptRoutine, void* argumentPointer)
 {
     bool enable = true;
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
@@ -107,11 +118,14 @@ bool GpioIO::EnableInterrupt(PinNameValue pinNameValue, GPIO_INTERRUPT_EDGE even
     }
     if (interruptRoutine != NULL)
     {
-        gpio_set_intr_type(pinNumber, edge_events);
-        gpio_isr_handler_add(pinNumber, (gpio_isr_t)interruptRoutine, NULL);
+        ESP_ERROR_CHECK(gpio_set_intr_type(pinNumber, edge_events));
+        ESP_ERROR_CHECK(gpio_isr_handler_add(pinNumber, interruptRoutine, argumentPointer));
     }
     return enable;
 }
+
+
+
 bool GpioIO::DisableInterrupt(PinNameValue pinNameValue)
 {
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
@@ -375,7 +389,6 @@ bool I2cIO::Read(int slaveAddress, unsigned char *readBuffer, int maxReadSize)
     return result == (ESP_OK);
 }
 bool I2cIO::WriteRead(
-    int I2C_deviceId,
     int slaveAddress,
     unsigned char *writeBuffer,
     int writeSize,

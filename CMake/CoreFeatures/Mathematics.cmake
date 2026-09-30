@@ -16,7 +16,7 @@ target_include_directories(nanoCLR.elf PUBLIC  ${Mathematics_Includes} )
 
 if(CONFIG_SUPPORT_MATHEMATICS_EMULATION) 
   target_compile_definitions(nanoCLR.elf PRIVATE NANOCLR_EMULATED_FLOATINGPOINT)
-  else()
+else()
   target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_NF_ENABLE_DOUBLE_PRECISION_FP)
 endif()
 

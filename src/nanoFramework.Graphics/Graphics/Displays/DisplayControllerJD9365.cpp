@@ -37,6 +37,7 @@
 #include "hal/ppa_types.h"
 #include "driver/ppa.h"
 #include "hal/assert.h"
+#include "board.h"
 
 // #include "JD9365_data_waveshare_10_1.inc"
 

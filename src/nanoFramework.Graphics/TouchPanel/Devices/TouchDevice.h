@@ -6,12 +6,18 @@
 #include "nanoCLR_Types.h"
 #include "CoreIO.h"
 
+enum TouchStatus
+{
+    NoChange,
+    TouchDown,
+    TouchUp
+};
 
 struct TouchPointDevice
 {
     int x;
     int y;
-    bool touch_down;
+    TouchStatus touchStatus;
 };
 
 struct TouchDevice

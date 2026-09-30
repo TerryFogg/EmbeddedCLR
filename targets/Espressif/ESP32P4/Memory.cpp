@@ -90,7 +90,7 @@
 
 #define TOTAL_SPIRAM 33554430
 // +------------------------------------------------+
-#define ESP_IDF                     500000
+#define ESP_IDF                     700000
 #define nanoFrameworkManagedHeap    16777215
 #define FrameBufferSize             2048000
 #define RotationBufferSize          FrameBufferSize

@@ -53,13 +53,16 @@ void InitializeBoard()
 
     InitializeGraphics();
     InitializeLcdTouchPanel();
+    return;
 }
 void InitializeGpio()
 {
+    GpioIO::Initialize();
     GpioIO::InitializePin(GPIO28, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
     GpioIO::InitializePin(GPIO29, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
     GpioIO::InitializePin(GPIO37, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
     GpioIO::InitializePin(GPIO38, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
+    return;
 }
 void InitializeADC()
 {
@@ -69,14 +72,16 @@ void InitializeADC()
     AdcIO::AddChannel(ADC_CHANNEL_1); // GPIO3
     AdcIO::AddChannel(ADC_CHANNEL_2); // GPIO4
     AdcIO::AddChannel(ADC_CHANNEL_3); // GPIO5
+    return;
 }
 void InitializeI2C()
 {
     // Internal Touch / Codec / ADC_PA
     I2cIO::Initialize(INTERNAL_SHARED_I2C_MASTER_BUS, GPIO7, GPIO8);
 
-    // Accessible on external jumper J*, back panel 40 pin connector
+    // Accessible on external jumper J8, back panel 40 pin connector
     I2cIO::Initialize(i2c_port_t::I2C_NUM_0, GPIO21, GPIO22);
+    return;
 }
 void InitializePWM()
 {
@@ -87,11 +92,13 @@ void InitializePWM()
     PwmIO::AttachGpio(GPIO49, ledc_timer_t::LEDC_TIMER_0, 1000);
     PwmIO::AttachGpio(GPIO50, ledc_timer_t::LEDC_TIMER_0, 1000);
     PwmIO::AttachGpio(GPIO51, ledc_timer_t::LEDC_TIMER_0, 1000);
+    return;
 }
 void InitializeSpi()
 {
     SpiIO::Initialize(spi_host_device_t::SPI1_HOST, GPIO30, GPIO31, GPIO32);
     SpiIO::AttachDevice(spi_host_device_t::SPI1_HOST, GPIO32);
+    return;
 }
 void InitializeWireProtocol()
 {
@@ -104,6 +111,7 @@ void InitializeWireProtocol()
         UART_PARITY_DISABLE,
         UART_STOP_BITS_1,
         UART_HW_FLOWCTRL_DISABLE);
+    return;
 }
 
 void InitializeGraphics()
@@ -111,11 +119,12 @@ void InitializeGraphics()
     g_GraphicsMemoryHeap.Initialize(6000000);
     g_DisplayInterface.Initialize();
     g_DisplayDriver.Initialize();
+    return;
 }
-
 void InitializeLcdTouchPanel()
 {
     g_TouchInterface.Initialize(INTERNAL_SHARED_I2C_MASTER_BUS, 0x5D);
     g_TouchDevice.Initialize();
     g_TouchPanel.Initialize();
+    return;
 }

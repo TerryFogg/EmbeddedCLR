@@ -268,11 +268,11 @@ endforeach()
 | GPIO0  | 32.768Khz         |      |
 | GPIO1  | 32.768Khz         |      |
 | GPIO6  | Wifi(Reserved)    |      |
-| GPIO9  | I2S(Reserved)     |      |
-| GPIO10 | I2S(Reserved)     |      |
-| GPIO11 | I2S(Reserved)     |      |
-| GPIO12 | I2S(Reserved)     |      |
-| GPIO13 | I2S(Reserved)     |      |
+| GPIO9  | I2S - DOUT        |      |
+| GPIO10 | I2S - LCLK        |      |
+| GPIO11 | I2S - DSIN        |      |
+| GPIO12 | I2S - SCLK        |      |
+| GPIO13 | I2S - MCLK        |      |
 | GPIO14 | Wifi(Reserved)    |      |
 | GPIO15 | Wifi(Reserved)    |      |
 | GPIO16 | Wifi(Reserved)    |      |

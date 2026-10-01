@@ -7,34 +7,22 @@
 #include "Graphics.h"
 #include "nanoFramework_Graphics.h"
 #include "TouchPanel.h"
-
-
-
-HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_Touch::InitializeInternal___STATIC__VOID(
-    CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        FAULT_ON_NULL(stack.This());
-    }
-    NANOCLR_NOCLEANUP();
-}
+extern TouchPanel g_TouchPanel;
 
 HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_Touch::Enable___STATIC__VOID(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
-        FAULT_ON_NULL(stack.This());
+        g_TouchPanel.Enable();
     }
-    NANOCLR_NOCLEANUP();
+    NANOCLR_NOCLEANUP_NOLABEL();
 }
 
 HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_Touch::Disable___STATIC__VOID(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
-        FAULT_ON_NULL(stack.This());
+        g_TouchPanel.Disable();
     }
-    NANOCLR_NOCLEANUP();
+    NANOCLR_NOCLEANUP_NOLABEL();
 }
-

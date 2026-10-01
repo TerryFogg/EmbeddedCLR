@@ -29,6 +29,9 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/targetRandom.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_BlockStorage.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.c
+
+            ${CMAKE_SOURCE_DIR}/targets/Experimental/ConstantExtractor.cpp
+
 )
 list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/Core
@@ -39,6 +42,9 @@ list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}
 
             ${CMAKE_BINARY_DIR}/config
+
+            ${CMAKE_SOURCE_DIR}/targets/Experimental
+
 )
 list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/bt/include

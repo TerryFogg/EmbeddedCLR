@@ -1016,7 +1016,6 @@ struct Library_nanoFramework_Graphics_nanoFramework_UI_Touch
 {
     static const int FIELD_STATIC___initialized = 33;
 
-    NANOCLR_NATIVE_DECLARE(InitializeInternal___STATIC__VOID);
     NANOCLR_NATIVE_DECLARE(Enable___STATIC__VOID);
     NANOCLR_NATIVE_DECLARE(Disable___STATIC__VOID);
 

@@ -976,7 +976,6 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     NULL,
     NULL,
-    Library_nanoFramework_Graphics_nanoFramework_UI_Touch::InitializeInternal___STATIC__VOID,
     Library_nanoFramework_Graphics_nanoFramework_UI_Touch::Enable___STATIC__VOID,
     Library_nanoFramework_Graphics_nanoFramework_UI_Touch::Disable___STATIC__VOID,
     NULL,
@@ -1012,7 +1011,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Graphics =
 {
     "nanoFramework.Graphics",
-    0xD97960C2,
+    0xE334A14C,
     method_lookup,
     { 100, 0, 0, 10 }
 };

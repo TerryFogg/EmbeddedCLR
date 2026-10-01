@@ -24,14 +24,16 @@
 #include "GraphicsMemoryHeap.h"
 #include "Graphics.h"
 
-extern GraphicsMemoryHeap g_GraphicsMemoryHeap;
+#include "ConstantExtractor.h"
 
+extern GraphicsMemoryHeap g_GraphicsMemoryHeap;
 extern DisplayInterface g_DisplayInterface;
 extern DisplayDriver g_DisplayDriver;
-
 extern TouchPanel g_TouchPanel;
 extern TouchInterface g_TouchInterface;
 extern TouchDevice g_TouchDevice;
+
+uint32_t GetConfiguredIPAddress();
 
 void InitializeWireProtocol();
 void InitializeADC();
@@ -53,6 +55,8 @@ void InitializeBoard()
 
     InitializeGraphics();
     InitializeLcdTouchPanel();
+
+  //  GetConfiguredIPAddress();
     return;
 }
 void InitializeGpio()
@@ -125,6 +129,50 @@ void InitializeLcdTouchPanel()
 {
     g_TouchInterface.Initialize(INTERNAL_SHARED_I2C_MASTER_BUS, 0x5D);
     g_TouchDevice.Initialize();
-    g_TouchPanel.Initialize();
+    //    g_TouchPanel.Initialize();
     return;
+}
+
+
+#include "ConstantExtractor.h"
+#include <cstdint>
+#include <cstdio>
+
+uint32_t GetConfiguredIPAddress()
+{
+    // Set these to your real mapped flash region
+    const void *flashBase = (const void *)0x1B0000;
+    size_t flashSize = 0x1A0000;
+
+    CE_InitFlashImage(flashBase, flashSize);
+
+    const char *cls = "network";
+    const char *ns = "nanoFramework.Configuration";
+    const char *field = "IPAddress";
+
+    // Find PE that contains the type (uses internal cache after first find)
+    const void *peBase = CE_FindPEByType(cls, ns);
+    if (!peBase)
+    {
+        // not found
+        return 0;
+    }
+
+    uint64_t value = 0;
+    if (!CE_ExtractPublicConstUnsignedAt(peBase, cls, ns, field, &value))
+    {
+        // field missing or wrong type
+        return 0;
+    }
+
+    // constant is 0xC0A80004u (fits in 32 bits)
+    uint32_t ip = (uint32_t)value;
+    // optional: print dotted decimal
+    uint8_t a = (ip >> 24) & 0xFF;
+    uint8_t b = (ip >> 16) & 0xFF;
+    uint8_t c = (ip >> 8) & 0xFF;
+    uint8_t d = ip & 0xFF;
+    printf("Found IP: 0x%08X (%u.%u.%u.%u)\n", ip, a, b, c, d);
+
+    return ip;
 }

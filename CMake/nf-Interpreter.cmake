@@ -168,6 +168,16 @@ list(APPEND Core_Includes
             ${TARGET_BASE_LOCATION}/nanoCLR
 )
 
+
+list(APPEND Core_Sources
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeAdc.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeDac.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeGpio.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeI2C.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativePwm.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeTouch.cpp
+)
 if(NF_TRACE_TO_STDIO)
     list(APPEND Core_Sources
                 ${CMAKE_SOURCE_DIR}/src/PAL/COM/GenericPort_stdio.c
@@ -183,5 +193,4 @@ endif()
 
 target_sources(nanoCLR.elf PUBLIC ${Core_Sources} )
 target_include_directories(nanoCLR.elf PUBLIC  ${Core_Includes} )   
-
 

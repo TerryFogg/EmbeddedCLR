@@ -14,7 +14,7 @@ add_executable(nanoCLR.elf
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake" "${CMAKE_SOURCE_DIR}/CMake/IOfeatures" "${CMAKE_SOURCE_DIR}/CMake/CoreFeatures")
 include(Common)
 
-# Define feature variables first, these can be used in the following core and io features for additonal options
+# Define feature variables first, these can be used in the following core and io features for additional options
 foreach(FEATURE IN LISTS FEATURE_DEFINES ADVANCED_DEBUGGING)
     string(REPLACE "=" ";" RESULT "${FEATURE}")
     list(GET RESULT 0 name)

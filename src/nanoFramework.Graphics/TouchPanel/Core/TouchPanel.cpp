@@ -195,7 +195,8 @@ void TouchPanel::TouchIsrProc(void *arg)
         {
             g_TouchPanel.m_touchCompletion.Abort();
         }
-        g_TouchPanel.m_touchCompletion.EnqueueDelta(0);
+        // A very small number, but if it is 0 it tries to perform the callback immediately and that is not allowed in an ISR
+        g_TouchPanel.m_touchCompletion.EnqueueDelta(10);
     }
     GLOBAL_UNLOCK();
 }

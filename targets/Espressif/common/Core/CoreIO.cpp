@@ -395,7 +395,7 @@ bool I2cIO::WriteRead(
     unsigned char *readBuffer,
     int readSize)
 {
-
+        
     int xfer_timeout_ms = 10;
     esp_err_t result = i2c_master_transmit_receive(
         s_devices[slaveAddress],

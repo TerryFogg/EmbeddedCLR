@@ -4,7 +4,7 @@
 // See LICENSE file in the project root for full license information.
 
 #include "nanoCLR_Types.h"
-#include "CoreIO.h"
+#include "NativeIO.h"
 
 enum TouchStatus
 {

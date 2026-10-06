@@ -6,6 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <board.h>
+#include <hal/ledc_types.h>
+
+#include "nanoFramework_NativeIO.h"
 
 enum PinNameValue
 {
@@ -65,31 +68,31 @@ enum PinNameValue
     GPIO53 = 53,
     GPIO54 = 54
 };
-enum GpioPinLevel
-{
-    LOW,
-    HIGH
-};
-enum GpioPinMode
-{
-    NONE,
-    MODE_INPUT,
-    MODE_OUTPUT,
-    MODE_OUTPUT_OPEN_DRAIN,
-};
-enum GpioBias
-{
-    NOBIAS,
-    PullUp,
-    PullDown
-};
-enum GPIO_INTERRUPT_EDGE
-{
-    GPIO_INTERRUPT_NONE = 0,
-    GPIO_INTERRUPT_EDGE_LOW = 1,
-    GPIO_INTERRUPT_EDGE_HIGH = 2,
-    GPIO_INTERRUPT_EDGE_BOTH = 3,
-};
+// enum GpioPinLevel
+//{
+//     LOW,
+//     HIGH
+// };
+// enum GpioPinMode
+//{
+//     NONE,
+//     MODE_INPUT,
+//     MODE_OUTPUT
+// };
+// enum GpioBias
+//{
+//     NOBIAS,
+//     PullUp,
+//     PullDown,
+//     OpenDrain
+// };
+// enum GPIO_INTERRUPT_EDGE
+//{
+//     GPIO_INTERRUPT_NONE = 0,
+//     GPIO_INTERRUPT_EDGE_LOW = 1,
+//     GPIO_INTERRUPT_EDGE_HIGH = 2,
+//     GPIO_INTERRUPT_EDGE_BOTH = 3,
+// };
 
 class GpioIO
 {
@@ -103,8 +106,7 @@ class GpioIO
     static bool EnableInterrupt(
         PinNameValue pinNumber,
         GPIO_INTERRUPT_EDGE events,
-        GPIO_INTERRUPT interruptRoutine,
-        void *argumentPointer);
+        void *alternateInterruptHandler = nullptr);
     static bool DisableInterrupt(PinNameValue pinNumber);
 };
 class AdcIO
@@ -141,14 +143,18 @@ class I2cIO
 class PwmIO
 {
   private:
+    static uint8_t s_usedChannels;
+
   public:
-    static bool Initialize(int Frequency);
-    static bool AttachGpio(PinNameValue pinNumber, int PwmChannel, int Frequency);
-    static bool SetDutyCycle(int PwmChannel, float percent);
+    static bool Initialize(int Frequency = 1000);
+    static int AllocatePwmChannel(PinNameValue pinNumber);
+    static int FindPwmChannel(PinNameValue pinNumber);
+    static bool ConfigurePin(PinNameValue pinNumber, int Frequency, int DutyCycle);
+    static bool SetDutyCycle(PinNameValue pinNumber, int DutyCycle);
     static bool Start(PinNameValue pinNumber, int timerId);
-    static bool SetFrequency(int PwmChannel, int desiredFrequency);
-    static bool Stop(int PwmChannel, PinNameValue pinNumber, bool OutputHigh);
-    static bool Start(int PwmChannel, PinNameValue pinNumber);
+    static bool SetFrequency(PinNameValue pinNumber, int frequency);
+    static bool Stop(PinNameValue pinNumber, bool OutputHigh);
+    static bool Start(PinNameValue pinNumber);
 };
 class SerialIO
 {

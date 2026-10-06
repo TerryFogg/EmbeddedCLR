@@ -6,7 +6,7 @@
 #include "TouchInterface.h"
 #include "TouchPanel.h"
 
-#include "CoreIO.h"
+#include "NativeIO.h"
 #include "WireProtocol_HAL_Interface.h"
 #include "board.h"
 #include "driver/gpio.h"
@@ -62,10 +62,10 @@ void InitializeBoard()
 void InitializeGpio()
 {
     GpioIO::Initialize();
-    GpioIO::InitializePin(GPIO28, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
-    GpioIO::InitializePin(GPIO29, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
-    GpioIO::InitializePin(GPIO37, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
-    GpioIO::InitializePin(GPIO38, GpioPinMode::MODE_INPUT, GpioBias::NOBIAS);
+    GpioIO::InitializePin(GPIO28, GpioPinMode_MODE_INPUT, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO29, GpioPinMode_MODE_INPUT, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO37, GpioPinMode_MODE_INPUT, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO38, GpioPinMode_MODE_INPUT, GpioBias_NoBias);
     return;
 }
 void InitializeADC()
@@ -90,12 +90,6 @@ void InitializeI2C()
 void InitializePWM()
 {
     PwmIO::Initialize(1000);
-    PwmIO::AttachGpio(GPIO46, ledc_timer_t::LEDC_TIMER_0, 1000);
-    PwmIO::AttachGpio(GPIO47, ledc_timer_t::LEDC_TIMER_0, 1000);
-    PwmIO::AttachGpio(GPIO48, ledc_timer_t::LEDC_TIMER_0, 1000);
-    PwmIO::AttachGpio(GPIO49, ledc_timer_t::LEDC_TIMER_0, 1000);
-    PwmIO::AttachGpio(GPIO50, ledc_timer_t::LEDC_TIMER_0, 1000);
-    PwmIO::AttachGpio(GPIO51, ledc_timer_t::LEDC_TIMER_0, 1000);
     return;
 }
 void InitializeSpi()

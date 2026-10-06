@@ -1,13 +1,53 @@
-﻿#pragma once
+﻿//-----------------------------------------------------------------------------
 //
-// Copyright (c) .NET Foundation and Contributors
-// See LICENSE file in the project root for full license information.
+//                   ** WARNING! **
+//    This file was generated automatically by a tool.
+//    Re-running the tool will overwrite this file.
+//    You should copy this file to a custom location
+//    before adding any customization in the copy to
+//    prevent loss of your changes when the tool is
+//    re-run.
 //
+//-----------------------------------------------------------------------------
+
+#ifndef NANOFRAMEWORK_NATIVEIO_H
+#define NANOFRAMEWORK_NATIVEIO_H
 
 #include <nanoCLR_Interop.h>
 #include <nanoCLR_Runtime.h>
 #include <nanoPackStruct.h>
 #include <corlib_native.h>
+
+
+void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, bool pinLevel);
+
+typedef enum __nfpack GPIO_INTERRUPT_EDGE
+{
+    GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_LOW = 0,
+    GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_HIGH = 1,
+    GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_BOTH = 2,
+} GPIO_INTERRUPT_EDGE;
+
+typedef enum __nfpack GpioBias
+{
+    GpioBias_NoBias = 0,
+    GpioBias_PullUp = 1,
+    GpioBias_PullDown = 2,
+} GpioBias;
+
+typedef enum __nfpack GpioPinLevel
+{
+    GpioPinLevel_LOW = 0,
+    GpioPinLevel_HIGH = 1,
+} GpioPinLevel;
+
+typedef enum __nfpack GpioPinMode
+{
+    GpioPinMode_NONE = 0,
+    GpioPinMode_MODE_INPUT = 1,
+    GpioPinMode_MODE_OUTPUT = 2,
+    GpioPinMode_MODE_OUTPUT_OPEN_DRAIN = 3,
+} GpioPinMode;
 
 typedef enum __nfpack PinCapabilities
 {
@@ -33,49 +73,57 @@ typedef enum __nfpack PinCapabilities
     PinCapabilities_McPwm = 524288,
 } PinCapabilities;
 
-struct Library_nanoFramework_NativeIO_NativeAdc
+struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeAdc
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeIO_NativeDac
+struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeDac
 {
     NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeIO_NativeGpio
+struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio
 {
-    NANOCLR_NATIVE_DECLARE(ConfigureInput___STATIC__VOID__I4);
-    NANOCLR_NATIVE_DECLARE(ConfigureOutput___STATIC__VOID__I4);
-    NANOCLR_NATIVE_DECLARE(Read___STATIC__BOOLEAN__I4);
-    NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__BOOLEAN);
+    NANOCLR_NATIVE_DECLARE(
+        ConfigurePin___STATIC__VOID__I4__nanoFrameworkNativeIOGpioPinMode__nanoFrameworkNativeIOGpioBias);
+    NANOCLR_NATIVE_DECLARE(Read___STATIC__nanoFrameworkNativeIOGpioPinLevel__I4);
+    NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__nanoFrameworkNativeIOGpioPinLevel);
     NANOCLR_NATIVE_DECLARE(EnableInterrupt___STATIC__VOID__I4);
     NANOCLR_NATIVE_DECLARE(DisableInterrupt___STATIC__VOID__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeIO_NativeI2C
+struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeI2C
 {
-    NANOCLR_NATIVE_DECLARE(Open___STATIC__I4__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Open___STATIC__BOOLEAN__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(AddSlaveDevice___STATIC__BOOLEAN__I4__I4__U2);
+    NANOCLR_NATIVE_DECLARE(Probe___STATIC__BOOLEAN__I4__U2__I4);
+    NANOCLR_NATIVE_DECLARE(Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
+    NANOCLR_NATIVE_DECLARE(Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
+    NANOCLR_NATIVE_DECLARE(WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeIO_NativePwm
+struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativePwm
 {
-    NANOCLR_NATIVE_DECLARE(Start___STATIC__VOID__I4__I4__I4);
-    NANOCLR_NATIVE_DECLARE(Stop___STATIC__VOID__I4);
-    NANOCLR_NATIVE_DECLARE(SetDuty___STATIC__VOID__I4);
+    NANOCLR_NATIVE_DECLARE(Initialize___STATIC__VOID__I4);
+    NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(SetDutyCycle___STATIC__VOID__I4__I4);
+    NANOCLR_NATIVE_DECLARE(SetFrequency___STATIC__VOID__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Start___STATIC__VOID__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Stop___STATIC__VOID__I4__BOOLEAN);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeIO_NativeTouch
+struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeTouch
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
 
@@ -84,3 +132,4 @@ struct Library_nanoFramework_NativeIO_NativeTouch
 
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_NativeIO;
 
+#endif // NANOFRAMEWORK_NATIVEIO_H

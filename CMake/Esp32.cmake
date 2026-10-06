@@ -3,7 +3,7 @@
 # See LICENSE file in the project root for full license information.
 #
 list(APPEND ESP32_Sources
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/CoreIO.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeIO.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Device_BlockStorage.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp

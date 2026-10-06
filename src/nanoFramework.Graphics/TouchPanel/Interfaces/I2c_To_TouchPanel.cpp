@@ -4,7 +4,7 @@
 //
 
 #include "TouchInterface.h"
-#include "CoreIO.h"
+#include "NativeIO.h"
 
 TouchInterface g_TouchInterface;
 

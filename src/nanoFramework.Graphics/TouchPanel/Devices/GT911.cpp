@@ -4,7 +4,7 @@
 
 #include "TouchDevice.h"
 #include "TouchInterface.h"
-#include "CoreIO.h"
+#include "NativeIO.h"
 #include "esp_err.h"
 #include "board.h"
 
@@ -48,11 +48,10 @@ int control_phase_bytes = 1;
 int lcd_cmd_bits = 16;
 int scl_speed_hz = 100000;
 int disable_control_phase = 1;
-int touchStatusInterruptArg;
 
 GPIO_INTERRUPT touchInterruptServiceRoutine;
 
-void local_gpio_callback(void *arg)
+static void local_gpio_callback(void *arg)
 {
     touchInterruptServiceRoutine(NULL);
 }
@@ -65,10 +64,10 @@ bool TouchDevice::Initialize()
     uint8_t buf[4];
 
     // Reset the controller
-    GpioIO::InitializePin(TOUCH_RESET_PIN, GpioPinMode::MODE_OUTPUT, GpioBias::NOBIAS);
-    GpioIO::SetLevel(TOUCH_RESET_PIN, GpioPinLevel::LOW);
+    GpioIO::InitializePin(TOUCH_RESET_PIN, GpioPinMode_MODE_OUTPUT, GpioBias_NoBias);
+    GpioIO::SetLevel(TOUCH_RESET_PIN, GpioPinLevel_LOW);
     PLATFORM_DELAY(5);
-    GpioIO::SetLevel(TOUCH_RESET_PIN, GpioPinLevel::HIGH);
+    GpioIO::SetLevel(TOUCH_RESET_PIN, GpioPinLevel_HIGH);
     PLATFORM_DELAY(50);
 
     // Check the device is answering to the default primary address
@@ -84,13 +83,13 @@ bool TouchDevice::Initialize()
     TouchHeight = buf[2] | (buf[3] << 8);
 
     I2cIO::Write(LCD_TOUCH_GT911_ADDRESS, ClearStatusAndCoordinates, sizeof(ClearStatusAndCoordinates));
-    GpioIO::InitializePin(TOUCH_INTERRUPT_PIN, GpioPinMode::MODE_INPUT, GpioBias::PullUp);
+    GpioIO::InitializePin(TOUCH_INTERRUPT_PIN, GpioPinMode_MODE_INPUT, GpioBias_PullUp);
     return true;
 }
 bool TouchDevice::Enable(GPIO_INTERRUPT touchIsrProc)
 {
     touchInterruptServiceRoutine = touchIsrProc;
-    GpioIO::EnableInterrupt(TOUCH_INTERRUPT_PIN, GPIO_INTERRUPT_EDGE::GPIO_INTERRUPT_EDGE_LOW, local_gpio_callback,&touchStatusInterruptArg);
+    GpioIO::EnableInterrupt(TOUCH_INTERRUPT_PIN, GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_LOW, (void *)local_gpio_callback);
     return TRUE;
 }
 bool TouchDevice::Disable()

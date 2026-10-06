@@ -4,10 +4,11 @@
 //
 
 #include "nanoFramework_NativeIO.h"
-#include "CoreIO.h"
+#include "NativeIO.h"
 
 
-HRESULT Library_nanoFramework_NativeIO_NativeI2C::Open___STATIC__I4__I4__I4__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4(
+    CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

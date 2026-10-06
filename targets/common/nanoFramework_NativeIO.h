@@ -18,22 +18,19 @@
 #include <nanoPackStruct.h>
 #include <corlib_native.h>
 
-
-void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, bool pinLevel);
-
-typedef enum __nfpack GPIO_INTERRUPT_EDGE
-{
-    GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_LOW = 0,
-    GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_HIGH = 1,
-    GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_BOTH = 2,
-} GPIO_INTERRUPT_EDGE;
-
 typedef enum __nfpack GpioBias
 {
     GpioBias_NoBias = 0,
     GpioBias_PullUp = 1,
     GpioBias_PullDown = 2,
 } GpioBias;
+
+typedef enum __nfpack GpioInterruptMode
+{
+    GpioInterruptMode_EDGE_LOW = 0,
+    GpioInterruptMode_EDGE_HIGH = 1,
+    GpioInterruptMode_EDGE_BOTH = 2,
+} GpioInterruptMode;
 
 typedef enum __nfpack GpioPinLevel
 {
@@ -44,9 +41,9 @@ typedef enum __nfpack GpioPinLevel
 typedef enum __nfpack GpioPinMode
 {
     GpioPinMode_NONE = 0,
-    GpioPinMode_MODE_INPUT = 1,
-    GpioPinMode_MODE_OUTPUT = 2,
-    GpioPinMode_MODE_OUTPUT_OPEN_DRAIN = 3,
+    GpioPinMode_INPUT = 1,
+    GpioPinMode_OUTPUT = 2,
+    GpioPinMode_OUTPUT_OPEN_DRAIN = 3,
 } GpioPinMode;
 
 typedef enum __nfpack PinCapabilities
@@ -93,8 +90,10 @@ struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio
         ConfigurePin___STATIC__VOID__I4__nanoFrameworkNativeIOGpioPinMode__nanoFrameworkNativeIOGpioBias);
     NANOCLR_NATIVE_DECLARE(Read___STATIC__nanoFrameworkNativeIOGpioPinLevel__I4);
     NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__nanoFrameworkNativeIOGpioPinLevel);
+    NANOCLR_NATIVE_DECLARE(AddInterrupt___STATIC__VOID__I4__nanoFrameworkNativeIOGpioInterruptMode);
     NANOCLR_NATIVE_DECLARE(EnableInterrupt___STATIC__VOID__I4);
     NANOCLR_NATIVE_DECLARE(DisableInterrupt___STATIC__VOID__I4);
+    NANOCLR_NATIVE_DECLARE(RemoveInterrupt___STATIC__VOID__I4);
 
     //--//
 };

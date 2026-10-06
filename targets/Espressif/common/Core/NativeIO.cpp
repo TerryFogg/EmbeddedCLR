@@ -55,13 +55,13 @@ bool GpioIO::InitializePin(PinNameValue pinNameValue, GpioPinMode mode, GpioBias
         case GpioPinMode_NONE:
             io_conf.mode = gpio_mode_t::GPIO_MODE_DISABLE;
             break;
-        case GpioPinMode_MODE_INPUT:
+        case GpioPinMode_INPUT:
             io_conf.mode = gpio_mode_t::GPIO_MODE_INPUT;
             break;
-        case GpioPinMode_MODE_OUTPUT:
+        case GpioPinMode_OUTPUT:
             io_conf.mode = gpio_mode_t::GPIO_MODE_OUTPUT;
             break;
-        case GpioPinMode_MODE_OUTPUT_OPEN_DRAIN:
+        case GpioPinMode_OUTPUT_OPEN_DRAIN:
             io_conf.mode = gpio_mode_t::GPIO_MODE_OUTPUT_OD;
             break;
     }
@@ -104,21 +104,22 @@ bool GpioIO::SetLevel(PinNameValue pinNameValue, GpioPinLevel pinState)
     return true;
 }
 
-bool GpioIO::EnableInterrupt(PinNameValue pinNameValue, GPIO_INTERRUPT_EDGE events, void * alternateInterruptHandler)
+bool GpioIO::AddInterrupt(PinNameValue pinNameValue, GpioInterruptMode interruptMode, void *alternateInterruptHandler)
 {
     gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
 
     gpio_int_type_t edge_events = GPIO_INTR_DISABLE;
-    switch (events)
+    switch (interruptMode)
     {
-        case GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_LOW:
+        case GpioInterruptMode_EDGE_LOW:
             edge_events = GPIO_INTR_NEGEDGE;
             break;
-        case GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_HIGH:
+        case GpioInterruptMode_EDGE_HIGH:
             edge_events = GPIO_INTR_POSEDGE;
             break;
-        case GPIO_INTERRUPT_EDGE_GPIO_INTERRUPT_EDGE_BOTH:
+        case GpioInterruptMode_EDGE_BOTH:
             edge_events = GPIO_INTR_ANYEDGE;
+            break;
             break;
     }
     ESP_ERROR_CHECK(gpio_set_intr_type(pinNumber, edge_events));
@@ -135,13 +136,24 @@ bool GpioIO::EnableInterrupt(PinNameValue pinNameValue, GPIO_INTERRUPT_EDGE even
     return true;
 }
 
+bool GpioIO::EnableInterrupt(PinNameValue pinNameValue)
+{
+    gpio_intr_enable((gpio_num_t)pinNameValue);
+    return true;
+}
+
 bool GpioIO::DisableInterrupt(PinNameValue pinNameValue)
 {
-    gpio_num_t pinNumber = (gpio_num_t)pinNameValue;
-    gpio_set_intr_type(pinNumber, GPIO_INTR_DISABLE);
-    gpio_isr_handler_remove(pinNumber);
-    return false;
+    gpio_intr_disable((gpio_num_t)pinNameValue);
+    return true;
 }
+
+bool GpioIO::RemoveInterrupt(PinNameValue pinNameValue)
+{
+    gpio_isr_handler_remove((gpio_num_t)pinNameValue);
+    return true;
+}
+
 #pragma endregion
 
 #pragma region Adc

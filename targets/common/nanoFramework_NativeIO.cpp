@@ -9,8 +9,10 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::ConfigurePin___STATIC__VOID__I4__nanoFrameworkNativeIOGpioPinMode__nanoFrameworkNativeIOGpioBias,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::Read___STATIC__nanoFrameworkNativeIOGpioPinLevel__I4,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::Write___STATIC__VOID__I4__nanoFrameworkNativeIOGpioPinLevel,
+    Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::AddInterrupt___STATIC__VOID__I4__nanoFrameworkNativeIOGpioInterruptMode,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::EnableInterrupt___STATIC__VOID__I4,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::DisableInterrupt___STATIC__VOID__I4,
+    Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::RemoveInterrupt___STATIC__VOID__I4,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeI2C::AddSlaveDevice___STATIC__BOOLEAN__I4__I4__U2,
     Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4,
@@ -29,7 +31,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_NativeIO =
 {
     "nanoFramework.NativeIO",
-    0xB901E367,
+    0x6BC9365C,
     method_lookup,
     { 100, 1, 0, 6 }
 };

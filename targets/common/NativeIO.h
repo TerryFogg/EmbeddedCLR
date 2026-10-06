@@ -9,6 +9,7 @@
 #include <hal/ledc_types.h>
 
 #include "nanoFramework_NativeIO.h"
+void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, bool pinState);
 
 enum PinNameValue
 {
@@ -68,46 +69,24 @@ enum PinNameValue
     GPIO53 = 53,
     GPIO54 = 54
 };
-// enum GpioPinLevel
-//{
-//     LOW,
-//     HIGH
-// };
-// enum GpioPinMode
-//{
-//     NONE,
-//     MODE_INPUT,
-//     MODE_OUTPUT
-// };
-// enum GpioBias
-//{
-//     NOBIAS,
-//     PullUp,
-//     PullDown,
-//     OpenDrain
-// };
-// enum GPIO_INTERRUPT_EDGE
-//{
-//     GPIO_INTERRUPT_NONE = 0,
-//     GPIO_INTERRUPT_EDGE_LOW = 1,
-//     GPIO_INTERRUPT_EDGE_HIGH = 2,
-//     GPIO_INTERRUPT_EDGE_BOTH = 3,
-// };
 
 class GpioIO
 {
   private:
+
   public:
     static void Initialize();
     static bool InitializePin(PinNameValue pin, GpioPinMode mode, GpioBias Bias);
     static GpioPinLevel ReadLevel(PinNameValue pinNumber);
     static bool SetDirection(PinNameValue pinNameValue, GpioPinMode pinMode);
     static bool SetLevel(PinNameValue pinNumber, GpioPinLevel pinState);
-    static bool EnableInterrupt(
+    static bool AddInterrupt(
         PinNameValue pinNumber,
-        GPIO_INTERRUPT_EDGE events,
+        GpioInterruptMode interruptMode,
         void *alternateInterruptHandler = nullptr);
+    static bool EnableInterrupt(PinNameValue pinNumber);
     static bool DisableInterrupt(PinNameValue pinNumber);
+    static bool RemoveInterrupt(PinNameValue pinNumber);
 };
 class AdcIO
 {

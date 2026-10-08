@@ -62,10 +62,10 @@ void InitializeBoard()
 void InitializeGpio()
 {
     GpioIO::Initialize();
-    GpioIO::InitializePin(GPIO28, GpioPinMode_INPUT, GpioBias_NoBias);
-    GpioIO::InitializePin(GPIO29, GpioPinMode_INPUT, GpioBias_NoBias);
-    GpioIO::InitializePin(GPIO37, GpioPinMode_INPUT, GpioBias_NoBias);
-    GpioIO::InitializePin(GPIO38, GpioPinMode_INPUT, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO28, GpioPinMode_Input, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO29, GpioPinMode_Input, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO37, GpioPinMode_Input, GpioBias_NoBias);
+    GpioIO::InitializePin(GPIO38, GpioPinMode_Input, GpioBias_NoBias);
     return;
 }
 void InitializeADC()

@@ -9,7 +9,7 @@
 #include <hal/ledc_types.h>
 
 #include "nanoFramework_NativeIO.h"
-void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, bool pinState);
+void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, int pinLevel);
 
 enum PinNameValue
 {

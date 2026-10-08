@@ -76,6 +76,3 @@
 | GPIO54 | WIFI(Reserved)                    |                |
 
 
-
-
-

@@ -18,6 +18,13 @@
 #include <nanoPackStruct.h>
 #include <corlib_native.h>
 
+typedef enum __nfpack BusSpeed
+{
+    BusSpeed_Standard = 0,
+    BusSpeed_Fast = 1,
+    BusSpeed_FastPlus = 2,
+} BusSpeed;
+
 typedef enum __nfpack GpioBias
 {
     GpioBias_NoBias = 0,
@@ -27,23 +34,23 @@ typedef enum __nfpack GpioBias
 
 typedef enum __nfpack GpioInterruptMode
 {
-    GpioInterruptMode_EDGE_LOW = 0,
-    GpioInterruptMode_EDGE_HIGH = 1,
-    GpioInterruptMode_EDGE_BOTH = 2,
+    GpioInterruptMode_EdgeLow = 0,
+    GpioInterruptMode_EdgeHigh = 1,
+    GpioInterruptMode_EdgeBoth = 2,
 } GpioInterruptMode;
 
 typedef enum __nfpack GpioPinLevel
 {
-    GpioPinLevel_LOW = 0,
-    GpioPinLevel_HIGH = 1,
+    GpioPinLevel_Low = 0,
+    GpioPinLevel_High = 1,
 } GpioPinLevel;
 
 typedef enum __nfpack GpioPinMode
 {
-    GpioPinMode_NONE = 0,
-    GpioPinMode_INPUT = 1,
-    GpioPinMode_OUTPUT = 2,
-    GpioPinMode_OUTPUT_OPEN_DRAIN = 3,
+    GpioPinMode_None = 0,
+    GpioPinMode_Input = 1,
+    GpioPinMode_Output = 2,
+    GpioPinMode_OutputOpenDrain = 3,
 } GpioPinMode;
 
 typedef enum __nfpack PinCapabilities
@@ -101,7 +108,7 @@ struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio
 struct Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeI2C
 {
     NANOCLR_NATIVE_DECLARE(Open___STATIC__BOOLEAN__I4__I4__I4);
-    NANOCLR_NATIVE_DECLARE(AddSlaveDevice___STATIC__BOOLEAN__I4__I4__U2);
+    NANOCLR_NATIVE_DECLARE(AddSlaveDevice___STATIC__BOOLEAN__I4__nanoFrameworkNativeIOBusSpeed__U2);
     NANOCLR_NATIVE_DECLARE(Probe___STATIC__BOOLEAN__I4__U2__I4);
     NANOCLR_NATIVE_DECLARE(Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
     NANOCLR_NATIVE_DECLARE(Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);

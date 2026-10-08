@@ -52,16 +52,16 @@ bool GpioIO::InitializePin(PinNameValue pinNameValue, GpioPinMode mode, GpioBias
         .hys_ctrl_mode = gpio_hys_ctrl_mode_t::GPIO_HYS_SOFT_DISABLE};
     switch (mode)
     {
-        case GpioPinMode_NONE:
+        case GpioPinMode_None:
             io_conf.mode = gpio_mode_t::GPIO_MODE_DISABLE;
             break;
-        case GpioPinMode_INPUT:
+        case GpioPinMode_Input:
             io_conf.mode = gpio_mode_t::GPIO_MODE_INPUT;
             break;
-        case GpioPinMode_OUTPUT:
+        case GpioPinMode_Output:
             io_conf.mode = gpio_mode_t::GPIO_MODE_OUTPUT;
             break;
-        case GpioPinMode_OUTPUT_OPEN_DRAIN:
+        case GpioPinMode_OutputOpenDrain:
             io_conf.mode = gpio_mode_t::GPIO_MODE_OUTPUT_OD;
             break;
     }
@@ -111,13 +111,13 @@ bool GpioIO::AddInterrupt(PinNameValue pinNameValue, GpioInterruptMode interrupt
     gpio_int_type_t edge_events = GPIO_INTR_DISABLE;
     switch (interruptMode)
     {
-        case GpioInterruptMode_EDGE_LOW:
+        case GpioInterruptMode_EdgeLow:
             edge_events = GPIO_INTR_NEGEDGE;
             break;
-        case GpioInterruptMode_EDGE_HIGH:
+        case GpioInterruptMode_EdgeHigh:
             edge_events = GPIO_INTR_POSEDGE;
             break;
-        case GpioInterruptMode_EDGE_BOTH:
+        case GpioInterruptMode_EdgeBoth:
             edge_events = GPIO_INTR_ANYEDGE;
             break;
             break;

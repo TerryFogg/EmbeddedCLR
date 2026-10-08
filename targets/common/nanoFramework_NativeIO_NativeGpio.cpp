@@ -8,10 +8,10 @@
 
 // Setup interrupts to be one shot, must be re-enabled after each interrupt.
 // This is to avoid flooding the event queue with interrupts if the pin is bouncing.
-void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, bool pinState)
+void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, int pinLevel)
 {
     GpioIO::DisableInterrupt((PinNameValue)pinNumber);
-    PostManagedEvent(EVENT_GPIO, 0, (uint16_t)pinNumber, (uint32_t)pinState);
+    PostManagedEvent(EVENT_GPIO, 0, (uint16_t)pinNumber, pinLevel);
 }
 
 HRESULT Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeGpio::

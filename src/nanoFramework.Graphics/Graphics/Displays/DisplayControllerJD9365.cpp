@@ -32,11 +32,9 @@
 #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_panel_vendor.h"
 #include "esp_lcd_types.h"
-#include "driver/gpio.h"
 #include "driver/ledc.h"
 #include "hal/ppa_types.h"
 #include "driver/ppa.h"
-#include "hal/assert.h"
 #include "board.h"
 
 // #include "JD9365_data_waveshare_10_1.inc"
@@ -278,13 +276,7 @@ static const jd9365_lcd_init_cmd_t jd9365_vendor_specific_init_default[] = {
 #define JD9365_CMD_GS_BIT (1 << 0)
 #define JD9365_CMD_SS_BIT (1 << 1)
 
-#define BSP_LCD_BACKLIGHT              (GPIO_NUM_26)
-#define BSP_LCD_RST                    (GPIO_NUM_27)
-#define LCD_LEDC_CH                    (1)
 #define CONFIG_BSP_LCD_DPI_BUFFER_NUMS (1)
-
-#define LCD_X_SIZE       (800)
-#define LCD_Y_SIZE       (1280)
 #define PANEL_SIZE_BYTES (LCD_X_SIZE * LCD_Y_SIZE * 2)
 
 typedef struct
@@ -308,8 +300,8 @@ typedef struct
 static esp_err_t panel_jd9365_del(esp_lcd_panel_t *panel);
 static esp_err_t panel_jd9365_init(esp_lcd_panel_t *panel);
 static esp_err_t panel_jd9365_reset(esp_lcd_panel_t *panel);
-//static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data);
-//static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y);
+// static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data);
+// static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y);
 static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off);
 bsp_lcd_handles_t handles;
 esp_lcd_panel_handle_t disp_panel = NULL;
@@ -327,20 +319,20 @@ extern esp_lcd_dsi_bus_handle_t mipi_dsi_bus;
 extern esp_lcd_panel_io_handle_t io_handle;
 extern uint16_t *graphicsRotationBuffer;
 
- SemaphoreHandle_t refresh_finish;
+SemaphoreHandle_t refresh_finish;
 
 ppa_client_handle_t ppa_srm_client_handle = NULL;
 
- IRAM_ATTR static bool test_notify_refresh_ready(
-     esp_lcd_panel_handle_t panel,
-     esp_lcd_dpi_panel_event_data_t *edata,
-     void *user_ctx)
+IRAM_ATTR static bool test_notify_refresh_ready(
+    esp_lcd_panel_handle_t panel,
+    esp_lcd_dpi_panel_event_data_t *edata,
+    void *user_ctx)
 {
-     refresh_finish = (SemaphoreHandle_t)user_ctx;
-     BaseType_t need_yield = pdFALSE;
-     xSemaphoreGiveFromISR(refresh_finish, &need_yield);
-     return (need_yield == pdTRUE);
- }
+    refresh_finish = (SemaphoreHandle_t)user_ctx;
+    BaseType_t need_yield = pdFALSE;
+    xSemaphoreGiveFromISR(refresh_finish, &need_yield);
+    return (need_yield == pdTRUE);
+}
 
 bool DisplayDriver::Initialize()
 {
@@ -349,8 +341,16 @@ bool DisplayDriver::Initialize()
 
     // Initialize the backlight control using LEDC
     {
+        const ledc_timer_config_t LCD_backlight_timer = {
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .duty_resolution = LEDC_TIMER_10_BIT,
+            .timer_num = LEDC_TIMER_1,
+            .freq_hz = 5000,
+            .clk_cfg = LEDC_AUTO_CLK,
+            .deconfigure = false};
+
         const ledc_channel_config_t LCD_backlight_channel = {
-            .gpio_num = BSP_LCD_BACKLIGHT,
+            .gpio_num = LCD_BACK_LIGHT,
             .speed_mode = LEDC_LOW_SPEED_MODE,
             .channel = LEDC_CHANNEL_1,
             .intr_type = LEDC_INTR_DISABLE,
@@ -359,13 +359,7 @@ bool DisplayDriver::Initialize()
             .hpoint = 0,
             .sleep_mode = LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
             .flags = {.output_invert = 0}};
-        const ledc_timer_config_t LCD_backlight_timer = {
-            .speed_mode = LEDC_LOW_SPEED_MODE,
-            .duty_resolution = LEDC_TIMER_10_BIT,
-            .timer_num = LEDC_TIMER_1,
-            .freq_hz = 5000,
-            .clk_cfg = LEDC_AUTO_CLK,
-            .deconfigure = false};
+
         ledc_timer_config(&LCD_backlight_timer);
         ledc_channel_config(&LCD_backlight_channel);
     }
@@ -408,7 +402,7 @@ bool DisplayDriver::Initialize()
             .lane_num = 2,
         }};
     esp_lcd_panel_dev_config_t lcd_dev_config = {
-        .reset_gpio_num = BSP_LCD_RST,
+        .reset_gpio_num = LCD_RESET,
         .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
         .data_endian = LCD_RGB_DATA_ENDIAN_BIG,
         .bits_per_pixel = 16,
@@ -431,11 +425,11 @@ bool DisplayDriver::Initialize()
     esp_lcd_dpi_panel_get_frame_buffer(disp_panel, 1, &framebuffer[0]);
     Attributes.TransferBuffer = (CLR_UINT8 *)framebuffer[0];
 
-     refresh_finish = xSemaphoreCreateBinary();
-     esp_lcd_dpi_panel_event_callbacks_t cbs = {
-         .on_color_trans_done = NULL,
-         .on_refresh_done = test_notify_refresh_ready};
-     esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
+    refresh_finish = xSemaphoreCreateBinary();
+    esp_lcd_dpi_panel_event_callbacks_t cbs = {
+        .on_color_trans_done = NULL,
+        .on_refresh_done = test_notify_refresh_ready};
+    esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
 
     // Setup for pixel processor for 90/180/270 degree rotation
     ppa_client_config_t ppa_srm_client_config = {
@@ -613,7 +607,7 @@ void DisplayDriver::BitBlt(
             break;
     }
 
-     xSemaphoreTake(refresh_finish, portMAX_DELAY);
+    xSemaphoreTake(refresh_finish, portMAX_DELAY);
 }
 
 CLR_UINT32 DisplayDriver::PixelsPerWord()
@@ -677,8 +671,8 @@ esp_err_t esp_lcd_new_panel_jd9365(
     panel_handle->del = panel_jd9365_del;
     panel_handle->init = panel_jd9365_init;
     panel_handle->reset = panel_jd9365_reset;
-    //panel_handle->mirror = panel_jd9365_mirror;
-    //panel_handle->invert_color = panel_jd9365_invert_color;
+    // panel_handle->mirror = panel_jd9365_mirror;
+    // panel_handle->invert_color = panel_jd9365_invert_color;
     panel_handle->disp_on_off = panel_jd9365_disp_on_off;
     panel_handle->user_data = jd9365;
     *ret_panel = panel_handle;
@@ -792,55 +786,6 @@ static esp_err_t panel_jd9365_reset(esp_lcd_panel_t *panel)
     return ESP_OK;
 }
 
-//static esp_err_t panel_jd9365_invert_color(esp_lcd_panel_t *panel, bool invert_color_data)
-//{
-//    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
-//    esp_lcd_panel_io_handle_t io = jd9365->io;
-//    uint8_t command = 0;
-//
-//    if (invert_color_data)
-//    {
-//        command = LCD_CMD_INVON;
-//    }
-//    else
-//    {
-//        command = LCD_CMD_INVOFF;
-//    }
-//    esp_lcd_panel_io_tx_param(io, command, NULL, 0);
-//
-//    return ESP_OK;
-//}
-//
-//static esp_err_t panel_jd9365_mirror(esp_lcd_panel_t *panel, bool mirror_x, bool mirror_y)
-//{
-//    jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
-//    esp_lcd_panel_io_handle_t io = jd9365->io;
-//    uint8_t madctl_val = jd9365->madctl_val;
-//
-//    // Control mirror through LCD command
-//    if (mirror_x)
-//    {
-//        madctl_val |= JD9365_CMD_GS_BIT;
-//    }
-//    else
-//    {
-//        madctl_val &= ~JD9365_CMD_GS_BIT;
-//    }
-//    if (mirror_y)
-//    {
-//        madctl_val |= JD9365_CMD_SS_BIT;
-//    }
-//    else
-//    {
-//        madctl_val &= ~JD9365_CMD_SS_BIT;
-//    }
-//
-//    esp_lcd_panel_io_tx_param(io, LCD_CMD_MADCTL, (uint8_t[]){madctl_val}, 1);
-//    jd9365->madctl_val = madctl_val;
-//
-//    return ESP_OK;
-//}
-
 static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off)
 {
     jd9365_panel_t *jd9365 = (jd9365_panel_t *)panel->user_data;
@@ -855,4 +800,3 @@ static esp_err_t panel_jd9365_disp_on_off(esp_lcd_panel_t *panel, bool on_off)
     }
     return ESP_OK;
 }
-

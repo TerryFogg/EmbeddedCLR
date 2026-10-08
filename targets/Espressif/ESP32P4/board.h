@@ -31,13 +31,15 @@
 
 #define TOUCH_HEIGHT                   800
 #define TOUCH_WIDTH                    1280
-#define TOUCH_RESET_PIN                GPIO23 // Shared with LCD reset on ESP32P4-WIFI6 (Waveshare)
+#define TOUCH_RESET_PIN                GPIO23
 #define TOUCH_INTERRUPT_PIN            GPIO33
 #define LCD_TOUCH_GT911_ADDRESS        (0x5D)
 #define LCD_TOUCH_GT911_ADDRESS_BACKUP (0x14)
 
-#define LCD_RESET      (0x27)
-#define LCD_BACK_LIGHT (0x26)
+#define LCD_RESET      (GPIO_NUM_27)
+#define LCD_BACK_LIGHT (GPIO_NUM_26)
+#define LCD_X_SIZE        (800)
+#define LCD_Y_SIZE        (1280)
 
 #ifdef __cplusplus
 extern "C"

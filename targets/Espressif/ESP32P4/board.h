@@ -55,6 +55,9 @@
 #define LCD_X_SIZE        (800)
 #define LCD_Y_SIZE        (1280)
 
+#define MAX_WIFI_STATION_CONNECIONS 5
+
+
 #ifdef __cplusplus
 extern "C"
 {

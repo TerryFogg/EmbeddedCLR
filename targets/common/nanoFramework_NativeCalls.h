@@ -84,6 +84,27 @@ typedef enum __nfpack PinCapabilities
     PinCapabilities_McPwm = 524288,
 } PinCapabilities;
 
+typedef enum __nfpack WifiAuthMode
+{
+    WifiAuthMode_Open = 0,
+    WifiAuthMode_Wep = 1,
+    WifiAuthMode_Wpa = 2,
+    WifiAuthMode_Wpa2 = 3,
+    WifiAuthMode_Wpa3 = 4,
+    WifiAuthMode_Wpa2Wpa3 = 5,
+} WifiAuthMode;
+
+typedef enum __nfpack WifiCipherType
+{
+    WifiCipherType_None = 0,
+    WifiCipherType_Wep40 = 1,
+    WifiCipherType_Wep104 = 2,
+    WifiCipherType_Tkip = 3,
+    WifiCipherType_Ccmp = 4,
+    WifiCipherType_TkipCcmp = 5,
+    WifiCipherType_AesCmac128 = 6,
+} WifiCipherType;
+
 typedef enum __nfpack NetworkState
 {
     NetworkState_Disabled = 0,
@@ -133,15 +154,15 @@ struct Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocke
 
 struct Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi
 {
+    NANOCLR_NATIVE_DECLARE(Initialize___STATIC__BOOLEAN);
+    NANOCLR_NATIVE_DECLARE(IsAvailable___STATIC__BOOLEAN);
+    NANOCLR_NATIVE_DECLARE(Connect___STATIC__BOOLEAN__STRING__STRING__I4);
+    NANOCLR_NATIVE_DECLARE(Disconnect___STATIC__BOOLEAN);
+    NANOCLR_NATIVE_DECLARE(IsConnected___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Enable___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Disable___STATIC__BOOLEAN);
-    NANOCLR_NATIVE_DECLARE(Scan___STATIC__I4);
-    NANOCLR_NATIVE_DECLARE(Connect___STATIC__BOOLEAN__STRING__STRING__I4);
-    NANOCLR_NATIVE_DECLARE(Disconnect___STATIC__VOID);
-    NANOCLR_NATIVE_DECLARE(GetState___STATIC__NetworkState);
-    NANOCLR_NATIVE_DECLARE(GetIPAddress___STATIC__STRING);
-    NANOCLR_NATIVE_DECLARE(GetSignalStrength___STATIC__I4);
-    NANOCLR_NATIVE_DECLARE(GetSSID___STATIC__STRING__I4);
+    NANOCLR_NATIVE_DECLARE(StartScan___STATIC__BOOLEAN);
+    NANOCLR_NATIVE_DECLARE(GetScanResults___STATIC__SZARRAY_U1);
     NANOCLR_NATIVE_DECLARE(GetRSSI___STATIC__I4__I4);
 
     //--//
@@ -219,6 +240,24 @@ struct Library_nanoFramework_NativeCalls_NativeCalls_NativePwm
 struct Library_nanoFramework_NativeCalls_NativeCalls_NativeTouch
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
+
+    //--//
+};
+
+struct Library_nanoFramework_NativeCalls_NativeCalls_WifiScanRecord
+{
+    // renamed backing field '<Bssid>k__BackingField'
+    static const int FIELD__Bssid = 1;
+    // renamed backing field '<Ssid>k__BackingField'
+    static const int FIELD__Ssid = 2;
+    // renamed backing field '<Rssi>k__BackingField'
+    static const int FIELD__Rssi = 3;
+    // renamed backing field '<AuthMode>k__BackingField'
+    static const int FIELD__AuthMode = 4;
+    // renamed backing field '<CipherType>k__BackingField'
+    static const int FIELD__CipherType = 5;
+    // renamed backing field '<SignalStrength>k__BackingField'
+    static const int FIELD__SignalStrength = 6;
 
     //--//
 };

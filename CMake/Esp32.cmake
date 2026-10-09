@@ -3,16 +3,16 @@
 # See LICENSE file in the project root for full license information.
 #
 list(APPEND ESP32_Sources
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeIO.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/CLR_Startup_Thread.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/Device_BlockStorage.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoSupport_CRC32.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/CLR_Startup_Thread.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.cpp
-
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/platform_heap.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeIO.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeNetwork.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.cpp
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/platform_heap.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_Rtos.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL_Time.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetPAL_Events.cpp
@@ -58,20 +58,20 @@ list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/esp_adc/interface
             ${ESP32_IDF_PATH}/components/esp_common/include
             ${ESP32_IDF_PATH}/components/esp_driver_gpio/include
-            ${ESP32_IDF_PATH}/components/esp_hw_support/include
-
             ${ESP32_IDF_PATH}/components/esp_driver_i2c
             ${ESP32_IDF_PATH}/components/esp_driver_i2c/include
             ${ESP32_IDF_PATH}/components/esp_driver_i2s/include
             ${ESP32_IDF_PATH}/components/esp_driver_ledc/include
             ${ESP32_IDF_PATH}/components/esp_driver_spi/include
-            ${ESP32_IDF_PATH}/components/esp_partition/include
             ${ESP32_IDF_PATH}/components/esp_driver_uart/include
             ${ESP32_IDF_PATH}/components/esp_hw_support/include
             ${ESP32_IDF_PATH}/components/esp_hw_support/dma/include
             ${ESP32_IDF_PATH}/components/esp_hw_support/include/soc
+            ${ESP32_IDF_PATH}/components/esp_partition/include
             ${ESP32_IDF_PATH}/components/esp_rom/include
             ${ESP32_IDF_PATH}/components/esp_system/include
+            ${ESP32_IDF_PATH}/components/esp_wifi/include
+            ${ESP32_IDF_PATH}/components/esp_wifi_remote/esp_wifi/include
             ${ESP32_IDF_PATH}/components/freertos/config/include
             ${ESP32_IDF_PATH}/components/freertos/config/riscv/include 
             ${ESP32_IDF_PATH}/components/freertos/esp_additions/include
@@ -83,9 +83,10 @@ list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/soc/include
             ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
             ${ESP32_IDF_PATH}/components/vfs/include
+
             ${ESP32_IDF_PATH}/components/hal/${TARGET_SERIES}/include
             ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
-            ${ESP32_IDF_PATH}/components/esp_driver_i2c/include
+
 )
 target_sources(nanoCLR.elf PUBLIC ${ESP32_Sources} )
 target_include_directories(nanoCLR.elf PUBLIC
@@ -111,6 +112,16 @@ set( ADDITIONAL_IDF_COMPONENTS
       esp_driver_ledc
       esp_driver_spi
 )
+
+if(CONFIG_SUPPORT_WIFI)
+    list(APPEND ADDITIONAL_IDF_COMPONENTS
+                esp_hosted
+                esp_wifi_remote
+                esp_wifi
+                esp_netif
+                lwip
+    )
+endif()
 
 if( CONFIG_SUPPORT_INTERSOUND)
     list(APPEND ADDITIONAL_IDF_COMPONENTS
@@ -158,16 +169,6 @@ if(CONFIG_SUPPORT_USBSTREAM)
     )
 endif()
 
-if(CONFIG_SUPPORT_WIFI)
-    list(APPEND ADDITIONAL_IDF_COMPONENTS
-                esp_hosted
-                esp_wifi_remote
-                esp_wifi
-                esp_netif
-                esp_event
-                lwip
-    )
-endif()
 
 # Let the IDF build system handle the build of the IDF core and components used by nanoCLR
 include(${ESP32_IDF_PATH}/tools/cmake/idf.cmake)

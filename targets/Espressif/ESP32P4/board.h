@@ -6,6 +6,20 @@
 #include "driver/gpio.h"
 #include "hal/uart_types.h"
 #include "hal/i2c_types.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/event_groups.h"
+#include "esp_event.h"
+#include "esp_log.h"
+
+#include "nvs_flash.h"
+#include "esp_err.h"
+#include <string.h>
+
+#ifdef NETWORK
+ #include "esp_wifi.h"
+ #include "esp_netif.h"
+#endif
+
 
 //- 4 ADC inputs
 //- 1 dedicated user I²C bus

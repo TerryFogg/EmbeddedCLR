@@ -140,6 +140,17 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/src/PAL/FileSystem/nanoPAL_FileSystem_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/nanoPAL_Network_stubs.cpp
             ${CMAKE_SOURCE_DIR}/src/PAL/Profiler/nanoPAL_PerformanceCounters_stubs.cpp
+
+            # Runtime included as default
+            ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events/nf_rt_events_native_nanoFramework_Runtime_Events_EventSink.cpp
+            ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events/nf_rt_events_native_nanoFramework_Runtime_Events_NativeEventDispatcher.cpp
+            ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events/nf_rt_events_native_nanoFramework_Runtime_Events_WeakDelegate.cpp    
+            ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events/nf_rt_events_native.cpp
+            ${CMAKE_SOURCE_DIR}/src/PAL/AsyncProcCall/AsyncContinuations.cpp
+            ${CMAKE_SOURCE_DIR}/src/PAL/Events/nanoPAL_Events_functions.cpp
+
+
+
 )
 
 list(APPEND Core_Includes
@@ -158,6 +169,7 @@ list(APPEND Core_Includes
             ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Native
             ${CMAKE_SOURCE_DIR}/src/nanoFramework.System.Collections
             ${CMAKE_SOURCE_DIR}/src/DeviceInterfaces/Networking.Sntp
+            ${CMAKE_SOURCE_DIR}/src/nanoFramework.Runtime.Events
 
             ${CMAKE_BINARY_DIR}
 
@@ -172,13 +184,17 @@ list(APPEND Core_Includes
 
 
 list(APPEND Core_Sources
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeAdc.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeDac.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeGpio.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeI2C.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativePwm.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeIO_NativeTouch.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeDns.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeCalls_NativeAdc.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeCalls_NativeDac.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeCalls_NativeGpio.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeCalls_NativeI2C.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeCalls_NativePwm.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/nanoFramework_NativeCalls_NativeCalls_NativeTouch.cpp
 )
 if(NF_TRACE_TO_STDIO)
     list(APPEND Core_Sources

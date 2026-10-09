@@ -6,9 +6,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <board.h>
-#include <hal/ledc_types.h>
 
-#include "nanoFramework_NativeIO.h"
+#include "nanoFramework_NativeCalls.h"
 void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, int pinLevel);
 
 enum PinNameValue

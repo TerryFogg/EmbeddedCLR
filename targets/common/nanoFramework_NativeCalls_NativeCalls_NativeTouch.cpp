@@ -3,11 +3,11 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include "nanoFramework_NativeIO.h"
+#include "nanoFramework_NativeCalls.h"
 #include "NativeIO.h"
 
 
-HRESULT Library_nanoFramework_NativeIO_nanoFramework_NativeIO_NativeTouch::Read___STATIC__I4__I4(
+HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeTouch::Read___STATIC__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

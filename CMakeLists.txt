@@ -8,10 +8,10 @@ string(TIMESTAMP BUILD_TIMESTAMP UTC)
 project(nanoFramework VERSION ${BUILD_VERSION} LANGUAGES C CXX ASM)
 add_executable(nanoCLR.elf 
                ${CMAKE_SOURCE_DIR}/targets/Espressif/common/core/app_main.c
-               ${CMAKE_SOURCE_DIR}/targets/Espressif/${TARGET_SERIES}/CLR_RT_InteropAssembliesTable.cpp
+               ${CMAKE_SOURCE_DIR}/targets/common/CLR_RT_InteropAssembliesTable.cpp
  )
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake" "${CMAKE_SOURCE_DIR}/CMake/IOfeatures" "${CMAKE_SOURCE_DIR}/CMake/CoreFeatures")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake" "${CMAKE_SOURCE_DIR}/CMake/Features" "${CMAKE_SOURCE_DIR}/CMake/CoreOptions")
 include(Common)
 
 # Define feature variables first, these can be used in the following core and io features for additional options
@@ -24,7 +24,7 @@ foreach(FEATURE IN LISTS FEATURE_DEFINES ADVANCED_DEBUGGING)
     target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_${NAME_UPPER}=$<BOOL:${enabled}> )
 endforeach()
 
-foreach(FEATURE IN LISTS CORE_FEATURES  IO_FEATURES)
+foreach(FEATURE IN LISTS CORE_FEATURES  IO_FEATURES NETWORK_FEATURES)
     string(REPLACE "=" ";" RESULT "${FEATURE}")
     list(GET RESULT 0 name)
     list(GET RESULT 1 enabled)

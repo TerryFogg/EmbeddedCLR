@@ -128,28 +128,34 @@ bool WiFi::Disable()
     esp_err_t result = esp_wifi_stop();
     return (result == ESP_OK);
 }
-bool WiFi::StartScan()
-{
-    esp_err_t result = esp_wifi_scan_start(NULL, true);
-    return (result == ESP_OK);
-}
-bool WiFi::GetScanResults()
+
+static WiFi::ScanRecord *records;
+
+int WiFi::ScanToCache()
 {
     uint16_t apCount = 0;
-    esp_wifi_scan_stop();
+    esp_wifi_scan_start(NULL, true);
     esp_wifi_scan_get_ap_num(&apCount);
-    wifi_ap_record_t *aps = (wifi_ap_record_t *)platform_malloc(sizeof(wifi_ap_record_t) * apCount);
+    wifi_ap_record_t *aps = nullptr;
     esp_wifi_scan_get_ap_records(&apCount, aps);
+    records = (ScanRecord *)platform_malloc(sizeof(ScanRecord) * apCount);
+    return apCount;
+}
 
-    //for (int i = 0; i < apCount; i++)
-    //{
-    //    aps->bssid = ;
-    //    aps->ssid = ;
-    //    aps->rssi = ;
-    //    aps->authmode = ;
-    //    aps->pairwise_cipher = ;
-    //    aps->group_cipher = ;
-    //}
+bool WiFi::GetScanResults(uint8_t *packedScanReport, int apCount)
+{
+    for (int i = 0; i < apCount; i++)
+    {
+        memcpy(packedScanReport, records[i].bssid, 6);
+        packedScanReport += 6;
+        memcpy(packedScanReport, records[i].ssid, 33);
+        packedScanReport += 33;
+        *packedScanReport++ =  records[i].rssi;
+        *packedScanReport++ = records[i].authMode;
+        *packedScanReport++ = records[i].cypherType;
+    }
+    platform_free(records);
+
     return true;
 }
 
@@ -157,10 +163,10 @@ bool WiFi::GetRSSI()
 {
     wifi_ap_record_t ap;
     esp_err_t result = esp_wifi_sta_get_ap_info(&ap);
-    //if (result)
+    // if (result)
     //{
-    //    int rssi = ap.rssi;
-    //}
+    //     int rssi = ap.rssi;
+    // }
     return (result == ESP_OK);
 }
 

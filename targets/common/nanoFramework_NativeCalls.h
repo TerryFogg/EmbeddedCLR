@@ -18,6 +18,43 @@
 #include <nanoPackStruct.h>
 #include <corlib_native.h>
 
+typedef enum __nfpack NativeWifi_WiFiEventType
+{
+    NativeWifi_WiFiEventType_WifiConnected = 1,
+    NativeWifi_WiFiEventType_WifiDisconnected = 2,
+} NativeWifi_WiFiEventType;
+
+typedef enum __nfpack NetworkEventType
+{
+    NetworkEventType_SocketDataAvailable = 1,
+    NetworkEventType_SocketDisconnected = 2,
+    NetworkEventType_SocketError = 3,
+    NetworkEventType_UdpDatagramReceived = 4,
+    NetworkEventType_UdpError = 5,
+} NetworkEventType;
+
+typedef enum __nfpack NetworkState
+{
+    NetworkState_Disabled = 0,
+    NetworkState_Disconnected = 1,
+    NetworkState_Connecting = 2,
+    NetworkState_Connected = 3,
+} NetworkState;
+
+typedef enum __nfpack SocketProtocol
+{
+    SocketProtocol_Tcp = 0,
+    SocketProtocol_Udp = 1,
+} SocketProtocol;
+
+typedef enum __nfpack BluetoothEventType
+{
+    BluetoothEventType_BluetoothDeviceFound = 1,
+    BluetoothEventType_BluetoothConnected = 2,
+    BluetoothEventType_BluetoothDisconnected = 3,
+    BluetoothEventType_BluetoothCharacteristicChanged = 4,
+} BluetoothEventType;
+
 typedef enum __nfpack BluetoothState
 {
     BluetoothState_Disabled = 0,
@@ -105,35 +142,6 @@ typedef enum __nfpack WifiCipherType
     WifiCipherType_AesCmac128 = 6,
 } WifiCipherType;
 
-typedef enum __nfpack NetworkState
-{
-    NetworkState_Disabled = 0,
-    NetworkState_Disconnected = 1,
-    NetworkState_Connecting = 2,
-    NetworkState_Connected = 3,
-} NetworkState;
-
-typedef enum __nfpack NeworkEventType
-{
-    NeworkEventType_WifiConnected = 1,
-    NeworkEventType_WifiDisconnected = 2,
-    NeworkEventType_SocketDataAvailable = 10,
-    NeworkEventType_SocketDisconnected = 11,
-    NeworkEventType_SocketError = 12,
-    NeworkEventType_UdpDatagramReceived = 20,
-    NeworkEventType_UdpError = 21,
-    NeworkEventType_BluetoothDeviceFound = 30,
-    NeworkEventType_BluetoothConnected = 31,
-    NeworkEventType_BluetoothDisconnected = 32,
-    NeworkEventType_BluetoothCharacteristicChanged = 40,
-} NeworkEventType;
-
-typedef enum __nfpack SocketProtocol
-{
-    SocketProtocol_Tcp = 0,
-    SocketProtocol_Udp = 1,
-} SocketProtocol;
-
 struct Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeDns
 {
     NANOCLR_NATIVE_DECLARE(ResolveHost___STATIC__STRING__STRING);
@@ -143,7 +151,7 @@ struct Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeDns
 
 struct Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket
 {
-    NANOCLR_NATIVE_DECLARE(Create___STATIC__I4__SocketProtocol);
+    NANOCLR_NATIVE_DECLARE(Create___STATIC__I4__nanoFrameworkNativeNetworkSocketProtocol);
     NANOCLR_NATIVE_DECLARE(Connect___STATIC__BOOLEAN__I4__STRING__U2__I4);
     NANOCLR_NATIVE_DECLARE(Send___STATIC__I4__I4__SZARRAY_U1__I4__I4);
     NANOCLR_NATIVE_DECLARE(Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4);
@@ -161,7 +169,6 @@ struct Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi
     NANOCLR_NATIVE_DECLARE(IsConnected___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Enable___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Disable___STATIC__BOOLEAN);
-    NANOCLR_NATIVE_DECLARE(StartScan___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(GetScanResults___STATIC__SZARRAY_U1);
     NANOCLR_NATIVE_DECLARE(GetRSSI___STATIC__I4__I4);
 
@@ -172,7 +179,7 @@ struct Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth
 {
     NANOCLR_NATIVE_DECLARE(Enable___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Disable___STATIC__BOOLEAN);
-    NANOCLR_NATIVE_DECLARE(GetState___STATIC__BluetoothState);
+    NANOCLR_NATIVE_DECLARE(GetState___STATIC__NativeBlueToothBluetoothState);
     NANOCLR_NATIVE_DECLARE(StartScan___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(StopScan___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(DeviceCount___STATIC__I4);
@@ -240,24 +247,6 @@ struct Library_nanoFramework_NativeCalls_NativeCalls_NativePwm
 struct Library_nanoFramework_NativeCalls_NativeCalls_NativeTouch
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
-
-    //--//
-};
-
-struct Library_nanoFramework_NativeCalls_NativeCalls_WifiScanRecord
-{
-    // renamed backing field '<Bssid>k__BackingField'
-    static const int FIELD__Bssid = 1;
-    // renamed backing field '<Ssid>k__BackingField'
-    static const int FIELD__Ssid = 2;
-    // renamed backing field '<Rssi>k__BackingField'
-    static const int FIELD__Rssi = 3;
-    // renamed backing field '<AuthMode>k__BackingField'
-    static const int FIELD__AuthMode = 4;
-    // renamed backing field '<CipherType>k__BackingField'
-    static const int FIELD__CipherType = 5;
-    // renamed backing field '<SignalStrength>k__BackingField'
-    static const int FIELD__SignalStrength = 6;
 
     //--//
 };

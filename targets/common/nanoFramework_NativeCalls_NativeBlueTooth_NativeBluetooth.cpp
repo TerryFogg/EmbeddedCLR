@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 //
 //                   ** WARNING! ** 
 //    This file was generated automatically by a tool.
@@ -31,7 +31,8 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Disab
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetState___STATIC__BluetoothState( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::
+    GetState___STATIC__NativeBlueToothBluetoothState(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 

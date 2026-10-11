@@ -5,7 +5,7 @@
 static const CLR_RT_MethodHandler method_lookup[] =
 {
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeDns::ResolveHost___STATIC__STRING__STRING,
-    Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::Create___STATIC__I4__SocketProtocol,
+    Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::Create___STATIC__I4__nanoFrameworkNativeNetworkSocketProtocol,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::Connect___STATIC__BOOLEAN__I4__STRING__U2__I4,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::Send___STATIC__I4__I4__SZARRAY_U1__I4__I4,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4,
@@ -17,12 +17,11 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::IsConnected___STATIC__BOOLEAN,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::Enable___STATIC__BOOLEAN,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::Disable___STATIC__BOOLEAN,
-    Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::StartScan___STATIC__BOOLEAN,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::GetScanResults___STATIC__SZARRAY_U1,
     Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::GetRSSI___STATIC__I4__I4,
     Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Enable___STATIC__BOOLEAN,
     Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Disable___STATIC__BOOLEAN,
-    Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetState___STATIC__BluetoothState,
+    Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetState___STATIC__NativeBlueToothBluetoothState,
     Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::StartScan___STATIC__BOOLEAN,
     Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::StopScan___STATIC__BOOLEAN,
     Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::DeviceCount___STATIC__I4,
@@ -54,25 +53,12 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Start___STATIC__VOID__I4__I4,
     Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Stop___STATIC__VOID__I4__BOOLEAN,
     Library_nanoFramework_NativeCalls_NativeCalls_NativeTouch::Read___STATIC__I4__I4,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
 };
 
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_NativeCalls =
 {
     "nanoFramework.NativeCalls",
-    0x3C386911,
+    0x5A4C67C9,
     method_lookup,
     { 100, 1, 0, 6 }
 };

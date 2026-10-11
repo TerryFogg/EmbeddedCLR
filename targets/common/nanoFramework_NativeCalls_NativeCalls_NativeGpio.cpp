@@ -15,8 +15,7 @@ void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, int pinLevel)
 }
 
 HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::
-    ConfigurePin___STATIC__VOID__I4__NativeCallsGpioPinMode__NativeCallsGpioBias(
-        CLR_RT_StackFrame &stack)
+    ConfigurePin___STATIC__VOID__I4__NativeCallsGpioPinMode__NativeCallsGpioBias(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

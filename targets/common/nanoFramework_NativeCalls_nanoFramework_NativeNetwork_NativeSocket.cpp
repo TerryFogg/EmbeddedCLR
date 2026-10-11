@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 //
 //                   ** WARNING! ** 
 //    This file was generated automatically by a tool.
@@ -13,7 +13,8 @@
 #include "nanoFramework_NativeCalls.h"
 
 
-HRESULT Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::Create___STATIC__I4__SocketProtocol( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeSocket::
+    Create___STATIC__I4__nanoFrameworkNativeNetworkSocketProtocol(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 

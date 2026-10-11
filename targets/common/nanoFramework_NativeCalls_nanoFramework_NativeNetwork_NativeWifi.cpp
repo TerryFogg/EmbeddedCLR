@@ -102,26 +102,17 @@ HRESULT Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::StartScan___STATIC__BOOLEAN(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::GetScanResults___STATIC__SZARRAY_U1( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
         FAULT_ON_NULL(stack.This());
-        bool result = WiFi::StartScan();
-        stack.SetResult_Boolean(result);
-    }
-    NANOCLR_NOCLEANUP();
-}
-
-HRESULT Library_nanoFramework_NativeCalls_nanoFramework_NativeNetwork_NativeWifi::GetScanResults___STATIC__SZARRAY_U1(
-    CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        FAULT_ON_NULL(stack.This());
-        bool result = WiFi::GetScanResults();
-        stack.SetResult_Boolean(result);
+        int numberOfRecords = WiFi::ScanToCache();
+        CLR_RT_HeapBlock &top = stack.PushValueAndClear();
+        CLR_RT_HeapBlock_Array::CreateInstance(top, numberOfRecords, g_CLR_RT_WellKnownTypes.m_UInt8);
+        CLR_RT_HeapBlock_Array *array = top.DereferenceArray();
+        CLR_UINT8 *packedScanReport = array->GetFirstElement();
+        WiFi::GetScanResults(packedScanReport, numberOfRecords);
     }
     NANOCLR_NOCLEANUP();
 }

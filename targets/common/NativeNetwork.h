@@ -83,6 +83,7 @@ class Bluetooth
     static int32_t DeviceCount();
     static const char *GetDeviceAddress(int32_t index);
     static const char *GetDeviceName(int32_t index);
+    static int GetDeviceCount();
     static bool Connect(const char *address, int32_t timeoutMs);
     static bool Disconnect(const char *address);
     static int32_t ReadCharacteristic(

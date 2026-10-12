@@ -201,9 +201,11 @@ struct BTDevice
     char name[64];
 };
 static BTDevice s_btDevices[MAX_BT_DEVICES];
-static int s_btDeviceCount = 0;
-static bool s_btInitialized = false;
-static bool s_btScanning = false;
+static bool s_initialized = false;
+static bool s_connected = false;
+static bool s_scanning = false;
+static bool s_enabled = false;
+static int s_DeviceCount = 0;
 
 static void bt_addr_to_str(const uint8_t *bda, char *out, size_t outLen)
 {
@@ -233,18 +235,18 @@ static int ble_gap_event_cb(struct ble_gap_event *event, void *arg)
     if (event->type == BLE_GAP_EVENT_DISC)
     {
         const struct ble_gap_disc_desc *disc = &event->disc;
-        for (int i = 0; i < s_btDeviceCount; i++)
+        for (int i = 0; i < s_DeviceCount; i++)
         {
             if (memcmp(s_btDevices[i].bda, disc->addr.val, 6) == 0)
             {
                 return 0;
             }
         }
-        if (s_btDeviceCount >= MAX_BT_DEVICES)
+        if (s_DeviceCount >= MAX_BT_DEVICES)
         {
             return 0;
         }
-        int idx = s_btDeviceCount++;
+        int idx = s_DeviceCount++;
         memcpy(s_btDevices[idx].bda, disc->addr.val, 6);
         bt_addr_to_str(disc->addr.val, s_btDevices[idx].addrStr, sizeof(s_btDevices[idx].addrStr));
         memset(&fields, 0, sizeof(fields));
@@ -267,11 +269,10 @@ static int ble_gap_event_cb(struct ble_gap_event *event, void *arg)
 }
 bool Bluetooth::Enable()
 {
-    if (s_btInitialized)
+    if (s_initialized)
     {
         return true;
     }
-    // initialize NimBLE host
     nimble_port_init();
 
     /* Set the sync callback so we know when the host is ready. */
@@ -279,49 +280,62 @@ bool Bluetooth::Enable()
 
     /* Start the host task. */
     nimble_port_freertos_init(ble_host_task);
-
-    s_btInitialized = true;
-    s_btDeviceCount = 0;
+    s_initialized = true;
+    s_DeviceCount = 0;
     return true;
 }
 
 bool Bluetooth::Disable()
 {
-    if (!s_btInitialized)
+    if (!s_initialized)
     {
         return true;
     }
 
-    if (s_btScanning)
+    if (s_scanning)
     {
         ble_gap_disc_cancel();
-        s_btScanning = false;
+        s_scanning = false;
     }
 
     nimble_port_stop();
     nimble_port_deinit();
 
-    s_btInitialized = false;
-    s_btDeviceCount = 0;
+    s_initialized = false;
+    s_DeviceCount = 0;
     return true;
 }
 
 int32_t Bluetooth::GetState()
 {
-    // TODO: return actual Bluetooth state enum value
-    return (int32_t)BluetoothState::BluetoothState_Disabled;
+    if (!s_enabled)
+    {
+        return (int32_t)BluetoothState::BluetoothState_Disabled;
+    }
+
+    if (s_connected)
+    {
+        return (int32_t)BluetoothState::BluetoothState_Connected;
+    }
+
+    if (s_scanning)
+    {
+        return (int32_t)BluetoothState::BluetoothState_Scanning;
+    }
+
+    return (int32_t)BluetoothState::BluetoothState_Enabled;
 }
 
 bool Bluetooth::StartScan()
 {
     struct ble_gap_disc_params disc_params;
 
-    if (!s_btInitialized)
+    if (!s_initialized)
     {
         return false;
     }
 
-    if (s_btScanning)
+    if (s_scanning)
     {
         return true;
     }
@@ -336,30 +350,30 @@ bool Bluetooth::StartScan()
     {
         return false;
     }
-    s_btScanning = true;
-    s_btDeviceCount = 0;
+    s_scanning = true;
+    s_DeviceCount = 0;
     return true;
 }
 
 bool Bluetooth::StopScan()
 {
-    if (!s_btInitialized || !s_btScanning)
+    if (!s_initialized || !s_scanning)
     {
         return true;
     }
     ble_gap_disc_cancel();
-    s_btScanning = false;
+    s_scanning = false;
     return true;
 }
 
 int32_t Bluetooth::DeviceCount()
 {
-    return s_btDeviceCount;
+    return s_DeviceCount;
 }
 
 const char *Bluetooth::GetDeviceAddress(int32_t index)
 {
-    if (index < 0 || index >= s_btDeviceCount)
+    if (index < 0 || index >= s_DeviceCount)
     {
         return nullptr;
     }
@@ -368,7 +382,7 @@ const char *Bluetooth::GetDeviceAddress(int32_t index)
 
 const char *Bluetooth::GetDeviceName(int32_t index)
 {
-    if (index < 0 || index >= s_btDeviceCount)
+    if (index < 0 || index >= s_DeviceCount)
     {
         return nullptr;
     }
@@ -377,6 +391,11 @@ const char *Bluetooth::GetDeviceName(int32_t index)
         return nullptr;
     }
     return s_btDevices[index].name;
+}
+
+int Bluetooth::GetDeviceCount()
+{
+    return 1;
 }
 
 bool Bluetooth::Connect(const char *address, int32_t timeoutMs)
@@ -421,7 +440,6 @@ bool Bluetooth::WriteCharacteristic(
     (void)length;
     return false;
 }
-
 
 #pragma endregion
 

@@ -8,6 +8,7 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoSupport_CRC32.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeFile.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeIO.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeNetwork.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.c

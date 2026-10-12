@@ -24,6 +24,7 @@ HRESULT Library_NativeCalls_Gpio::ConfigurePin___STATIC__VOID__I4__GpioPinMode__
         GpioBias gpioBias = (GpioBias)stack.Arg2().NumericByRef().s4;
         GpioIO::InitializePin((PinNameValue)pinNumber, pinMode, gpioBias);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -36,6 +37,7 @@ HRESULT Library_NativeCalls_Gpio::Read___STATIC__GpioPinLevel__I4(CLR_RT_StackFr
         GpioPinLevel value = GpioIO::ReadLevel((PinNameValue)pinNumber);
         stack.SetResult_I4(value);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -48,6 +50,7 @@ HRESULT Library_NativeCalls_Gpio::Write___STATIC__VOID__I4__GpioPinLevel(CLR_RT_
         GpioPinLevel level = (GpioPinLevel)stack.Arg1().NumericByRef().s4;
         GpioIO::SetLevel((PinNameValue)pinNumber, level);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -60,6 +63,7 @@ HRESULT Library_NativeCalls_Gpio::AddInterrupt___STATIC__VOID__I4__GpioInterrupt
         GpioInterruptMode interruptMode = (GpioInterruptMode)stack.Arg1().NumericByRef().s4;
         GpioIO::AddInterrupt((PinNameValue)pinNumber, interruptMode);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -71,6 +75,7 @@ HRESULT Library_NativeCalls_Gpio::EnableInterrupt___STATIC__VOID__I4(CLR_RT_Stac
         CLR_INT32 pinNumber = stack.Arg0().NumericByRef().s4;
         GpioIO::EnableInterrupt((PinNameValue)pinNumber);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -82,6 +87,7 @@ HRESULT Library_NativeCalls_Gpio::DisableInterrupt___STATIC__VOID__I4(CLR_RT_Sta
         CLR_INT32 pinNumber = stack.Arg0().NumericByRef().s4;
         GpioIO::DisableInterrupt((PinNameValue)pinNumber);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -93,5 +99,6 @@ HRESULT Library_NativeCalls_Gpio::RemoveInterrupt___STATIC__VOID__I4(CLR_RT_Stac
         CLR_INT32 pinNumber = stack.Arg0().NumericByRef().s4;
         GpioIO::RemoveInterrupt((PinNameValue)pinNumber);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }

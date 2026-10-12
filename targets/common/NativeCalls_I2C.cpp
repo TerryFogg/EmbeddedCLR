@@ -15,7 +15,8 @@ HRESULT Library_NativeCalls_I2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_Stack
         int pinSCL = stack.Arg2().NumericByRef().s4;
         I2cIO::Initialize(i2c_bus_number_number, pinSDA, pinSCL);
     }
-    NANOCLR_NOCLEANUP_NOLABEL();
+    NANOCLR_SET_AND_LEAVE(S_OK);
+    NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_I2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2(CLR_RT_StackFrame &stack)
@@ -27,7 +28,8 @@ HRESULT Library_NativeCalls_I2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed_
         unsigned short slaveAddress = stack.Arg2().NumericByRef().s4;
         I2cIO::AddDevice(i2c_bus_number_number, I2C_speed, slaveAddress);
     }
-    NANOCLR_NOCLEANUP_NOLABEL();
+    NANOCLR_SET_AND_LEAVE(S_OK);
+    NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_I2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
@@ -39,7 +41,8 @@ HRESULT Library_NativeCalls_I2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_Stac
             stack.Arg1().NumericByRef().s4,
             stack.Arg2().NumericByRef().s4);
     }
-    NANOCLR_NOCLEANUP_NOLABEL();
+    NANOCLR_SET_AND_LEAVE(S_OK);
+    NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_I2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
@@ -51,7 +54,8 @@ HRESULT Library_NativeCalls_I2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4
             stack.Arg1().NumericByRef().s4,
             stack.Arg2().NumericByRef().s4);
     }
-    NANOCLR_NOCLEANUP_NOLABEL();
+    NANOCLR_SET_AND_LEAVE(S_OK);
+    NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_I2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
@@ -63,7 +67,8 @@ HRESULT Library_NativeCalls_I2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(
             stack.Arg1().NumericByRef().s4,
             stack.Arg2().NumericByRef().s4);
     }
-    NANOCLR_NOCLEANUP_NOLABEL();
+    NANOCLR_SET_AND_LEAVE(S_OK);
+    NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_I2C::
@@ -76,5 +81,6 @@ HRESULT Library_NativeCalls_I2C::
             stack.Arg1().NumericByRef().s4,
             stack.Arg2().NumericByRef().s4);
     }
-    NANOCLR_NOCLEANUP_NOLABEL();
+    NANOCLR_SET_AND_LEAVE(S_OK);
+    NANOCLR_NOCLEANUP();
 }

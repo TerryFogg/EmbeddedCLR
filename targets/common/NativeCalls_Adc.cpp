@@ -17,5 +17,6 @@ HRESULT Library_NativeCalls_Adc::Read___STATIC__I4__I4(CLR_RT_StackFrame &stack)
         AdcIO::Read(pinNumber, &adcValue);
         stack.SetResult_I4(adcValue);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }

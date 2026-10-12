@@ -24,5 +24,6 @@ HRESULT Library_NativeCalls_Dns::ResolveHost___STATIC__I4__STRING(CLR_RT_StackFr
         NativeSockets::ResolveHost(host, &address);
         stack.SetResult_Boolean(address);
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }

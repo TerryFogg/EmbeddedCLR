@@ -23,6 +23,7 @@ typedef enum __nfpack BluetoothState
     BluetoothState_Disabled = 0,
     BluetoothState_Enabled = 1,
     BluetoothState_Scanning = 2,
+    BluetoothState_Connected = 3,
 } BluetoothState;
 
 typedef enum __nfpack BusSpeed

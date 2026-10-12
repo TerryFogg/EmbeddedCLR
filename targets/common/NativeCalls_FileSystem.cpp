@@ -1,131 +1,185 @@
-﻿//-----------------------------------------------------------------------------
-//
-//                   ** WARNING! ** 
-//    This file was generated automatically by a tool.
-//    Re-running the tool will overwrite this file.
-//    You should copy this file to a custom location
-//    before adding any customization in the copy to
-//    prevent loss of your changes when the tool is
-//    re-run.
-//
-//-----------------------------------------------------------------------------
-
-#include "NativeCalls.h"
+﻿#include "NativeCalls.h"
+#include "NativeFile.h"
 
 
 HRESULT Library_NativeCalls_FileSystem::Exists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        bool result = File::Exists(path);
+        stack.SetResult_Boolean(result);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::Delete___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        bool result = File::Delete(path);
+        stack.SetResult_Boolean(result);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::Move___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *source = stack.Arg0().RecoverString();
+        const char *destination = stack.Arg1().RecoverString();
+        bool result = File::Move(source, destination);
+        stack.SetResult_Boolean(result);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::Length___STATIC__I8__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        CLR_INT64 length = File::Length(path);
+        stack.SetResult_I8(length);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        CLR_RT_HeapBlock_Array *pArray = stack.Arg1().DereferenceArray();
+        int offset = stack.Arg2().NumericByRef().s4;
+        int count = stack.Arg3().NumericByRef().s4;
+        File::Read(path, (CLR_UINT8 *)pArray->GetFirstElement(), offset, count);
+        stack.SetResult_I4(0);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        CLR_RT_HeapBlock_Array *pArray = stack.Arg1().DereferenceArray();
+        int offset = stack.Arg2().NumericByRef().s4;
+        int count = stack.Arg3().NumericByRef().s4;
+        bool append = stack.Arg4().NumericByRef().s4;
+        int32_t bytesWritten = File::Write(path, (CLR_UINT8 *)pArray->GetFirstElement(), offset, count, append);
+        stack.SetResult_I4(bytesWritten);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::CreateDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        bool result = File::Delete(path);
+        stack.SetResult_Boolean(result);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::DeleteDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        bool result = File::Delete(path);
+        stack.SetResult_Boolean(result);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::DirectoryExists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        bool result = File::Exists(path);
+        stack.SetResult_Boolean(result);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::FileCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        int fileCount = File::FileCount(path);
+        stack.SetResult_I4(fileCount);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::GetFileName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        int index = stack.Arg1().NumericByRef().s4;
+        char fileName[64];
+        int maxLength = 64;
+        if (File::GetFileName(path, index, fileName, maxLength))
+        {
+            stack.SetResult_String(fileName);
+        }
+        else
+        {
+            stack.SetResult_String("/0");
+        }
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::DirectoryCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        int fileCount = File::FileCount(path);
+        stack.SetResult_I4(fileCount);
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
 HRESULT Library_NativeCalls_FileSystem::GetDirectoryName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
-
-    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-
+    {
+        const char *path = stack.Arg0().RecoverString();
+        int index = stack.Arg1().NumericByRef().s4;
+        char directoryName[64];
+        int maxLength = 64;
+        if (File::GetFileName(path, index, directoryName, maxLength))
+        {
+            stack.SetResult_String(directoryName);
+        }
+        else
+        {
+            stack.SetResult_String("/0");
+        }
+    }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }

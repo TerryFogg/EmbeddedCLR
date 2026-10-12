@@ -14,6 +14,7 @@ HRESULT Library_NativeCalls_Pwm::Initialize___STATIC__VOID__I4(
         FAULT_ON_NULL(stack.This());
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -25,6 +26,7 @@ HRESULT Library_NativeCalls_Pwm::ConfigurePin___STATIC__VOID__I4__I4__I4(
         FAULT_ON_NULL(stack.This());
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -36,6 +38,7 @@ HRESULT Library_NativeCalls_Pwm::SetDutyCycle___STATIC__VOID__I4__I4(
         FAULT_ON_NULL(stack.This());
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -47,6 +50,7 @@ HRESULT Library_NativeCalls_Pwm::SetFrequency___STATIC__VOID__I4__I4(
         FAULT_ON_NULL(stack.This());
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -58,6 +62,7 @@ HRESULT Library_NativeCalls_Pwm::Start___STATIC__VOID__I4__I4(
         FAULT_ON_NULL(stack.This());
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }
 
@@ -69,5 +74,6 @@ HRESULT Library_NativeCalls_Pwm::Stop___STATIC__VOID__I4__BOOLEAN(
         FAULT_ON_NULL(stack.This());
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
+    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }

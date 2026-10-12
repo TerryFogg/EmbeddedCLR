@@ -10,11 +10,11 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 #include "nanoCLR_Types.h"
 #include "NativeNetwork.h"
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Initialize___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::Initialize___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -25,7 +25,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Initialize___STATIC__BOOLE
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::IsAvailable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::IsAvailable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -36,7 +36,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::IsAvailable___STATIC__BOOL
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Connect___STATIC__BOOLEAN__STRING__STRING__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::Connect___STATIC__BOOLEAN__STRING__STRING__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -51,7 +51,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Connect___STATIC__BOOLEAN_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Disconnect___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::Disconnect___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -62,7 +62,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Disconnect___STATIC__BOOLE
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::IsConnected___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::IsConnected___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -73,7 +73,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::IsConnected___STATIC__BOOL
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Enable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::Enable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -84,7 +84,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Enable___STATIC__BOOLEAN(C
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Disable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::Disable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -95,7 +95,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::Disable___STATIC__BOOLEAN(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::GetScanResults___STATIC__SZARRAY_U1(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::GetScanResults___STATIC__SZARRAY_U1(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -110,7 +110,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeWifi::GetScanResults___STATIC__S
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeWifi::GetRSSI___STATIC__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Wifi::GetRSSI___STATIC__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

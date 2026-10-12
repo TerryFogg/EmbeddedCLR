@@ -3,10 +3,10 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 #include "NativeIO.h"
 
-HRESULT Library_nanoFramework_NativeCalls_NativeDac::Write___STATIC__VOID__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Dac::Write___STATIC__VOID__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

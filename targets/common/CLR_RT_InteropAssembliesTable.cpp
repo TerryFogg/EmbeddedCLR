@@ -6,7 +6,7 @@
 
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_mscorlib;
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Native;
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_NativeCalls;
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_NativeCalls;
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events;
 extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Runtime_Events_EventSink_DriverProcs;
 
@@ -35,7 +35,7 @@ extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_Graphi
 const CLR_RT_NativeAssemblyData *g_CLR_InteropAssembliesNativeData[] = {
     &g_CLR_AssemblyNative_mscorlib,
     &g_CLR_AssemblyNative_nanoFramework_Runtime_Native,
-    &g_CLR_AssemblyNative_nanoFramework_NativeCalls,
+    &g_CLR_AssemblyNative_NativeCalls,
     &g_CLR_AssemblyNative_nanoFramework_Runtime_Events,
     &g_CLR_AssemblyNative_nanoFramework_Runtime_Events_EventSink_DriverProcs,
 #if CONFIG_SUPPORT_RESOURCEMANAGER

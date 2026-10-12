@@ -10,10 +10,10 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Exists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::Exists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -22,7 +22,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Exists___STATIC__BOO
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Delete___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::Delete___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -31,7 +31,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Delete___STATIC__BOO
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Move___STATIC__BOOLEAN__STRING__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::Move___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -40,7 +40,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Move___STATIC__BOOLE
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Length___STATIC__I8__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::Length___STATIC__I8__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -49,7 +49,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Length___STATIC__I8_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -58,7 +58,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Read___STATIC__I4__S
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
 
@@ -67,7 +67,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Write___STATIC__I4__
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::CreateDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::CreateDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -76,7 +76,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::CreateDirectory___ST
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DeleteDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::DeleteDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -85,7 +85,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DeleteDirectory___ST
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DirectoryExists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::DirectoryExists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -94,7 +94,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DirectoryExists___ST
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::FileCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::FileCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -103,7 +103,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::FileCount___STATIC__
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::GetFileName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::GetFileName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -112,7 +112,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::GetFileName___STATIC
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DirectoryCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::DirectoryCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -121,7 +121,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DirectoryCount___STA
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::GetDirectoryName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_FileSystem::GetDirectoryName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 

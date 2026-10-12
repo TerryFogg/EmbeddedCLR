@@ -10,11 +10,10 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 #include "NativeNetwork.h"
 
-HRESULT Library_nanoFramework_NativeCalls_NativeDns::ResolveHost___STATIC__I4__STRING(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_Dns::ResolveHost___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

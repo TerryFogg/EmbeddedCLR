@@ -3,10 +3,10 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 #include "NativeIO.h"
 
-HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_I2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -18,7 +18,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Open___STATIC__BOOLEAN__I4_
     NANOCLR_NOCLEANUP_NOLABEL();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeI2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_I2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -30,7 +30,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeI2C::AddSlaveDevice___STATIC__BO
     NANOCLR_NOCLEANUP_NOLABEL();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_I2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -42,7 +42,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4
     NANOCLR_NOCLEANUP_NOLABEL();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_I2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -54,7 +54,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__I4
     NANOCLR_NOCLEANUP_NOLABEL();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_I2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -66,7 +66,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__I4_
     NANOCLR_NOCLEANUP_NOLABEL();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeI2C::
+HRESULT Library_NativeCalls_I2C::
     WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

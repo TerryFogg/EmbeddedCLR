@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <board.h>
 
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, int pinLevel);
 
 enum PinNameValue

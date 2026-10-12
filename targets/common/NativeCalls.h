@@ -10,8 +10,8 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef NANOFRAMEWORK_NATIVECALLS_H
-#define NANOFRAMEWORK_NATIVECALLS_H
+#ifndef NATIVECALLS_H
+#define NATIVECALLS_H
 
 #include <nanoCLR_Interop.h>
 #include <nanoCLR_Runtime.h>
@@ -60,12 +60,6 @@ typedef enum __nfpack GpioPinMode
     GpioPinMode_OutputOpenDrain = 3,
 } GpioPinMode;
 
-typedef enum __nfpack NativeWifi_WiFiEventType
-{
-    NativeWifi_WiFiEventType_WifiConnected = 1,
-    NativeWifi_WiFiEventType_WifiDisconnected = 2,
-} NativeWifi_WiFiEventType;
-
 typedef enum __nfpack NetworkEventType
 {
     NetworkEventType_SocketDataAvailable = 1,
@@ -113,6 +107,12 @@ typedef enum __nfpack SocketProtocol
     SocketProtocol_Udp = 1,
 } SocketProtocol;
 
+typedef enum __nfpack Wifi_WiFiEventType
+{
+    Wifi_WiFiEventType_WifiConnected = 1,
+    Wifi_WiFiEventType_WifiDisconnected = 2,
+} Wifi_WiFiEventType;
+
 typedef enum __nfpack WifiAuthMode
 {
     WifiAuthMode_Open = 0,
@@ -134,14 +134,14 @@ typedef enum __nfpack WifiCipherType
     WifiCipherType_AesCmac128 = 6,
 } WifiCipherType;
 
-struct Library_nanoFramework_NativeCalls_NativeAdc
+struct Library_NativeCalls_Adc
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeBluetooth
+struct Library_NativeCalls_Bluetooth
 {
     NANOCLR_NATIVE_DECLARE(Enable___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Disable___STATIC__BOOLEAN);
@@ -159,21 +159,21 @@ struct Library_nanoFramework_NativeCalls_NativeBluetooth
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeDac
+struct Library_NativeCalls_Dac
 {
     NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeDns
+struct Library_NativeCalls_Dns
 {
     NANOCLR_NATIVE_DECLARE(ResolveHost___STATIC__I4__STRING);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeFileSystem
+struct Library_NativeCalls_FileSystem
 {
     NANOCLR_NATIVE_DECLARE(Exists___STATIC__BOOLEAN__STRING);
     NANOCLR_NATIVE_DECLARE(Delete___STATIC__BOOLEAN__STRING);
@@ -192,7 +192,7 @@ struct Library_nanoFramework_NativeCalls_NativeFileSystem
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeGpio
+struct Library_NativeCalls_Gpio
 {
     NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__GpioPinMode__GpioBias);
     NANOCLR_NATIVE_DECLARE(Read___STATIC__GpioPinLevel__I4);
@@ -205,7 +205,7 @@ struct Library_nanoFramework_NativeCalls_NativeGpio
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeI2C
+struct Library_NativeCalls_I2C
 {
     NANOCLR_NATIVE_DECLARE(Open___STATIC__BOOLEAN__I4__I4__I4);
     NANOCLR_NATIVE_DECLARE(AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2);
@@ -217,7 +217,7 @@ struct Library_nanoFramework_NativeCalls_NativeI2C
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativePwm
+struct Library_NativeCalls_Pwm
 {
     NANOCLR_NATIVE_DECLARE(Initialize___STATIC__VOID__I4);
     NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__I4__I4);
@@ -229,7 +229,7 @@ struct Library_nanoFramework_NativeCalls_NativePwm
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeSocket
+struct Library_NativeCalls_Socket
 {
     NANOCLR_NATIVE_DECLARE(Create___STATIC__I4__SocketProtocol);
     NANOCLR_NATIVE_DECLARE(Bind___STATIC__BOOLEAN__I4__U2);
@@ -246,14 +246,14 @@ struct Library_nanoFramework_NativeCalls_NativeSocket
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeTouch
+struct Library_NativeCalls_Touch
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
 
     //--//
 };
 
-struct Library_nanoFramework_NativeCalls_NativeWifi
+struct Library_NativeCalls_Wifi
 {
     NANOCLR_NATIVE_DECLARE(Initialize___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(IsAvailable___STATIC__BOOLEAN);
@@ -268,6 +268,6 @@ struct Library_nanoFramework_NativeCalls_NativeWifi
     //--//
 };
 
-extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_nanoFramework_NativeCalls;
+extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_NativeCalls;
 
-#endif // NANOFRAMEWORK_NATIVECALLS_H
+#endif // NATIVECALLS_H

@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "board.h"
-#include "nanoFramework_NativeCalls.h"
+#include "NativeCalls.h"
 
 class WiFi
 {

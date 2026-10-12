@@ -13,7 +13,7 @@
 #include "nanoFramework_NativeCalls.h"
 
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Enable___STATIC__BOOLEAN( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Exists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -22,7 +22,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Enabl
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Disable___STATIC__BOOLEAN( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Delete___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -31,8 +31,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Disab
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::
-    GetState___STATIC__NativeBlueToothBluetoothState(CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Move___STATIC__BOOLEAN__STRING__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -41,7 +40,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::StartScan___STATIC__BOOLEAN( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Length___STATIC__I8__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -50,7 +49,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Start
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::StopScan___STATIC__BOOLEAN( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -59,7 +58,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::StopS
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::DeviceCount___STATIC__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -68,7 +67,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Devic
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetDeviceAddress___STATIC__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::CreateDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -77,7 +76,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetDe
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetDeviceName___STATIC__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DeleteDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -86,7 +85,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::GetDe
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Connect___STATIC__BOOLEAN__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DirectoryExists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -95,7 +94,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Conne
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Disconnect___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::FileCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -104,7 +103,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::Disco
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::ReadCharacteristic___STATIC__I4__STRING__STRING__SZARRAY_U1( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::GetFileName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 
@@ -113,7 +112,16 @@ HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::ReadC
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeBlueTooth_NativeBluetooth::WriteCharacteristic___STATIC__BOOLEAN__STRING__STRING__SZARRAY_U1( CLR_RT_StackFrame &stack )
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::DirectoryCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
+{
+    NANOCLR_HEADER();
+
+    NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+
+    NANOCLR_NOCLEANUP();
+}
+
+HRESULT Library_nanoFramework_NativeCalls_NativeFileSystem::GetDirectoryName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
 

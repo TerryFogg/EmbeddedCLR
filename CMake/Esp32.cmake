@@ -31,8 +31,8 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.c
 
             ${CMAKE_SOURCE_DIR}/targets/Experimental/ConstantExtractor.cpp
-
 )
+
 list(APPEND ESP32_Includes
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/Core
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/FileSystem
@@ -44,8 +44,8 @@ list(APPEND ESP32_Includes
             ${CMAKE_BINARY_DIR}/config
 
             ${CMAKE_SOURCE_DIR}/targets/Experimental
-
 )
+
 list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/bt/include
             ${ESP32_IDF_PATH}/components/bt/common/include
@@ -86,8 +86,8 @@ list(APPEND IDF_INCLUDES
 
             ${ESP32_IDF_PATH}/components/hal/${TARGET_SERIES}/include
             ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
-
 )
+
 target_sources(nanoCLR.elf PUBLIC ${ESP32_Sources} )
 target_include_directories(nanoCLR.elf PUBLIC
                            ${ESP32_Includes}

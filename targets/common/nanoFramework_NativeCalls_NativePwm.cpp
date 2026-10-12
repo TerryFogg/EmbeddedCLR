@@ -6,7 +6,7 @@
 #include "nanoFramework_NativeCalls.h"
 #include "NativeIO.h"
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Initialize___STATIC__VOID__I4(
+HRESULT Library_nanoFramework_NativeCalls_NativePwm::Initialize___STATIC__VOID__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -17,7 +17,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Initialize___ST
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::ConfigurePin___STATIC__VOID__I4__I4__I4(
+HRESULT Library_nanoFramework_NativeCalls_NativePwm::ConfigurePin___STATIC__VOID__I4__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -28,7 +28,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::ConfigurePin___
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::SetDutyCycle___STATIC__VOID__I4__I4(
+HRESULT Library_nanoFramework_NativeCalls_NativePwm::SetDutyCycle___STATIC__VOID__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -39,7 +39,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::SetDutyCycle___
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::SetFrequency___STATIC__VOID__I4__I4(
+HRESULT Library_nanoFramework_NativeCalls_NativePwm::SetFrequency___STATIC__VOID__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -50,7 +50,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::SetFrequency___
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Start___STATIC__VOID__I4__I4(
+HRESULT Library_nanoFramework_NativeCalls_NativePwm::Start___STATIC__VOID__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -61,7 +61,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Start___STATIC_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativePwm::Stop___STATIC__VOID__I4__BOOLEAN(
+HRESULT Library_nanoFramework_NativeCalls_NativePwm::Stop___STATIC__VOID__I4__BOOLEAN(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

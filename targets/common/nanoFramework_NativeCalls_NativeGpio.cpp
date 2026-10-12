@@ -14,8 +14,7 @@ void Gpio_Interrupt_ISR(GPIO_PIN pinNumber, int pinLevel)
     PostManagedEvent(EVENT_GPIO, 0, (uint16_t)pinNumber, pinLevel);
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::
-    ConfigurePin___STATIC__VOID__I4__NativeCallsGpioPinMode__NativeCallsGpioBias(CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::ConfigurePin___STATIC__VOID__I4__GpioPinMode__GpioBias(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -28,8 +27,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::Read___STATIC__NativeCallsGpioPinLevel__I4(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::Read___STATIC__GpioPinLevel__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -41,8 +39,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::Read___STATIC_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::Write___STATIC__VOID__I4__NativeCallsGpioPinLevel(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::Write___STATIC__VOID__I4__GpioPinLevel(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -54,8 +51,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::Write___STATIC
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::
-    AddInterrupt___STATIC__VOID__I4__NativeCallsGpioInterruptMode(CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::AddInterrupt___STATIC__VOID__I4__GpioInterruptMode(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -67,8 +63,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::EnableInterrupt___STATIC__VOID__I4(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::EnableInterrupt___STATIC__VOID__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -79,8 +74,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::EnableInterrup
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::DisableInterrupt___STATIC__VOID__I4(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::DisableInterrupt___STATIC__VOID__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -91,8 +85,7 @@ HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::DisableInterru
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeGpio::RemoveInterrupt___STATIC__VOID__I4(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeGpio::RemoveInterrupt___STATIC__VOID__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

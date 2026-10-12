@@ -7,8 +7,7 @@
 #include "NativeIO.h"
 
 
-HRESULT Library_nanoFramework_NativeCalls_NativeCalls_NativeTouch::Read___STATIC__I4__I4(
-    CLR_RT_StackFrame &stack)
+HRESULT Library_nanoFramework_NativeCalls_NativeTouch::Read___STATIC__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

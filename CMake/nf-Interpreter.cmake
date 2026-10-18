@@ -195,6 +195,7 @@ list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Socket.cpp
             ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Touch.cpp
             ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Wifi.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/UI_Thread.cpp
 )
 if(NF_TRACE_TO_STDIO)
     list(APPEND Core_Sources

@@ -131,7 +131,6 @@ if( CONFIG_SUPPORT_INTERSOUND)
 endif()
 
 if(CONFIG_SUPPORT_BLUETOOTH)
-# Bluetooth currently not building with hosted/remote config
     file(APPEND ${SDKCONFIG_OVERRIDES_FILE} "CONFIG_BT_ENABLED=y\n")
     file(APPEND ${SDKCONFIG_OVERRIDES_FILE} "CONFIG_BT_NIMBLE_ENABLED=y\n")
     file(APPEND ${SDKCONFIG_OVERRIDES_FILE} "CONFIG_BT_NIMBLE_SVC_GAP_DEVICE_NAME=\"nanoBLE\"\n")
@@ -232,3 +231,4 @@ add_custom_target(generate_partition ALL
 #       
 #       message(STATUS "Fixed IDF version. Is now: ${MY_IDF_VER_FIXED}")
 #   endif()
+

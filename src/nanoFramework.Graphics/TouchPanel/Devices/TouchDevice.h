@@ -10,7 +10,8 @@ enum TouchStatus
 {
     NoChange,
     TouchDown,
-    TouchUp
+    TouchUp,
+    TouchMove
 };
 
 struct TouchPointDevice
@@ -24,6 +25,6 @@ struct TouchDevice
 {
     bool Initialize();
     TouchPointDevice GetPoint();
-    bool Enable(GPIO_INTERRUPT touchIsrProc);
+    bool Enable();
     bool Disable();
 };

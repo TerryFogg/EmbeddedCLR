@@ -46,6 +46,10 @@ void InitializeLcdTouchPanel();
 
 void InitializeBoard()
 {
+    // Switch off logging so as not to interfere with WireProtocol over Uart0
+    esp_log_level_set("*", ESP_LOG_NONE);
+    ESP_ERROR_CHECK(nvs_flash_init());
+
     InitializeGpio();
     InitializeADC();
     InitializeI2C();
@@ -56,7 +60,7 @@ void InitializeBoard()
     InitializeGraphics();
     InitializeLcdTouchPanel();
 
-  //  GetConfiguredIPAddress();
+    //  GetConfiguredIPAddress();
     return;
 }
 void InitializeGpio()
@@ -123,10 +127,9 @@ void InitializeLcdTouchPanel()
 {
     g_TouchInterface.Initialize(INTERNAL_SHARED_I2C_MASTER_BUS, 0x5D);
     g_TouchDevice.Initialize();
-    //    g_TouchPanel.Initialize();
+    // Touch panel enable/initialized by C# call and after the event system is initialized
     return;
 }
-
 
 #include "ConstantExtractor.h"
 #include <cstdint>

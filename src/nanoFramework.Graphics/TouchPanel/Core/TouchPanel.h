@@ -49,11 +49,10 @@ class TouchPanel
     static HRESULT Enable();
     static HRESULT Disable();
     static SimpleTouchGesture GestureDetect(CLR_INT16 x, CLR_INT16 y);
+    void PollTouchPoint();
+    void PollTouchPoint2();
 
   private:
-    static void TouchIsrProc( void *arg);
-    static void TouchCompletion(void *arg);
-    void PollTouchPoint();
     TouchPoint *AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time);
     HAL_COMPLETION m_touchCompletion;
     CLR_INT32 m_InternalFlags;

@@ -2,20 +2,63 @@
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
+
+//
+// Task/Core allocation
+//
+// Core 0
+// ------
+// UITask
+//     - LCD panel initialization
+//     - Touch device initialization
+//     - Touch interrupt handling
+//     - Touch coordinate processing
+//     - Touch event generation
+//
+// Core 1
+// ------
+// CLRStartupThread
+//     - C# interpreter
+//     - Managed application execution
+//
+// Design notes:
+//     - UI and touch processing run independently of the CLR.
+//     - LCD and Touch device initialization occur in parallel with CLR startup.
+//     - Heavy touch activity cannot directly consume CLR CPU time.
+//     - Touch ISR only signals UITask.
+//     - All touch I2C access is performed by UITask in task context.
+//     - UITask blocks while idle and consumes essentially no CPU.
+//
+
 #include <targetHAL.h>
 #include <nanoCLR_Application.h>
 #include <WireProtocol_ReceiverThread.h>
 #include "board.h"
+#include "UI_Thread.h"
+
 
 extern void CLRStartupThread(void const *argument);
+static void receiver_task(void *pvParameter);
+static void main_task(void *pvParameter);
+extern void StartUITask();
 
-void receiver_task(void *pvParameter)
+// Entry call from Esp32 IDF start up code
+void app_main()
 {
-    (void)pvParameter;
-    ReceiverThread(0);
-    vTaskDelete(NULL);
+    UBaseType_t taskPriority = 5;
+
+    InitializeBoard();
+
+    StartUITask();
+
+    // Receiver task pinned to core 0
+    xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
+
+    // CLR main task pinned to core 1
+    xTaskCreatePinnedToCore(&main_task, "main_task", 15000, NULL, taskPriority, NULL, 1);
 }
-void main_task(void *pvParameter)
+
+static void main_task(void *pvParameter)
 {
     (void)pvParameter;
     CLR_SETTINGS clrSettings = {
@@ -26,17 +69,10 @@ void main_task(void *pvParameter)
     CLRStartupThread(&clrSettings);
     vTaskDelete(NULL);
 }
-// App_main called from Esp32 IDF start up code
-void app_main()
+
+static void receiver_task(void *pvParameter)
 {
-    UBaseType_t taskPriority = 5;
-    // Switch off logging so as not to interfere with WireProtocol over Uart0
-    esp_log_level_set("*", ESP_LOG_NONE);
-    ESP_ERROR_CHECK(nvs_flash_init());
-    InitializeBoard();
-    vTaskPrioritySet(NULL, taskPriority);
-    // start receiver task pinned to core 0
-    xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
-    // start the CLR main task pinned to core 1
-    xTaskCreatePinnedToCore(&main_task, "main_task", 15000, NULL, taskPriority, NULL, 1);
+    (void)pvParameter;
+    ReceiverThread(0);
+    vTaskDelete(NULL);
 }

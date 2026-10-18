@@ -10,6 +10,7 @@
 #include "board.h"
 #include "TouchInterface.h"
 #include <nanoPAL_Events.h>
+#include <UI_Thread.h>
 
 #define abs(a)  (((a) < 0) ? -(a) : (a))
 #define NOT_SET -1
@@ -42,11 +43,10 @@ HRESULT TouchPanel::Initialize()
 }
 HRESULT TouchPanel::Enable()
 {
-    if (!g_TouchDevice.Enable(TouchIsrProc))
+    if (!g_TouchDevice.Enable())
     {
         return CLR_E_FAIL;
     }
-    g_TouchPanel.m_touchCompletion.InitializeForISR(TouchPanel::TouchCompletion, NULL);
     return S_OK;
 }
 HRESULT TouchPanel::Disable()
@@ -57,11 +57,6 @@ HRESULT TouchPanel::Disable()
     }
     g_TouchDevice.Disable();
     return S_OK;
-}
-void TouchPanel::TouchCompletion(void *arg)
-{
-    (void)arg;
-    g_TouchPanel.PollTouchPoint();
 }
 void TouchPanel::PollTouchPoint()
 {
@@ -138,24 +133,9 @@ void TouchPanel::PollTouchPoint()
             PostManagedEvent(EVENT_GESTURE, detectedGesture, 0, ((CLR_UINT32)x_start_gesture << 16) | y_start_gesture);
         }
     }
-
-    // Schedule or unschedule completion.
-    bool isLinked = g_TouchPanel.m_touchCompletion.IsLinked();
-    if (!isLinked)
-    {
-        if (ContactDown)
-        {
-            m_touchCompletion.EnqueueDelta(TOUCH_SAMPLING_PERIOD_MILLISECONDS);
-        }
-    }
-    else
-    {
-        if (!ContactDown)
-        {
-            g_TouchPanel.m_touchCompletion.Abort();
-        }
-    }
 }
+
+
 TouchPoint *TouchPanel::AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time)
 {
 
@@ -165,7 +145,7 @@ TouchPoint *TouchPanel::AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time
     point.location = location;
     // point.contact = TouchPointContactFlags_Primary;
 
-    GLOBAL_LOCK();
+    // GLOBAL_LOCK();
     {
         m_tail++;
 
@@ -180,25 +160,9 @@ TouchPoint *TouchPanel::AddTouchPoint(CLR_UINT16 x, CLR_UINT16 y, CLR_INT64 time
                 m_head = 0;
         }
     }
-    GLOBAL_UNLOCK();
+    // GLOBAL_UNLOCK();
 
     return &point;
-}
-void TouchPanel::TouchIsrProc(void *arg)
-{
-    // This routine is called to set the states and immediately queue
-    // a callback to the PollTouch Routine
-    (void)arg;
-    GLOBAL_LOCK();
-    {
-        if (g_TouchPanel.m_touchCompletion.IsLinked())
-        {
-            g_TouchPanel.m_touchCompletion.Abort();
-        }
-        // A very small number, but if it is 0 it tries to perform the callback immediately and that is not allowed in an ISR
-        g_TouchPanel.m_touchCompletion.EnqueueDelta(10);
-    }
-    GLOBAL_UNLOCK();
 }
 #pragma endregion
 

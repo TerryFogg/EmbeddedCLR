@@ -70,7 +70,7 @@
                 "BUILD_VERBOSE": "OFF",
                 "CORE_FEATURES": "Collections=ON;ConfigBlock=OFF;Cryptography=OFF;Hashing=ON;Mathematics=ON;Reflection=ON;ResourceManager=ON;RuntimeSerialization=ON;Text=ON;WireProtocol=ON",
                 "NETWORK_FEATURES": "WiFi=ON;Bluetooth=ON;Ethernet=OFF;SNTP=OFF",
-                "IO_FEATURES": "CAN=OFF;FileSystem=ON;Graphics=ON;InterSound=OFF;OneWire=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
+                "IO_FEATURES": "CAN=OFF;FileSystem=OFF;Graphics=ON;InterSound=OFF;OneWire=OFF;SerialPorts=OFF;UsbHost=OFF;UsbStream=OFF",
                 "FEATURE_DEFINES": "ConfigBlock=OFF;GraphicsTouch=ON",
                 "ADVANCED_DEBUGGING": "Trace=OFF",
                 "NF_SECURITY_MBEDTLS": true,

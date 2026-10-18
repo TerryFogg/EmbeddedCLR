@@ -447,15 +447,15 @@ bool I2cIO::Probe(int i2c_bus_number, int slaveAddress, int timeout)
     return (result == ESP_OK);
 }
 
-bool I2cIO::Write(int slaveAddress, unsigned char *writeBuffer, int writeSize)
+bool I2cIO::Write(int slaveAddress, unsigned char *writeBuffer, int writeSize, int timeoutMS = 10)
 {
-    esp_err_t result = i2c_master_transmit(s_devices[slaveAddress], writeBuffer, writeSize, -1);
+    esp_err_t result = i2c_master_transmit(s_devices[slaveAddress], writeBuffer, writeSize, timeoutMS);
     return (result == ESP_OK);
 }
 // I²C transactions are generally treated as atomic.
 // Either succeeds and all requested bytes are transferred, or fails
 
-bool I2cIO::Read(int slaveAddress, unsigned char *readBuffer, int maxReadSize)
+bool I2cIO::Read(int slaveAddress, unsigned char *readBuffer, int maxReadSize, int timeoutMS)
 {
     int xfer_timeout_ms = 100;
     esp_err_t result = i2c_master_receive(s_devices[slaveAddress], readBuffer, maxReadSize, xfer_timeout_ms);
@@ -466,10 +466,10 @@ bool I2cIO::WriteRead(
     unsigned char *writeBuffer,
     int writeSize,
     unsigned char *readBuffer,
-    int readSize)
+    int readSize,
+    int xfer_timeout_ms = 10)
 {
 
-    int xfer_timeout_ms = 10;
     esp_err_t result = i2c_master_transmit_receive(
         s_devices[slaveAddress],
         writeBuffer,
@@ -477,7 +477,21 @@ bool I2cIO::WriteRead(
         readBuffer,
         readSize,
         xfer_timeout_ms);
-    return result == (ESP_OK);
+
+    printf("I2C W[%d]:", writeSize);
+    for (int i = 0; i < writeSize && i < 3; i++)
+    {
+        printf(" %02X", writeBuffer[i]);
+    }
+
+    printf("  R[%d]:", readSize);
+    for (int i = 0; i < readSize && i < 12; i++)
+    {
+        printf(" %02X", readBuffer[i]);
+    }
+
+    printf("\n");
+    return (result == ESP_OK);
 }
 
 #pragma endregion

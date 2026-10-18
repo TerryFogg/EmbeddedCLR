@@ -80,7 +80,6 @@
                 "DISPLAY_DRIVER": "DisplayControllerJD9365.cpp",
                 "DISPLAY_INTERFACE": "DisplayInterfaceMipiDsi.cpp",
                 "TOUCH_INTERFACE_CONTROLLER": "GT911.cpp",
-                "TOUCH_INTERFACE_DRIVER": "I2c_To_TouchPanel.cpp"
             }
         },
 

@@ -66,6 +66,11 @@ void TouchPanel::PollTouchPoint()
     CLR_INT64 time = 0;
 
     TouchPointDevice touchPoint = g_TouchDevice.GetPoint();
+    if (touchPoint.touchStatus == TouchStatus::NoChange)
+    {
+        return;
+    }
+
     x = touchPoint.x;
     y = touchPoint.y;
 

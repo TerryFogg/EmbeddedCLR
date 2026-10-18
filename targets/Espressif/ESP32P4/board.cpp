@@ -30,7 +30,6 @@ extern GraphicsMemoryHeap g_GraphicsMemoryHeap;
 extern DisplayInterface g_DisplayInterface;
 extern DisplayDriver g_DisplayDriver;
 extern TouchPanel g_TouchPanel;
-extern TouchInterface g_TouchInterface;
 extern TouchDevice g_TouchDevice;
 
 uint32_t GetConfiguredIPAddress();
@@ -125,7 +124,6 @@ void InitializeGraphics()
 }
 void InitializeLcdTouchPanel()
 {
-    g_TouchInterface.Initialize(INTERNAL_SHARED_I2C_MASTER_BUS, 0x5D);
     g_TouchDevice.Initialize();
     // Touch panel enable/initialized by C# call and after the event system is initialized
     return;

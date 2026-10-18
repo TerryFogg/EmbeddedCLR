@@ -106,7 +106,6 @@ if(CONFIG_SUPPORT_GRAPHICSTOUCH)
                 ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Core/TouchPanel.cpp
 
                 ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Devices/${TOUCH_INTERFACE_CONTROLLER}
-                ${CMAKE_SOURCE_DIR}/src/nanoFramework.Graphics/TouchPanel/Interfaces/${TOUCH_INTERFACE_DRIVER}
     )
 endif()
 

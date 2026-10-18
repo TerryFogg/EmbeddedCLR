@@ -105,7 +105,6 @@ set( ADDITIONAL_IDF_COMPONENTS
       esp_event
       nvs_flash
       vfs
-      # CoreIO
       esp_hw_support
       esp_adc
       esp_driver_gpio

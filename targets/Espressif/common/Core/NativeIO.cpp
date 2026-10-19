@@ -477,20 +477,6 @@ bool I2cIO::WriteRead(
         readBuffer,
         readSize,
         xfer_timeout_ms);
-
-    printf("I2C W[%d]:", writeSize);
-    for (int i = 0; i < writeSize && i < 3; i++)
-    {
-        printf(" %02X", writeBuffer[i]);
-    }
-
-    printf("  R[%d]:", readSize);
-    for (int i = 0; i < readSize && i < 12; i++)
-    {
-        printf(" %02X", readBuffer[i]);
-    }
-
-    printf("\n");
     return (result == ESP_OK);
 }
 

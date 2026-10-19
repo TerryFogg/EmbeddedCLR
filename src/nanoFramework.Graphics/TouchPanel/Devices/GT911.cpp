@@ -92,8 +92,9 @@ TouchPointDevice TouchDevice::GetPoint()
     uint8_t TouchCount = touch.Status & 0x0F;
     if (NewDataAvailable)
     {
-        tp.x = touch.X;
-        tp.y = TOUCH_WIDTH - touch.Y;
+        // Switch x and y in landscape mode
+        tp.y = touch.X;
+        tp.x = TOUCH_WIDTH - touch.Y;
 
         if (TouchCount > 0)
         {

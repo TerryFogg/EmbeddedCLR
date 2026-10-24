@@ -123,5 +123,5 @@ target_compile_definitions(nanoCLR.elf PRIVATE NANOCLR_GRAPHICS=1)
 
 
 if(CONFIG_SUPPORT_GRAPHICSTOUCH)
- target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_GRAPHICSTOUCH=1)
+  target_compile_definitions(nanoCLR.elf PRIVATE CONFIG_SUPPORT_GRAPHICSTOUCH=1)
 endif()

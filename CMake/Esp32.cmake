@@ -8,9 +8,7 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoSupport_CRC32.c
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeFile.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeIO.cpp
-            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeNetwork.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/platform_heap.c
@@ -83,7 +81,8 @@ list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/partition_table/include
             ${ESP32_IDF_PATH}/components/soc/include
             ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
-            ${ESP32_IDF_PATH}/components/vfs/include
+            ${ESP32_IDF_PATH}/components/fatfs/vfs
+
 
             ${ESP32_IDF_PATH}/components/hal/${TARGET_SERIES}/include
             ${ESP32_IDF_PATH}/components/soc/${TARGET_SERIES}/include
@@ -156,8 +155,11 @@ endif()
 
 if(CONFIG_SUPPORT_FILESYSTEM)
     list(APPEND ADDITIONAL_IDF_COMPONENTS
-                littlefs
+                vfs
                 fatfs
+                wear_levelling
+                sdmmc
+                esp_driver_sdmmc
     )
 endif()
 

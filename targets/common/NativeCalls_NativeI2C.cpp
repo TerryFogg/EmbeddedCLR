@@ -6,7 +6,7 @@
 #include "NativeCalls.h"
 #include "NativeIO.h"
 
-HRESULT Library_NativeCalls_I2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -19,7 +19,7 @@ HRESULT Library_NativeCalls_I2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_Stack
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_I2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeI2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -32,7 +32,7 @@ HRESULT Library_NativeCalls_I2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_I2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -45,7 +45,7 @@ HRESULT Library_NativeCalls_I2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_Stac
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_I2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -58,7 +58,7 @@ HRESULT Library_NativeCalls_I2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_I2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -71,7 +71,7 @@ HRESULT Library_NativeCalls_I2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_I2C::
+HRESULT Library_NativeCalls_NativeI2C::
     WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

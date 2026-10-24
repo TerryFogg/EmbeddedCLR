@@ -13,7 +13,7 @@
 #include "NativeCalls.h"
 #include "NativeNetwork.h"
 
-HRESULT Library_NativeCalls_Dns::ResolveHost___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeDns::ResolveHost___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

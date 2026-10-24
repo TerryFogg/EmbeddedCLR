@@ -2,7 +2,7 @@
 #include "NativeFile.h"
 
 
-HRESULT Library_NativeCalls_FileSystem::Exists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeStorageSystem::Exists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -14,7 +14,7 @@ HRESULT Library_NativeCalls_FileSystem::Exists___STATIC__BOOLEAN__STRING(CLR_RT_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::Delete___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeStorageSystem::Delete___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -26,7 +26,7 @@ HRESULT Library_NativeCalls_FileSystem::Delete___STATIC__BOOLEAN__STRING(CLR_RT_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::Move___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeStorageSystem::Move___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -39,7 +39,7 @@ HRESULT Library_NativeCalls_FileSystem::Move___STATIC__BOOLEAN__STRING__STRING(C
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::Length___STATIC__I8__STRING(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeStorageSystem::Length___STATIC__I8__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -51,7 +51,7 @@ HRESULT Library_NativeCalls_FileSystem::Length___STATIC__I8__STRING(CLR_RT_Stack
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeStorageSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -66,7 +66,7 @@ HRESULT Library_NativeCalls_FileSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeStorageSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -82,7 +82,7 @@ HRESULT Library_NativeCalls_FileSystem::Write___STATIC__I4__STRING__SZARRAY_U1__
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::CreateDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::CreateDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
@@ -94,7 +94,7 @@ HRESULT Library_NativeCalls_FileSystem::CreateDirectory___STATIC__BOOLEAN__STRIN
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::DeleteDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::DeleteDirectory___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
@@ -106,7 +106,7 @@ HRESULT Library_NativeCalls_FileSystem::DeleteDirectory___STATIC__BOOLEAN__STRIN
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::DirectoryExists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::DirectoryExists___STATIC__BOOLEAN__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
@@ -118,7 +118,7 @@ HRESULT Library_NativeCalls_FileSystem::DirectoryExists___STATIC__BOOLEAN__STRIN
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::FileCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::FileCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
@@ -130,7 +130,7 @@ HRESULT Library_NativeCalls_FileSystem::FileCount___STATIC__I4__STRING( CLR_RT_S
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::GetFileName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::GetFileName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
@@ -151,7 +151,7 @@ HRESULT Library_NativeCalls_FileSystem::GetFileName___STATIC__STRING__STRING__I4
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::DirectoryCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::DirectoryCount___STATIC__I4__STRING( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {
@@ -163,7 +163,7 @@ HRESULT Library_NativeCalls_FileSystem::DirectoryCount___STATIC__I4__STRING( CLR
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_FileSystem::GetDirectoryName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
+HRESULT Library_NativeCalls_NativeStorageSystem::GetDirectoryName___STATIC__STRING__STRING__I4( CLR_RT_StackFrame &stack )
 {
     NANOCLR_HEADER();
     {

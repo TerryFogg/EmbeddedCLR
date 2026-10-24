@@ -184,17 +184,14 @@ list(APPEND Core_Includes
 
 list(APPEND Core_Sources
             ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Adc.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Bluetooth.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Dac.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Dns.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_FileSystem.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Gpio.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_I2C.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Pwm.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Socket.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Touch.cpp
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_Wifi.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NotImplemented.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeAdc.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeDac.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeDns.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeGpio.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeI2C.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativePwm.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeTouch.cpp
             ${CMAKE_SOURCE_DIR}/targets/common/UI_Thread.cpp
 )
 if(NF_TRACE_TO_STDIO)

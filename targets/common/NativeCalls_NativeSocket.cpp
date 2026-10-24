@@ -5,7 +5,7 @@
 #include "NativeNetwork.h"
 #include "NativeCalls.h"
 
-HRESULT Library_NativeCalls_Socket::Create___STATIC__I4__SocketProtocol(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::Create___STATIC__I4__SocketProtocol(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -17,7 +17,7 @@ HRESULT Library_NativeCalls_Socket::Create___STATIC__I4__SocketProtocol(CLR_RT_S
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Bind___STATIC__BOOLEAN__I4__U2(
+HRESULT Library_NativeCalls_NativeSocket::Bind___STATIC__BOOLEAN__I4__U2(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -31,7 +31,7 @@ HRESULT Library_NativeCalls_Socket::Bind___STATIC__BOOLEAN__I4__U2(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Connect___STATIC__BOOLEAN__I4__STRING__U2__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::Connect___STATIC__BOOLEAN__I4__STRING__U2__I4(CLR_RT_StackFrame &stack)
 {
     // args:
     // 0: socket (I4)
@@ -51,7 +51,7 @@ HRESULT Library_NativeCalls_Socket::Connect___STATIC__BOOLEAN__I4__STRING__U2__I
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Listen___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::Listen___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -65,7 +65,7 @@ HRESULT Library_NativeCalls_Socket::Listen___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Accept___STATIC__I4__I4__I4(
+HRESULT Library_NativeCalls_NativeSocket::Accept___STATIC__I4__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     // args:
@@ -82,7 +82,7 @@ HRESULT Library_NativeCalls_Socket::Accept___STATIC__I4__I4__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Send___STATIC__I4__I4__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::Send___STATIC__I4__I4__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
 {
     // args:
     // 0: socket (I4)
@@ -103,7 +103,7 @@ HRESULT Library_NativeCalls_Socket::Send___STATIC__I4__I4__SZARRAY_U1__I4__I4(CL
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::SendTo___STATIC__I4__I4__STRING__U2__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::SendTo___STATIC__I4__I4__STRING__U2__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
 {
     // args:
     // 0: socket (I4)
@@ -128,7 +128,7 @@ HRESULT Library_NativeCalls_Socket::SendTo___STATIC__I4__I4__STRING__U2__SZARRAY
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4(CLR_RT_StackFrame &stack)
 {
     // args:
     // 0: socket (I4)
@@ -152,7 +152,7 @@ HRESULT Library_NativeCalls_Socket::Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::ReceiveFrom___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4__SZARRAY_U1__SZARRAY_U1(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeSocket::ReceiveFrom___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4__SZARRAY_U1__SZARRAY_U1(CLR_RT_StackFrame &stack)
 {
     // args:
     // 0: socket (I4)
@@ -183,7 +183,7 @@ HRESULT Library_NativeCalls_Socket::ReceiveFrom___STATIC__I4__I4__SZARRAY_U1__I4
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::IsConnected___STATIC__BOOLEAN__I4(
+HRESULT Library_NativeCalls_NativeSocket::IsConnected___STATIC__BOOLEAN__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -196,7 +196,7 @@ HRESULT Library_NativeCalls_Socket::IsConnected___STATIC__BOOLEAN__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Socket::Close___STATIC__BOOLEAN__I4(
+HRESULT Library_NativeCalls_NativeSocket::Close___STATIC__BOOLEAN__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

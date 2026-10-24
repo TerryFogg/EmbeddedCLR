@@ -21,4 +21,9 @@ class File
     static bool GetFileName(const char *path, int32_t index, char *fileName, int32_t maximumLength);
     static bool GetDirectoryName(const char *path, int32_t index, char *directoryName, int32_t maximumLength);
     static int64_t Length(const char *path);
+    static bool IsDirectory(const char *parent, const char *name);
+    static bool MountSdCard();
+    static void UnmountSdCard();
+    static bool IsSdMounted();
+    static uint64_t GetFreeBytes();
 };

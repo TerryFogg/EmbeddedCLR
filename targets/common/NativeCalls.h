@@ -61,6 +61,12 @@ typedef enum __nfpack GpioPinMode
     GpioPinMode_OutputOpenDrain = 3,
 } GpioPinMode;
 
+typedef enum __nfpack NativeWifi_WiFiEventType
+{
+    NativeWifi_WiFiEventType_WifiConnected = 1,
+    NativeWifi_WiFiEventType_WifiDisconnected = 2,
+} NativeWifi_WiFiEventType;
+
 typedef enum __nfpack NetworkEventType
 {
     NetworkEventType_SocketDataAvailable = 1,
@@ -108,12 +114,6 @@ typedef enum __nfpack SocketProtocol
     SocketProtocol_Udp = 1,
 } SocketProtocol;
 
-typedef enum __nfpack Wifi_WiFiEventType
-{
-    Wifi_WiFiEventType_WifiConnected = 1,
-    Wifi_WiFiEventType_WifiDisconnected = 2,
-} Wifi_WiFiEventType;
-
 typedef enum __nfpack WifiAuthMode
 {
     WifiAuthMode_Open = 0,
@@ -135,14 +135,14 @@ typedef enum __nfpack WifiCipherType
     WifiCipherType_AesCmac128 = 6,
 } WifiCipherType;
 
-struct Library_NativeCalls_Adc
+struct Library_NativeCalls_NativeAdc
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
 
     //--//
 };
 
-struct Library_NativeCalls_Bluetooth
+struct Library_NativeCalls_NativeBluetooth
 {
     NANOCLR_NATIVE_DECLARE(Enable___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(Disable___STATIC__BOOLEAN);
@@ -160,21 +160,75 @@ struct Library_NativeCalls_Bluetooth
     //--//
 };
 
-struct Library_NativeCalls_Dac
+struct Library_NativeCalls_NativeDac
 {
     NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__I4);
 
     //--//
 };
 
-struct Library_NativeCalls_Dns
+struct Library_NativeCalls_NativeDns
 {
     NANOCLR_NATIVE_DECLARE(ResolveHost___STATIC__I4__STRING);
 
     //--//
 };
 
-struct Library_NativeCalls_FileSystem
+struct Library_NativeCalls_NativeGpio
+{
+    NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__GpioPinMode__GpioBias);
+    NANOCLR_NATIVE_DECLARE(Read___STATIC__GpioPinLevel__I4);
+    NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__GpioPinLevel);
+    NANOCLR_NATIVE_DECLARE(AddInterrupt___STATIC__VOID__I4__GpioInterruptMode);
+    NANOCLR_NATIVE_DECLARE(EnableInterrupt___STATIC__VOID__I4);
+    NANOCLR_NATIVE_DECLARE(DisableInterrupt___STATIC__VOID__I4);
+    NANOCLR_NATIVE_DECLARE(RemoveInterrupt___STATIC__VOID__I4);
+
+    //--//
+};
+
+struct Library_NativeCalls_NativeI2C
+{
+    NANOCLR_NATIVE_DECLARE(Open___STATIC__BOOLEAN__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2);
+    NANOCLR_NATIVE_DECLARE(Probe___STATIC__BOOLEAN__I4__U2__I4);
+    NANOCLR_NATIVE_DECLARE(Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
+    NANOCLR_NATIVE_DECLARE(Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
+    NANOCLR_NATIVE_DECLARE(WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4);
+
+    //--//
+};
+
+struct Library_NativeCalls_NativePwm
+{
+    NANOCLR_NATIVE_DECLARE(Initialize___STATIC__VOID__I4);
+    NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(SetDutyCycle___STATIC__VOID__I4__I4);
+    NANOCLR_NATIVE_DECLARE(SetFrequency___STATIC__VOID__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Start___STATIC__VOID__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Stop___STATIC__VOID__I4__BOOLEAN);
+
+    //--//
+};
+
+struct Library_NativeCalls_NativeSocket
+{
+    NANOCLR_NATIVE_DECLARE(Create___STATIC__I4__SocketProtocol);
+    NANOCLR_NATIVE_DECLARE(Bind___STATIC__BOOLEAN__I4__U2);
+    NANOCLR_NATIVE_DECLARE(Connect___STATIC__BOOLEAN__I4__STRING__U2__I4);
+    NANOCLR_NATIVE_DECLARE(Listen___STATIC__BOOLEAN__I4__U2__I4);
+    NANOCLR_NATIVE_DECLARE(Accept___STATIC__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Send___STATIC__I4__I4__SZARRAY_U1__I4__I4);
+    NANOCLR_NATIVE_DECLARE(SendTo___STATIC__I4__I4__STRING__U2__SZARRAY_U1__I4__I4);
+    NANOCLR_NATIVE_DECLARE(Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4);
+    NANOCLR_NATIVE_DECLARE(ReceiveFrom___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4__SZARRAY_U1__SZARRAY_U1);
+    NANOCLR_NATIVE_DECLARE(IsConnected___STATIC__BOOLEAN__I4);
+    NANOCLR_NATIVE_DECLARE(Close___STATIC__BOOLEAN__I4);
+
+    //--//
+};
+
+struct Library_NativeCalls_NativeStorageSystem
 {
     NANOCLR_NATIVE_DECLARE(Exists___STATIC__BOOLEAN__STRING);
     NANOCLR_NATIVE_DECLARE(Delete___STATIC__BOOLEAN__STRING);
@@ -193,68 +247,14 @@ struct Library_NativeCalls_FileSystem
     //--//
 };
 
-struct Library_NativeCalls_Gpio
-{
-    NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__GpioPinMode__GpioBias);
-    NANOCLR_NATIVE_DECLARE(Read___STATIC__GpioPinLevel__I4);
-    NANOCLR_NATIVE_DECLARE(Write___STATIC__VOID__I4__GpioPinLevel);
-    NANOCLR_NATIVE_DECLARE(AddInterrupt___STATIC__VOID__I4__GpioInterruptMode);
-    NANOCLR_NATIVE_DECLARE(EnableInterrupt___STATIC__VOID__I4);
-    NANOCLR_NATIVE_DECLARE(DisableInterrupt___STATIC__VOID__I4);
-    NANOCLR_NATIVE_DECLARE(RemoveInterrupt___STATIC__VOID__I4);
-
-    //--//
-};
-
-struct Library_NativeCalls_I2C
-{
-    NANOCLR_NATIVE_DECLARE(Open___STATIC__BOOLEAN__I4__I4__I4);
-    NANOCLR_NATIVE_DECLARE(AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2);
-    NANOCLR_NATIVE_DECLARE(Probe___STATIC__BOOLEAN__I4__U2__I4);
-    NANOCLR_NATIVE_DECLARE(Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
-    NANOCLR_NATIVE_DECLARE(Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4);
-    NANOCLR_NATIVE_DECLARE(WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4);
-
-    //--//
-};
-
-struct Library_NativeCalls_Pwm
-{
-    NANOCLR_NATIVE_DECLARE(Initialize___STATIC__VOID__I4);
-    NANOCLR_NATIVE_DECLARE(ConfigurePin___STATIC__VOID__I4__I4__I4);
-    NANOCLR_NATIVE_DECLARE(SetDutyCycle___STATIC__VOID__I4__I4);
-    NANOCLR_NATIVE_DECLARE(SetFrequency___STATIC__VOID__I4__I4);
-    NANOCLR_NATIVE_DECLARE(Start___STATIC__VOID__I4__I4);
-    NANOCLR_NATIVE_DECLARE(Stop___STATIC__VOID__I4__BOOLEAN);
-
-    //--//
-};
-
-struct Library_NativeCalls_Socket
-{
-    NANOCLR_NATIVE_DECLARE(Create___STATIC__I4__SocketProtocol);
-    NANOCLR_NATIVE_DECLARE(Bind___STATIC__BOOLEAN__I4__U2);
-    NANOCLR_NATIVE_DECLARE(Connect___STATIC__BOOLEAN__I4__STRING__U2__I4);
-    NANOCLR_NATIVE_DECLARE(Listen___STATIC__BOOLEAN__I4__U2__I4);
-    NANOCLR_NATIVE_DECLARE(Accept___STATIC__I4__I4__I4);
-    NANOCLR_NATIVE_DECLARE(Send___STATIC__I4__I4__SZARRAY_U1__I4__I4);
-    NANOCLR_NATIVE_DECLARE(SendTo___STATIC__I4__I4__STRING__U2__SZARRAY_U1__I4__I4);
-    NANOCLR_NATIVE_DECLARE(Receive___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4);
-    NANOCLR_NATIVE_DECLARE(ReceiveFrom___STATIC__I4__I4__SZARRAY_U1__I4__I4__I4__SZARRAY_U1__SZARRAY_U1);
-    NANOCLR_NATIVE_DECLARE(IsConnected___STATIC__BOOLEAN__I4);
-    NANOCLR_NATIVE_DECLARE(Close___STATIC__BOOLEAN__I4);
-
-    //--//
-};
-
-struct Library_NativeCalls_Touch
+struct Library_NativeCalls_NativeTouch
 {
     NANOCLR_NATIVE_DECLARE(Read___STATIC__I4__I4);
 
     //--//
 };
 
-struct Library_NativeCalls_Wifi
+struct Library_NativeCalls_NativeWifi
 {
     NANOCLR_NATIVE_DECLARE(Initialize___STATIC__BOOLEAN);
     NANOCLR_NATIVE_DECLARE(IsAvailable___STATIC__BOOLEAN);

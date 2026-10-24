@@ -13,7 +13,7 @@
 #include "NativeNetwork.h"
 #include "NativeCalls.h"
 
-HRESULT Library_NativeCalls_Bluetooth::Enable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::Enable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -23,7 +23,7 @@ HRESULT Library_NativeCalls_Bluetooth::Enable___STATIC__BOOLEAN(CLR_RT_StackFram
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::Disable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::Disable___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -33,7 +33,7 @@ HRESULT Library_NativeCalls_Bluetooth::Disable___STATIC__BOOLEAN(CLR_RT_StackFra
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::GetState___STATIC__BluetoothState(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::GetState___STATIC__BluetoothState(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -43,7 +43,7 @@ HRESULT Library_NativeCalls_Bluetooth::GetState___STATIC__BluetoothState(CLR_RT_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::StartScan___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::StartScan___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -53,7 +53,7 @@ HRESULT Library_NativeCalls_Bluetooth::StartScan___STATIC__BOOLEAN(CLR_RT_StackF
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::StopScan___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::StopScan___STATIC__BOOLEAN(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -63,7 +63,7 @@ HRESULT Library_NativeCalls_Bluetooth::StopScan___STATIC__BOOLEAN(CLR_RT_StackFr
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::DeviceCount___STATIC__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::DeviceCount___STATIC__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -73,7 +73,7 @@ HRESULT Library_NativeCalls_Bluetooth::DeviceCount___STATIC__I4(CLR_RT_StackFram
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::GetDeviceAddress___STATIC__STRING__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::GetDeviceAddress___STATIC__STRING__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -88,7 +88,7 @@ HRESULT Library_NativeCalls_Bluetooth::GetDeviceAddress___STATIC__STRING__I4(CLR
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::GetDeviceName___STATIC__STRING__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::GetDeviceName___STATIC__STRING__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -100,7 +100,7 @@ HRESULT Library_NativeCalls_Bluetooth::GetDeviceName___STATIC__STRING__I4(CLR_RT
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::Connect___STATIC__BOOLEAN__STRING__I4(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::Connect___STATIC__BOOLEAN__STRING__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -112,7 +112,7 @@ HRESULT Library_NativeCalls_Bluetooth::Connect___STATIC__BOOLEAN__STRING__I4(CLR
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::Disconnect___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::Disconnect___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -123,7 +123,7 @@ HRESULT Library_NativeCalls_Bluetooth::Disconnect___STATIC__BOOLEAN__STRING(CLR_
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::ReadCharacteristic___STATIC__I4__STRING__STRING__SZARRAY_U1(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::ReadCharacteristic___STATIC__I4__STRING__STRING__SZARRAY_U1(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -144,7 +144,7 @@ HRESULT Library_NativeCalls_Bluetooth::ReadCharacteristic___STATIC__I4__STRING__
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Bluetooth::WriteCharacteristic___STATIC__BOOLEAN__STRING__STRING__SZARRAY_U1(CLR_RT_StackFrame &stack)
+HRESULT Library_NativeCalls_NativeBluetooth::WriteCharacteristic___STATIC__BOOLEAN__STRING__STRING__SZARRAY_U1(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {

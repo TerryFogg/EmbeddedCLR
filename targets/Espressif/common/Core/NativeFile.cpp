@@ -2,11 +2,18 @@
 
 #include "NativeFile.h"
 
-#include <dirent.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
+
+#include "esp_vfs_fat.h"
+#include "esp_vfs.h"
+
+#include "sdmmc_cmd.h"
+#include "driver/sdmmc_host.h"
 
 bool File::Exists(const char *path)
 {
@@ -24,175 +31,221 @@ bool File::CreateDirectory(const char *path)
     return mkdir(path, 0777) == 0;
 }
 
-bool File::Move(const char *source, const char *destination)
-{
-    return rename(source, destination) == 0;
-}
-
 bool File::DirectoryExists(const char *path)
 {
     struct stat info;
     return stat(path, &info) == 0 && S_ISDIR(info.st_mode);
 }
 
-int32_t File::Read(const char *path, uint8_t *buffer, int32_t offset, int32_t length)
-{
-    FILE *file = fopen(path, "rb");
-    if (file == nullptr)
-    {
-        return -1;
-    }
-    int32_t bytesRead = fread(buffer + offset, 1, length, file);
-    fclose(file);
-    return bytesRead;
-}
-
-int32_t File::Write(const char *path, const uint8_t *data, int32_t offset, int32_t length, bool append)
-{
-    FILE *file = fopen(path, append ? "ab" : "wb");
-    if (file == nullptr)
-    {
-        return -1;
-    }
-    int32_t bytesWritten = fwrite(data + offset, 1, length, file);
-    fclose(file);
-    return bytesWritten;
-}
-
-int64_t File::Length(const char *path)
-{
-    struct stat info;
-    if (stat(path, &info) != 0)
-    {
-        return -1;
-    }
-    return info.st_size;
-}
-
 int32_t File::FileCount(const char *path)
 {
-    struct stat info;
-    char fullPath[256];
+    DIR *dir = opendir(path);
+    if (!dir)
+    {
+        return -1;
+    }
     int32_t count = 0;
-    dirent *entry;
-    DIR *directory = opendir(path);
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != nullptr)
+    {
+        if (entry->d_type == DT_REG)
+        {
+            count++;
+        }
+    }
+    closedir(dir);
+    return count;
+}
 
-    while ((entry = readdir(directory)) != nullptr)
+int32_t File::DirectoryCount(const char *path)
+{
+    DIR *dir = opendir(path);
+
+    if (!dir)
+    {
+        return -1;
+    }
+
+    int32_t count = 0;
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != nullptr)
     {
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
         {
             continue;
         }
 
-        if (stat(fullPath, &info) == 0)
+        if (entry->d_type == DT_DIR)
         {
-            if (S_ISREG(info.st_mode))
-            {
-                count++;
-            }
+            count++;
         }
     }
-    closedir(directory);
+    closedir(dir);
     return count;
 }
 
-int32_t File::DirectoryCount(const char *path)
+bool File::Move(const char *source, const char *destination)
 {
-    struct stat info;
-    char fullPath[256];
-    int32_t count = 0;
-    dirent *entry;
-    DIR *directory = opendir(path);
-
-    while ((entry = readdir(directory)) != nullptr)
-    {
-        if (strcmp(entry->d_name, ".") == 0)
-        {
-            continue;
-        }
-        if (strcmp(entry->d_name, "..") == 0)
-        {
-            continue;
-        }
-        if (stat(fullPath, &info) == 0)
-        {
-            if (S_ISDIR(info.st_mode))
-            {
-                count++;
-            }
-        }
-    }
-    closedir(directory);
-    return count;
+    return rename(source, destination) == 0;
 }
+
+int32_t File::Read(const char *path, uint8_t *buffer, int32_t offset, int32_t length)
+{
+    FILE *fp = fopen(path, "rb");
+    if (!fp)
+    {
+        return -1;
+    }
+    fseek(fp, offset, SEEK_SET);
+    int32_t bytesRead = (int32_t)fread(buffer, 1, length, fp);
+    fclose(fp);
+    return bytesRead;
+}
+
+int32_t File::Write(const char *path, const uint8_t *data, int32_t offset, int32_t length, bool append)
+{
+    FILE *fp = fopen(path, append ? "ab" : "r+b");
+    if (!fp && !append)
+    {
+        fp = fopen(path, "wb+");
+    }
+    if (!fp)
+    {
+        return -1;
+    }
+    if (!append)
+    {
+        fseek(fp, offset, SEEK_SET);
+    }
+    int32_t written = (int32_t)fwrite(data, 1, length, fp);
+    fclose(fp);
+    return written;
+}
+
 bool File::GetFileName(const char *path, int32_t index, char *fileName, int32_t maximumLength)
 {
-    DIR *directory = opendir(path);
-    if (directory == nullptr)
+    DIR *dir = opendir(path);
+    struct dirent *entry;
+    int32_t current = 0;
+
+    if (!dir)
     {
         return false;
     }
-    int32_t currentIndex = 0;
-    dirent *entry;
-    while ((entry = readdir(directory)) != nullptr)
+
+    while ((entry = readdir(dir)) != nullptr)
     {
-        if (strcmp(entry->d_name, ".") == 0)
+        if (entry->d_type == DT_REG)
         {
-            continue;
+            if (current == index)
+            {
+                strncpy(fileName, entry->d_name, maximumLength - 1);
+                fileName[maximumLength - 1] = '\0';
+                closedir(dir);
+                return true;
+            }
+            current++;
         }
-        if (strcmp(entry->d_name, "..") == 0)
-        {
-            continue;
-        }
-        if (currentIndex == index)
-        {
-            strncpy(fileName, entry->d_name, maximumLength - 1);
-            fileName[maximumLength - 1] = '\0';
-            closedir(directory);
-            return true;
-        }
-        currentIndex++;
     }
-    closedir(directory);
+    closedir(dir);
     return false;
 }
-#include <sys/stat.h>
 
 bool File::GetDirectoryName(const char *path, int32_t index, char *directoryName, int32_t maximumLength)
 {
-    int32_t currentIndex = 0;
-    struct stat info;
-    char fullPath[256];
-    dirent *entry;
-    DIR *directory = opendir(path);
+    DIR *dir = opendir(path);
 
-    while ((entry = readdir(directory)) != nullptr)
+    if (!dir)
     {
-        if (strcmp(entry->d_name, ".") == 0)
-        {
-            continue;
-        }
-        if (strcmp(entry->d_name, "..") == 0)
-        {
-            continue;
-        }
-        if (stat(fullPath, &info) != 0)
-        {
-            continue;
-        }
-        if (!S_ISDIR(info.st_mode))
-        {
-            continue;
-        }
-        if (currentIndex == index)
-        {
-            strncpy(directoryName, entry->d_name, maximumLength - 1);
-            directoryName[maximumLength - 1] = '\0';
-            closedir(directory);
-            return true;
-        }
-        currentIndex++;
+        return false;
     }
-    closedir(directory);
+
+    struct dirent *entry;
+    int32_t current = 0;
+
+    while ((entry = readdir(dir)) != nullptr)
+    {
+        if (entry->d_type == DT_DIR)
+        {
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+            {
+                continue;
+            }
+            if (current == index)
+            {
+                strncpy(directoryName, entry->d_name, maximumLength - 1);
+                directoryName[maximumLength - 1] = '\0';
+                closedir(dir);
+                return true;
+            }
+            current++;
+        }
+    }
+    closedir(dir);
     return false;
+}
+
+int64_t File::Length(const char *path)
+{
+    struct stat st;
+
+    if (stat(path, &st) != 0)
+    {
+        return -1;
+    }
+    return st.st_size;
+}
+
+bool File::IsDirectory(const char *parent, const char *name)
+{
+    char fullPath[256];
+    struct stat st;
+
+    snprintf(fullPath, sizeof(fullPath), "%s/%s", parent, name);
+    return stat(fullPath, &st) == 0 && S_ISDIR(st.st_mode);
+}
+
+sdmmc_card_t *card = nullptr;
+
+bool File::MountSdCard()
+{
+    esp_vfs_fat_sdmmc_mount_config_t mountConfig = {
+        .format_if_mount_failed = false,
+        .max_files = 16,
+        .allocation_unit_size = 32 * 1024,
+        .disk_status_check_enable = true,
+        .use_one_fat = true,
+        .rootdir_entries = 0
+    };
+
+    sdmmc_host_t host = SDMMC_HOST_DEFAULT();
+    sdmmc_slot_config_t slotConfig = SDMMC_SLOT_CONFIG_DEFAULT();
+    esp_err_t err = esp_vfs_fat_sdmmc_mount("/sdcard", &host, &slotConfig, &mountConfig, &card);
+    if (err != ESP_OK)
+    {
+        return false;
+    }
+    sdmmc_card_print_info(stdout, card);
+    return (err == ESP_OK);
+}
+
+void File::UnmountSdCard()
+{
+    esp_vfs_fat_sdcard_unmount("/sdcard", card);
+    card = nullptr;
+}
+
+bool File::IsSdMounted()
+{
+    struct stat st;
+    return stat("/sdcard", &st) == 0;
+}
+
+uint64_t File::GetFreeBytes()
+{
+    FATFS *fs;
+    DWORD freeClusters;
+    f_getfree("0:", &freeClusters, &fs);
+    uint64_t freeSectors = freeClusters * fs->csize;
+    return freeSectors * 512ULL;
 }

@@ -6,7 +6,7 @@
 #include "NativeCalls.h"
 #include "NativeIO.h"
 
-HRESULT Library_NativeCalls_Pwm::Initialize___STATIC__VOID__I4(
+HRESULT Library_NativeCalls_NativePwm::Initialize___STATIC__VOID__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -18,7 +18,7 @@ HRESULT Library_NativeCalls_Pwm::Initialize___STATIC__VOID__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Pwm::ConfigurePin___STATIC__VOID__I4__I4__I4(
+HRESULT Library_NativeCalls_NativePwm::ConfigurePin___STATIC__VOID__I4__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -30,7 +30,7 @@ HRESULT Library_NativeCalls_Pwm::ConfigurePin___STATIC__VOID__I4__I4__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Pwm::SetDutyCycle___STATIC__VOID__I4__I4(
+HRESULT Library_NativeCalls_NativePwm::SetDutyCycle___STATIC__VOID__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -42,7 +42,7 @@ HRESULT Library_NativeCalls_Pwm::SetDutyCycle___STATIC__VOID__I4__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Pwm::SetFrequency___STATIC__VOID__I4__I4(
+HRESULT Library_NativeCalls_NativePwm::SetFrequency___STATIC__VOID__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -54,7 +54,7 @@ HRESULT Library_NativeCalls_Pwm::SetFrequency___STATIC__VOID__I4__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Pwm::Start___STATIC__VOID__I4__I4(
+HRESULT Library_NativeCalls_NativePwm::Start___STATIC__VOID__I4__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -66,7 +66,7 @@ HRESULT Library_NativeCalls_Pwm::Start___STATIC__VOID__I4__I4(
     NANOCLR_NOCLEANUP();
 }
 
-HRESULT Library_NativeCalls_Pwm::Stop___STATIC__VOID__I4__BOOLEAN(
+HRESULT Library_NativeCalls_NativePwm::Stop___STATIC__VOID__I4__BOOLEAN(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

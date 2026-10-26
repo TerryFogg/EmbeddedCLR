@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
 // See LICENSE file in the project root for full license information.
@@ -791,13 +791,6 @@ template <typename T> class HAL_RingBuffer
     }
 };
 
-//--//
-
-// #include <..\Initialization\MasterConfig.h>
-
-//--//
-
-// hal cleanup for CLR reboot
 
 void nanoHAL_Initialize();
 void nanoHAL_Uninitialize(bool isPoweringDown);
@@ -806,76 +799,11 @@ typedef void (*ON_SOFT_REBOOT_HANDLER)(void);
 
 void HAL_AddSoftRebootHandler(ON_SOFT_REBOOT_HANDLER handler);
 
-//--//
-
-//--//
-
-//--//
-
-//--//
 
 extern bool g_fDoNotUninitializeDebuggerPort;
 
-//--//
-
 #include <nanoPAL_Network.h>
 #include <nanoPAL.h>
-// #include <drivers.h>
-
-/////////////////////////////////////////////////////////////////////
-//
-// Chipset
-//
-
-//// boot
-// #include <CPU_BOOT_decl.h>
-//
-//// Cache driver
-// #include <CPU_MMU_decl.h>
-//
-//// Cache driver
-// #include <CPU_CACHE_decl.h>
-//
-//// Gp I/O driver
-// #include <CPU_INTC_decl.h>
-//
-//  Gp I/O driver
-#include <CPU_GPIO_decl.h>
-
-//
-// SPI driver
-#include <nanoHAL_Spi.h>
-
-//
-//// External bus interface driver
-// #include <CPU_EBIU_decl.h>
-//
-//// Power control unit
-// #include <CPU_PCU_decl.h>
-//
-//// Clock management unit driver
-// #include <CPU_CMU_decl.h>
-//
-//// DMA driver
-// #include <CPU_DMA_decl.h>
-//
-// #include <PerformanceCounters_decl.h>
-//
-//// Virtual Key
-// #include <VirtualKey_decl.h>
-//
-
-//// Power API
-// #include <Power_decl.h>
-
-//
-// Chipset
-//
-/////////////////////////////////////////////////////////////////////
-
-// #include <drivers.h>
-
-// platform_selector.h (from MasterConfig.h)
 
 #if defined(_WIN32)
 

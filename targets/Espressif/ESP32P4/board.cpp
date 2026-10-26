@@ -17,7 +17,6 @@
 #include "esp_err.h"
 #include "hal/uart_types.h"
 #include "nanoHAL_v2.h"
-#include "soc/uart_channel.h"
 
 #include "Display.h"
 #include "DisplayInterface.h"
@@ -69,10 +68,20 @@ void InitializeGpio()
     GpioIO::InitializePin(GPIO29, GpioPinMode_Input, GpioBias_NoBias);
     GpioIO::InitializePin(GPIO37, GpioPinMode_Input, GpioBias_NoBias);
     GpioIO::InitializePin(GPIO38, GpioPinMode_Input, GpioBias_NoBias);
+
+    // Setup the button GPIO35 for input to act as halt for debug
+    GpioIO::InitializePin(GPIO35, GpioPinMode_Input, GpioBias_PullUp);
+
     return;
 }
-void InitializeADC()
+
+bool WaitForDebug()
 {
+    return !GpioIO::ReadLevel(PinNameValue::GPIO35);
+}
+
+void InitializeADC()
+    {
     // ESP32-P4 has 2 ADC units and multiple analog-capable pins, but the GPIO-to-channel mapping comes from the chip
     AdcIO::Initialize();
     AdcIO::AddChannel(ADC_CHANNEL_0); // GPIO2

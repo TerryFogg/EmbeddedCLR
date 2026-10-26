@@ -39,16 +39,15 @@ target_compile_options(nanoCLR.elf PUBLIC
 )
 
 target_compile_definitions( nanoCLR.elf PUBLIC
-                            ESP_PLATFORM
+                            ESP_PLATFORM   # Important used by ESP-IDF
                             F_GETPATH=20
                             I_AM_NANOCLR
-                            PLATFORM_ESP32
-                            SOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE
-                            SOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ
-                            TARGET=esp32p4
+                            PLATFORM_ESP32    # Something strange again
+#                            TARGET=esp32p4
                             TRACE_MASK=0
                             USE_FPU=TRUE
                             CONFIG_RTOS=1     #Strange define for the check of an include file
+                            CONFIG_LIBC_NEWLIB
 )
 
 # Defines used in the c/c++ code in rare situations to debug and profile
@@ -92,8 +91,10 @@ set_source_files_properties(
 add_custom_command(TARGET nanoCLR.elf POST_BUILD
   COMMAND ${CMAKE_OBJCOPY} -Oihex    $<TARGET_FILE:nanoCLR.elf>   ${CMAKE_BINARY_DIR}/nanoCLR.hex
   COMMAND ${CMAKE_OBJCOPY} -Obinary  $<TARGET_FILE:nanoCLR.elf>   ${CMAKE_BINARY_DIR}/nanoCLR.bin
-  COMMAND ${CMAKE_OBJDUMP} -d -EL -S $<TARGET_FILE:nanoCLR.elf> > ${CMAKE_BINARY_DIR}/nanoCLR.lst
+  COMMAND ${CMAKE_OBJDUMP} -d -EL -S $<TARGET_FILE:nanoCLR.elf>>  ${CMAKE_BINARY_DIR}/nanoCLR.lst
+  COMMAND ${CMAKE_NM}      -n        $<TARGET_FILE:nanoCLR.elf>>  ${CMAKE_BINARY_DIR}/nanoCLR.sym
 )
+
 
 ## Tracing Options
 

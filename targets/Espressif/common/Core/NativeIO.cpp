@@ -259,7 +259,8 @@ bool PwmIO::ConfigurePin(PinNameValue pinNumber, int Frequency, int DutyCycle)
         .duty = (unsigned int)DutyCycle,
         .hpoint = 0,
         .sleep_mode = ledc_sleep_mode_t::LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
-        .flags = {.output_invert = 0}};
+        .flags = {.output_invert = 0},
+        .deconfigure = false};
 
     esp_err_t result = ledc_channel_config(&chan_cfg);
     return (result == ESP_OK);
@@ -321,6 +322,7 @@ bool SerialIO::Initialize(
         .stop_bits = (uart_stop_bits_t)stopbits,
         .flow_ctrl = (uart_hw_flowcontrol_t)flowcontrol,
         .rx_flow_ctrl_thresh = 0,
+        .rx_glitch_filt_thresh = 0, //?????????????
         .source_clk = (uart_sclk_t)0,
         .flags = {.allow_pd = 0, .backup_before_sleep = 0}};
     uart_param_config(serialPort, &uart_config);
@@ -359,6 +361,7 @@ bool SpiIO::Initialize(int spiBusNumber, PinNameValue pinMosi, PinNameValue pinM
         .data7_io_num = -1,
         .data_io_default_level = false,
         .max_transfer_sz = 4096,
+        .dma_burst_size = 0,
         .flags = 0,
         .isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO,
         .intr_flags = 0};
@@ -393,16 +396,32 @@ bool SpiIO::AttachDevice(int spiBusNumber, PinNameValue pinChipSelect)
 
 bool SpiIO::Write(int spi_internal_bus_number, unsigned char *writeData, int writeDataSize)
 {
-    spi_transaction_t transaction =
-        {.flags = 0, .cmd = 0, .addr = 0, .length = 0, .rxlength = 0, .user = 0, .tx_buffer = NULL, .rx_buffer = NULL};
+    spi_transaction_t transaction = {
+        .flags = 0,
+        .cmd = 0,
+        .addr = 0,
+        .length = 0,
+        .rxlength = 0,
+        .override_freq_hz = 0,
+        .user = 0,
+        .tx_buffer = NULL,
+        .rx_buffer = NULL};
     esp_err_t result = spi_device_transmit((spi_device_handle_t)spi_internal_bus_number, &transaction);
     return (result == ESP_OK);
 }
 
 int SpiIO::Read(int spi_internal_bus_number, unsigned char *readData, int maxReadData)
 {
-    spi_transaction_t transaction =
-        {.flags = 0, .cmd = 0, .addr = 0, .length = 0, .rxlength = 0, .user = 0, .tx_buffer = NULL, .rx_buffer = NULL};
+    spi_transaction_t transaction = {
+        .flags = 0,
+        .cmd = 0,
+        .addr = 0,
+        .length = 0,
+        .rxlength = 0,
+        .override_freq_hz = 0,
+        .user = 0,
+        .tx_buffer = NULL,
+        .rx_buffer = NULL};
     esp_err_t result = spi_device_transmit((spi_device_handle_t)spi_internal_bus_number, &transaction);
     return (result == ESP_OK);
 }

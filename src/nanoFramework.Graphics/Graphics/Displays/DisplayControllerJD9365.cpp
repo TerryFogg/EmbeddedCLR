@@ -277,7 +277,7 @@ static const jd9365_lcd_init_cmd_t jd9365_vendor_specific_init_default[] = {
 #define JD9365_CMD_SS_BIT (1 << 1)
 
 #define CONFIG_BSP_LCD_DPI_BUFFER_NUMS (1)
-#define PANEL_SIZE_BYTES (LCD_X_SIZE * LCD_Y_SIZE * 2)
+#define PANEL_SIZE_BYTES               (LCD_X_SIZE * LCD_Y_SIZE * 2)
 
 typedef struct
 {
@@ -358,7 +358,8 @@ bool DisplayDriver::Initialize()
             .duty = 0,
             .hpoint = 0,
             .sleep_mode = LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
-            .flags = {.output_invert = 0}};
+            .flags = {.output_invert = 0},
+            .deconfigure = false};
 
         ledc_timer_config(&LCD_backlight_timer);
         ledc_channel_config(&LCD_backlight_channel);
@@ -371,7 +372,6 @@ bool DisplayDriver::Initialize()
         .virtual_channel = 0,
         .dpi_clk_src = MIPI_DSI_DPI_CLK_SRC_DEFAULT,
         .dpi_clock_freq_mhz = 80,
-        .pixel_format = LCD_COLOR_PIXEL_FORMAT_RGB565,
         .in_color_format = LCD_COLOR_FMT_RGB565,
         .out_color_format = LCD_COLOR_FMT_RGB565,
         .num_fbs = CONFIG_BSP_LCD_DPI_BUFFER_NUMS,
@@ -388,7 +388,6 @@ bool DisplayDriver::Initialize()
             },
         .flags =
             {
-                .use_dma2d = true,
                 .disable_lp = false,
             },
     };
@@ -402,12 +401,12 @@ bool DisplayDriver::Initialize()
             .lane_num = 2,
         }};
     esp_lcd_panel_dev_config_t lcd_dev_config = {
-        .reset_gpio_num = LCD_RESET,
         .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_RGB,
         .data_endian = LCD_RGB_DATA_ENDIAN_BIG,
         .bits_per_pixel = 16,
-        .flags = {.reset_active_high = 0},
+        .reset_gpio_num = LCD_RESET,
         .vendor_config = &vendor_config,
+        .flags = {.reset_active_high = 0},
     };
     esp_lcd_new_panel_jd9365(io_handle, &lcd_dev_config, &disp_panel);
 
@@ -428,14 +427,16 @@ bool DisplayDriver::Initialize()
     refresh_finish = xSemaphoreCreateBinary();
     esp_lcd_dpi_panel_event_callbacks_t cbs = {
         .on_color_trans_done = NULL,
-        .on_refresh_done = test_notify_refresh_ready};
+        .on_frame_buf_complete = test_notify_refresh_ready,
+        .on_vsync = NULL};
     esp_lcd_dpi_panel_register_event_callbacks(disp_panel, &cbs, refresh_finish);
 
     // Setup for pixel processor for 90/180/270 degree rotation
     ppa_client_config_t ppa_srm_client_config = {
         .oper_type = PPA_OPERATION_SRM,
         .max_pending_trans_num = 1,
-        .data_burst_length = PPA_DATA_BURST_LENGTH_128};
+        .data_burst_length = PPA_DATA_BURST_LENGTH_128,
+        .flags = {.allow_pd = 0}};
     ppa_register_client(&ppa_srm_client_config, &ppa_srm_client_handle);
 
     return true;

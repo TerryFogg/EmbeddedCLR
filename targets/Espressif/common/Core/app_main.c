@@ -35,7 +35,10 @@
 #include <WireProtocol_ReceiverThread.h>
 #include "board.h"
 #include "UI_Thread.h"
+#include "freertos/idf_additions.h"
+#include "soc/interrupt_reg.h"
 
+#include <stdbool.h>
 
 extern void CLRStartupThread(void const *argument);
 static void receiver_task(void *pvParameter);
@@ -49,23 +52,26 @@ void app_main()
 
     InitializeBoard();
 
+    bool WaitForDebugger = WaitForDebug();
+
     StartUITask();
 
     // Receiver task pinned to core 0
     xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
 
     // CLR main task pinned to core 1
-    xTaskCreatePinnedToCore(&main_task, "main_task", 15000, NULL, taskPriority, NULL, 1);
+    xTaskCreatePinnedToCore(&main_task, "main_task", 15000, (void *)&WaitForDebugger, taskPriority,NULL , 1);
 }
 
 static void main_task(void *pvParameter)
 {
-    (void)pvParameter;
+    bool RequestWaitForDebugger = *(bool *)pvParameter;
+
     CLR_SETTINGS clrSettings = {
         .EnterDebuggerLoopAfterExit = true,
         .MaxContextSwitches = 50,
         .RevertToBooterOnFault = false,
-        .WaitForDebugger = false};
+        .WaitForDebugger = RequestWaitForDebugger};
     CLRStartupThread(&clrSettings);
     vTaskDelete(NULL);
 }

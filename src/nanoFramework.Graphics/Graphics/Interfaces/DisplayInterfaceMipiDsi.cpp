@@ -29,6 +29,7 @@ void DisplayInterface::Initialize()
     esp_ldo_channel_config_t ldo_cfg = {
         .chan_id = BSP_MIPI_DSI_PHY_PWR_LDO_CHAN,
         .voltage_mv = BSP_MIPI_DSI_PHY_PWR_LDO_VOLTAGE_MV,
+        .voltage_stable_delay_us = 0,
         .flags =
             {
                 .adjustable = false,
@@ -44,7 +45,7 @@ void DisplayInterface::Initialize()
         .num_data_lanes = BSP_LCD_MIPI_DSI_LANE_NUM,
         .phy_clk_src = MIPI_DSI_PHY_CLK_SRC_DEFAULT,
         .lane_bit_rate_mbps = BSP_LCD_MIPI_DSI_LANE_BITRATE_MBPS,
-    };
+        .flags = {.clock_lane_force_hs = 0}};
     esp_lcd_new_dsi_bus(&bus_config, &mipi_dsi_bus);
 
     // Install MIPI DSI LCD control panel

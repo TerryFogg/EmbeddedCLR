@@ -64,7 +64,9 @@ extern "C"
 #endif
 
     void InitializeBoard();
+    bool WaitForDebug();
 
 #ifdef __cplusplus
 }
 #endif
+

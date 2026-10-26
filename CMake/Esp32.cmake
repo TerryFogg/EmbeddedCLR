@@ -75,6 +75,7 @@ list(APPEND IDF_INCLUDES
             ${ESP32_IDF_PATH}/components/freertos/config/riscv/include 
             ${ESP32_IDF_PATH}/components/freertos/esp_additions/include
             ${ESP32_IDF_PATH}/components/freertos/FreeRTOS-Kernel/include
+            ${ESP32_IDF_PATH}/components/freertos/esp_additions/include
             ${ESP32_IDF_PATH}/components/hal/include
             ${ESP32_IDF_PATH}/components/heap/include
             ${ESP32_IDF_PATH}/components/nvs_flash/include
@@ -107,15 +108,13 @@ set( ADDITIONAL_IDF_COMPONENTS
       esp_hw_support
       esp_adc
       esp_driver_gpio
-#      esp_driver_i2c
+      esp_driver_i2c
       esp_driver_ledc
       esp_driver_spi
 )
 
 if(CONFIG_SUPPORT_WIFI)
     list(APPEND ADDITIONAL_IDF_COMPONENTS
-                esp_hosted
-                esp_wifi_remote
                 esp_wifi
                 esp_netif
                 lwip
@@ -170,6 +169,12 @@ if(CONFIG_SUPPORT_USBSTREAM)
     )
 endif()
 
+foreach(component ${ADDITIONAL_IDF_COMPONENTS})
+     list(APPEND IDF_LIBRARIES_TO_ADD
+                 idf::${component}
+     )
+endforeach()
+
 
 # Let the IDF build system handle the build of the IDF core and components used by nanoCLR
 include(${ESP32_IDF_PATH}/tools/cmake/idf.cmake)
@@ -186,11 +191,6 @@ idf_build_process(esp32p4
                        ${CMAKE_SOURCE_DIR}
 
 )
-foreach(component ${ADDITIONAL_IDF_COMPONENTS})
-     list(APPEND IDF_LIBRARIES_TO_ADD
-                 idf::${component}
-     )
-endforeach()
 target_link_libraries(nanoCLR.elf ${IDF_LIBRARIES_TO_ADD})
 target_link_options(nanoCLR.elf PUBLIC "-Wl,--no-warn-rwx-segments")
 idf_build_executable(nanoCLR.elf)

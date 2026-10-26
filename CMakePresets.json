@@ -48,9 +48,10 @@
             ],
             "hidden": true,
             "environment": {
-                "PATH": "$penv{PATH};C:/users/terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
-                "IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
-                "ESP_IDF_VERSION": "5.5"
+                "PATH": "$penv{PATH};C:/Espressif/tools/riscv32-esp-elf/esp-15.2.0_20251204/riscv32-esp-elf/bin",
+                "IDF_PATH": "C:/esp/v6.1/esp-idf",
+                "ESP_IDF_VERSION": "6.1",
+                "ESP_ROM_ELF_DIR": "C:/Espressif/tools/esp-rom-elfs/20241011"
             },
             "cacheVariables": {
                 "TARGET_NAME": "WaveShare ESP32-WIFI6-Touch",
@@ -62,9 +63,9 @@
                 "PSRAM": true,
                 "FLASH_SIZE": "32MB",
 
-                "ESP32_IDF_PATH": "C:/users/terry/esp/v5.4.4/esp-idf",
-                "ESP_TOOLCHAIN_DIR": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin",
+                "ESP_TOOLCHAIN_DIR": "C:/Espressif/tools/riscv32-esp-elf/esp-15.2.0_20251204/riscv32-esp-elf/bin",
                 "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/targets/Espressif/ESP32P4/toolchain.riscv32-esp32p4-elf.cmake",
+                "ESP32_IDF_PATH": "C:/esp/v6.1/esp-idf",
                 "NF_INTEROP_ASSEMBLIES": null,
                 "BUILD_VERSION": "0.9.99.999",
                 "BUILD_VERBOSE": "OFF",
@@ -79,7 +80,7 @@
 
                 "DISPLAY_DRIVER": "DisplayControllerJD9365.cpp",
                 "DISPLAY_INTERFACE": "DisplayInterfaceMipiDsi.cpp",
-                "TOUCH_INTERFACE_CONTROLLER": "GT911.cpp",
+                "TOUCH_INTERFACE_CONTROLLER": "GT911.cpp"
             }
         },
 

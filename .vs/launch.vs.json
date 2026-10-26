@@ -8,33 +8,13 @@
             "projectTarget": "nanoCLR.elf",
             "project": "CMakeLists.txt",
             "program": "C:/repos/TerryFogg/EmbeddedCLR/build/nanoCLR.elf",
-            //       "hardwareBreakpoints": {"limit": 3 ,"require": true},
             "MIMode": "gdb",
-            "miDebuggerPath": "C:/Users/Terry/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
+            "miDebuggerPath": "C:/Espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb.exe",
             "miDebuggerServerAddress": "localhost:3333",
             "stopOnEntry": true,
-            "debugServerPath": "C:/Users/Terry/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/bin/openocd.exe",
-            "debugServerArgs": "-f board/esp32p4-builtin.cfg -c \"adapter speed 16000\" -c \"gdb port 3333\" -c \"init\"  -c \"reset halt\"",
+            "debugServerPath": "C:/Espressif/tools/openocd-esp32/v0.12.0-esp32-20260703/openocd-esp32/bin/openocd.exe",
+            "debugServerArgs": "-f board/esp32p4-builtin.cfg -c \"adapter speed 10000\"  -c \"gdb port 3333\" -c \"init\"  -c \"reset halt\"",
             "serverStarted": "Listening on port 3333 for gdb connections",
-            "setupCommands": [
-                {
-                    "text": "mon init",
-                    "ignoreFailures": true
-                },
-                {
-                    "text": "mon reset halt",
-                    "ignoreFailures": true
-                },
-                {
-                    "text": "set step-mode on",
-                    "ignoreFailures": true
-                }
-            ],
-            "postRemoteConnectCommands": [
-                {
-                    "text": "maintenance flush register-cache"
-                }
-            ],
             "launchCompleteCommand": "exec-continue",
             "filterStderr": true,
             "filterStdout": true

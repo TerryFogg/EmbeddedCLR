@@ -3,8 +3,6 @@
 // See LICENSE file in the project root for full license information.
 //
 
-#include <esp32_idf.h>
-
 #include <nanoCLR_Application.h>
 #include <nanoHAL_v2.h>
 

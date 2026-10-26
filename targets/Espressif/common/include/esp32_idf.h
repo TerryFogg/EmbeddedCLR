@@ -43,7 +43,7 @@
 
 #include <soc/i2s_reg.h>
 #include <driver/uart.h>
-#include <soc/uart_channel.h>
+//#include <soc/uart_channel.h>
 #include <esp_rom_crc.h>
 #include <esp_rom_caps.h>
 

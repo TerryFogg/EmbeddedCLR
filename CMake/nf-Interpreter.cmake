@@ -177,6 +177,7 @@ list(APPEND Core_Includes
             ${CMAKE_SOURCE_DIR}/src/CLR/WireProtocol
 
             ${CMAKE_SOURCE_DIR}/targets/common
+            ${CMAKE_SOURCE_DIR}/targets/common/NotUsed
 
             ${TARGET_BASE_LOCATION}
             ${TARGET_BASE_LOCATION}/nanoCLR

@@ -2,7 +2,6 @@
 // Copyright (c) .NET Foundation and Contributors
 // See LICENSE file in the project root for full license information.
 //
-#include <soc/uart_channel.h>
 #include "driver/uart.h"
 #include "hal/uart_types.h"
 #include <nanoHAL_v2.h>

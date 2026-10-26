@@ -69,6 +69,8 @@ bool WiFi::Initialize()
         .espnow_max_encrypt_num = 7,
         .tx_hetb_queue_num = 3,
         .dump_hesigb_enable = false,
+        .privacy_enhancements = false,
+        .rmac_auto_reset_int = 24,
         .magic = 0x1F2F3F4F};
     esp_wifi_init(&defaultConfiguration);
 
@@ -102,7 +104,8 @@ bool WiFi::Connect(int channel, char *szSSID, char *szPassword)
             .ft_enabled = 1,
             .owe_enabled = 1,
             .transition_disable = 1,
-            .reserved = 0,
+            .disable_wpa3_compatible_mode = 0,
+            .reserved1 = 0,
             .sae_pwe_h2e = wifi_sae_pwe_method_t::WPA3_SAE_PWE_BOTH,
             .sae_pk_mode = wifi_sae_pk_mode_t::WPA3_SAE_PK_MODE_AUTOMATIC,
             .failure_retry_cnt = 5,
@@ -114,7 +117,10 @@ bool WiFi::Connect(int channel, char *szSSID, char *szPassword)
             .he_trig_su_bmforming_feedback_disabled = 0,
             .he_trig_mu_bmforming_partial_feedback_disabled = 0,
             .he_trig_cqi_feedback_disabled = 0,
-            .he_reserved = 0,
+            .vht_su_beamformee_disabled = 0,
+            .vht_mu_beamformee_disabled = 0,
+            .vht_mcs8_enabled = 0,
+            .reserved2 = 0,
             .sae_h2e_identifier = ""}};
     hal_strcpy_s((char *)config.sta.ssid, sizeof(config.sta.ssid) - 1, szSSID);
     hal_strcpy_s((char *)config.sta.password, sizeof(config.sta.password) - 1, szPassword);

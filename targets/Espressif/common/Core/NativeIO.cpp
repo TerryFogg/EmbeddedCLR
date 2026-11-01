@@ -314,6 +314,7 @@ bool SerialIO::Initialize(
     int stopbits,
     int flowcontrol)
 {
+    volatile esp_err_t result;
     uart_port_t serialPort = (uart_port_t)portNumber;
     uart_config_t uart_config = {
         .baud_rate = baud,
@@ -325,9 +326,10 @@ bool SerialIO::Initialize(
         .rx_glitch_filt_thresh = 0, //?????????????
         .source_clk = (uart_sclk_t)0,
         .flags = {.allow_pd = 0, .backup_before_sleep = 0}};
-    uart_param_config(serialPort, &uart_config);
+    result = uart_param_config(serialPort, &uart_config);
     uart_set_pin(serialPort, TX, RX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
-    uart_driver_install(serialPort, 256, 256, 0, NULL, ESP_INTR_FLAG_IRAM);
+    result = uart_driver_install(serialPort, 256, 256, 0, NULL, 0); //ESP_INTR_FLAG_IRAM);
+    (void)result;
     return true;
 }
 
@@ -355,6 +357,7 @@ bool SpiIO::Initialize(int spiBusNumber, PinNameValue pinMosi, PinNameValue pinM
         .sclk_io_num = -1,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
+
         .data4_io_num = -1,
         .data5_io_num = -1,
         .data6_io_num = -1,

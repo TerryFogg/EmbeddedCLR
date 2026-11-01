@@ -26,12 +26,12 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_NativeCalls_NativeGpio::EnableInterrupt___STATIC__VOID__I4,
     Library_NativeCalls_NativeGpio::DisableInterrupt___STATIC__VOID__I4,
     Library_NativeCalls_NativeGpio::RemoveInterrupt___STATIC__VOID__I4,
+    Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4,
     Library_NativeCalls_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4,
     Library_NativeCalls_NativeI2C::AddSlaveDevice___STATIC__BOOLEAN__I4__BusSpeed__U2,
-    Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4,
-    Library_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4,
-    Library_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4,
-    Library_NativeCalls_NativeI2C::WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4,
+    Library_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__U2__SZARRAY_U1__I4,
+    Library_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__U2__SZARRAY_U1__I4,
+    Library_NativeCalls_NativeI2C::WriteRead___STATIC__BOOLEAN__U2__SZARRAY_U1__I4__SZARRAY_U1__I4,
     Library_NativeCalls_NativePwm::Initialize___STATIC__VOID__I4,
     Library_NativeCalls_NativePwm::ConfigurePin___STATIC__VOID__I4__I4__I4,
     Library_NativeCalls_NativePwm::SetDutyCycle___STATIC__VOID__I4__I4,
@@ -77,7 +77,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_NativeCalls =
 {
     "NativeCalls",
-    0x2CF212EC,
+    0x9B7CD22E,
     method_lookup,
     { 100, 1, 0, 6 }
 };

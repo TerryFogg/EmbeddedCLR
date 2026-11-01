@@ -37,6 +37,7 @@
 #include "UI_Thread.h"
 #include "freertos/idf_additions.h"
 #include "soc/interrupt_reg.h"
+#include "esp_task_wdt.h"
 
 #include <stdbool.h>
 
@@ -51,16 +52,14 @@ void app_main()
     UBaseType_t taskPriority = 5;
 
     InitializeBoard();
-
     bool WaitForDebugger = WaitForDebug();
-
     StartUITask();
 
     // Receiver task pinned to core 0
     xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
 
     // CLR main task pinned to core 1
-    xTaskCreatePinnedToCore(&main_task, "main_task", 15000, (void *)&WaitForDebugger, taskPriority,NULL , 1);
+    xTaskCreatePinnedToCore(&main_task, "main_task", 1500, (void *)&WaitForDebugger, taskPriority, NULL, 1);
 }
 
 static void main_task(void *pvParameter)

@@ -179,7 +179,15 @@ __nfweak  HRESULT Library_NativeCalls_NativeGpio::RemoveInterrupt___STATIC__VOID
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_StackFrame &stack)
+__nfweak HRESULT Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+__nfweak HRESULT Library_NativeCalls_NativeI2C::Open___STATIC__BOOLEAN__I4__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -195,7 +203,7 @@ __nfweak  HRESULT Library_NativeCalls_NativeI2C::AddSlaveDevice___STATIC__BOOLEA
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
+__nfweak HRESULT Library_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -203,7 +211,7 @@ __nfweak  HRESULT Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
+__nfweak HRESULT Library_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -211,15 +219,7 @@ __nfweak  HRESULT Library_NativeCalls_NativeI2C::Write___STATIC__BOOLEAN__I4__U2
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeI2C::Read___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeI2C::WriteRead___STATIC__BOOLEAN__I4__U2__SZARRAY_U1__I4__SZARRAY_U1__I4(
+__nfweak HRESULT Library_NativeCalls_NativeI2C::WriteRead___STATIC__BOOLEAN__U2__SZARRAY_U1__I4__SZARRAY_U1__I4(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();

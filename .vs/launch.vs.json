@@ -16,11 +16,15 @@
             "stopOnEntry": false,
             "debugServerPath": "C:/Users/Terry/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260831/openocd-esp32/bin/openocd.exe",
             "debugServerArgs": "-f board/esp32p4-builtin.cfg  -c \"adapter speed 12000\" -c \"gdb port 3333\" -c \"init\"  -c \"reset halt\" -c \"program_esp_bins C:/repos/TerryFogg/EmbeddedCLR/build flasher_args.json\"",
-            //          "debugServerArgs": "-f board/esp32p4-builtin.cfg  -c \"adapter speed 12000\" -c \"gdb port 3333\" -c \"init\"  -c \"reset halt\" ",
+            //"debugServerArgs": "-f board/esp32p4-builtin.cfg  -c \"adapter speed 21000\" -c \"gdb port 3333\" -c \"init\"  -c \"reset halt\" ",
             "serverStarted": "Listening on port 3333 for gdb connections",
             "setupCommands": [
                 {
                     "text": "set remote hardware-watchpoint-limit 3",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "thb app_main",
                     "ignoreFailures": true
                 },
                 {
@@ -29,7 +33,8 @@
                 }
             ],
             "postRemoteConnectCommands": [
-                { "text": "monitor reset halt" }            ],
+                { "text": "monitor reset halt" }
+            ],
             "launchCompleteCommand": "exec-continue",
             "filterStderr": true,
             "filterStdout": true

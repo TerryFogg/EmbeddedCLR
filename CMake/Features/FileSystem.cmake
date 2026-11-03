@@ -4,7 +4,7 @@
 #
 #
 list(APPEND FileSystem_Sources
-            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_FileSystem.cpp
+            ${CMAKE_SOURCE_DIR}/targets/common/NativeCalls_NativeFileSystem.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeFile.cpp
 )
 

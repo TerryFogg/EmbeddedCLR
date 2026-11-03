@@ -8,6 +8,7 @@ list(APPEND ESP32_Sources
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoCRT.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoHAL.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/nanoSupport_CRC32.c
+            ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeFile.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/NativeIO.cpp
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.c
             ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/core/targetHAL.cpp
@@ -176,7 +177,9 @@ foreach(component ${ADDITIONAL_IDF_COMPONENTS})
 endforeach()
 
 
+##########################################################################################
 # Let the IDF build system handle the build of the IDF core and components used by nanoCLR
+##########################################################################################
 include(${ESP32_IDF_PATH}/tools/cmake/idf.cmake)
 idf_build_process(esp32p4
                   COMPONENTS 
@@ -190,29 +193,37 @@ idf_build_process(esp32p4
                   PROJECT_DIR
                        ${CMAKE_SOURCE_DIR}
                   EXCLUDE_COMPONENTS
-                        esp_gdbstub
+                        components/esp_system/openocd_stub_bins
 
 )
 target_link_libraries(nanoCLR.elf ${IDF_LIBRARIES_TO_ADD})
 target_link_options(nanoCLR.elf PUBLIC "-Wl,--no-warn-rwx-segments")
 idf_build_executable(nanoCLR.elf)
 
+###############
 # Configuration
+###############
 configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_os.h.in       ${CMAKE_BINARY_DIR}/target_os.h @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_platform.h.in ${CMAKE_BINARY_DIR}/target_platform.h @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_common.h.in   ${CMAKE_BINARY_DIR}/target_common.h @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_board.h.in    ${CMAKE_BINARY_DIR}/target_board.h @ONLY)
+
+
+
+set(PARTITION_CSV ${CONFIG_PARTITION_TABLE_CUSTOM_FILENAME})
 
 add_custom_target(generate_partition ALL
                   COMMAND
                   "python"
                   ${ESP32_IDF_PATH}/components/partition_table/gen_esp32part.py 
                   --flash-size  ${FLASH_SIZE} 
-                  ${CMAKE_SOURCE_DIR}/targets/${VENDOR}/common/Core/partition.csv
+                  ${PARTITION_CSV}
                   ${CMAKE_BINARY_DIR}/partitions_${FLASH_SIZE}.bin
                   COMMENT
                   "Generate selected partition table size of  flash"
 )
+
+
 
 #   # if needed, "fix" the reported version so it doesn't show '-dirty'
 #   # this is because we could be deleting some files and tweaking others in the IDF
@@ -235,3 +246,98 @@ add_custom_target(generate_partition ALL
 #       message(STATUS "Fixed IDF version. Is now: ${MY_IDF_VER_FIXED}")
 #   endif()
 
+
+
+function(generate_partition_header csv_file output_header)
+    find_partition("${csv_file}" "app" "factory"   NANOCLR_PARTITION_ADDRESS     NANOCLR_PARTITION_SIZE)
+    find_partition("${csv_file}" "data" "0x84"     DEPLOYMENT_PARTITION_ADDRESS  DEPLOYMENT_PARTITION_SIZE)
+    find_partition("${csv_file}" "data" "littlefs" CONFIG_PARTITION_ADDRESS      CONFIG_PARTITION_SIZE)
+    configure_file(${CMAKE_SOURCE_DIR}/targets/${VENDOR}/${TARGET_SERIES}/target_partition_info.h.in ${output_header} @ONLY)
+endfunction()
+
+#
+# Convert ESP-IDF partition size notation:
+#   2M -> 2097152
+#   8M -> 8388608
+#   64K -> 65536
+#
+function(convert_partition_size input output)
+    string(TOUPPER "${input}" value)
+    if(value MATCHES "^([0-9]+)M$")
+        math(EXPR result "${CMAKE_MATCH_1} * 1024 * 1024")
+    elseif(value MATCHES "^([0-9]+)K$")
+        math(EXPR result "${CMAKE_MATCH_1} * 1024")
+    else()
+        set(result "${value}")
+    endif()
+
+    set(${output} "${result}" PARENT_SCOPE)
+endfunction()
+
+function(find_partition csv_file partition_type partition_subtype address_var size_var)
+
+    file(STRINGS "${csv_file}" partition_lines)
+
+    foreach(line ${partition_lines})
+
+        string(STRIP "${line}" line)
+
+        # Skip empty lines
+        if(line STREQUAL "")
+            continue()
+        endif()
+
+        # Skip comments
+        if(line MATCHES "^#")
+            continue()
+        endif()
+
+        # Convert CSV -> CMake list
+        string(REPLACE "," ";" fields "${line}")
+
+        list(LENGTH fields field_count)
+
+        if(field_count LESS 5)
+            continue()
+        endif()
+
+        list(GET fields 1 type)
+        list(GET fields 2 subtype)
+        list(GET fields 3 offset)
+        list(GET fields 4 size)
+
+        string(STRIP "${type}" type)
+        string(STRIP "${subtype}" subtype)
+        string(STRIP "${offset}" offset)
+        string(STRIP "${size}" size)
+
+        string(TOLOWER "${type}" type)
+        string(TOLOWER "${subtype}" subtype)
+
+        string(TOLOWER "${partition_type}" wanted_type)
+        string(TOLOWER "${partition_subtype}" wanted_subtype)
+
+        if(type STREQUAL wanted_type
+           AND subtype STREQUAL wanted_subtype)
+
+            convert_partition_size("${size}" size_bytes)
+
+            set(${address_var} "${offset}" PARENT_SCOPE)
+            set(${size_var} "${size_bytes}" PARENT_SCOPE)
+
+            return()
+
+        endif()
+
+    endforeach()
+
+    message(FATAL_ERROR
+        "Partition not found: type=${partition_type}, subtype=${partition_subtype}")
+
+endfunction()
+
+######################
+# Setup nanoCLR memory
+######################
+set(PARTITION_HEADER "${CMAKE_BINARY_DIR}/target_partition_info.h")
+generate_partition_header(${PARTITION_CSV} ${PARTITION_HEADER})

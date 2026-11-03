@@ -56,10 +56,10 @@ void app_main()
     StartUITask();
 
     // Receiver task pinned to core 0
-    xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 3072, NULL, taskPriority, NULL, 0);
+    xTaskCreatePinnedToCore(&receiver_task, "ReceiverThread", 8192, NULL, taskPriority, NULL, 1);
 
     // CLR main task pinned to core 1
-    xTaskCreatePinnedToCore(&main_task, "main_task", 1500, (void *)&WaitForDebugger, taskPriority, NULL, 1);
+    xTaskCreatePinnedToCore(&main_task, "main_task", 8192, (void *)&WaitForDebugger, taskPriority, NULL, 0);
 }
 
 static void main_task(void *pvParameter)

@@ -13,6 +13,5 @@ HRESULT Library_NativeCalls_NativeTouch::Read___STATIC__I4__I4(CLR_RT_StackFrame
     {
         NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     }
-    NANOCLR_SET_AND_LEAVE(S_OK);
     NANOCLR_NOCLEANUP();
 }

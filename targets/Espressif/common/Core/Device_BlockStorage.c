@@ -8,24 +8,28 @@
 #include <esp32_idf.h>
 #include <esp_partition.h>
 #include <Target_BlockStorage_Esp32FlashDriver.h>
+#include "Target_partition_info.h"
 
 BlockStorageDevice Device_BlockStorage;
 const BlockRange BlockRange1[] = {{.RangeType = BlockRange_BLOCKTYPE_CODE, .StartBlock = 0, .EndBlock = 0}};
 const BlockRange BlockRange2[] = {{.RangeType = BlockRange_BLOCKTYPE_DEPLOYMENT, .StartBlock = 0, .EndBlock = 0}};
 const BlockRange BlockRange3[] = {{.RangeType = BlockRange_BLOCKTYPE_CONFIG, .StartBlock = 0, .EndBlock = 0}};
 BlockRegionInfo BlockRegions[] = {
+    // nanoCLR
     {.Attributes = 0,
      .Start = 0,
      .NumBlocks = 1,
      .BytesPerBlock = 0,
      .NumBlockRanges = ARRAYSIZE_CONST_EXPR(BlockRange1),
      .BlockRanges = BlockRange1},
+    // Deployment area
     {.Attributes = BlockRegionAttribute_MemoryMapped,
      .Start = 0,
      .NumBlocks = 1,
      .BytesPerBlock = 0,
      .NumBlockRanges = ARRAYSIZE_CONST_EXPR(BlockRange2),
      .BlockRanges = BlockRange2},
+    // Config, littlefs partition
     {.Attributes = 0,
      .Start = 0,
      .NumBlocks = 1,

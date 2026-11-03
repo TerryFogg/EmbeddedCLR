@@ -123,62 +123,6 @@ __nfweak  HRESULT Library_NativeCalls_NativeDns::ResolveHost___STATIC__I4__STRIN
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::ConfigurePin___STATIC__VOID__I4__GpioPinMode__GpioBias(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::Read___STATIC__GpioPinLevel__I4(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::Write___STATIC__VOID__I4__GpioPinLevel(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::AddInterrupt___STATIC__VOID__I4__GpioInterruptMode(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::EnableInterrupt___STATIC__VOID__I4(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::DisableInterrupt___STATIC__VOID__I4(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
-__nfweak  HRESULT Library_NativeCalls_NativeGpio::RemoveInterrupt___STATIC__VOID__I4(CLR_RT_StackFrame &stack)
-{
-    NANOCLR_HEADER();
-    {
-        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
-    }
-    NANOCLR_NOCLEANUP();
-}
 __nfweak HRESULT Library_NativeCalls_NativeI2C::Probe___STATIC__BOOLEAN__I4__U2__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -366,7 +310,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeSocket::Close___STATIC__BOOLEAN__I4(
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Exists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileOpen___STATIC__I4__STRING__EmbeddedCLRIOFileMode__EmbeddedCLRIOFileAccess(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -374,7 +319,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Exists___STATIC__BOOL
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Delete___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileClose___STATIC__BOOLEAN__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -382,7 +328,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Delete___STATIC__BOOL
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Move___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileFlush___STATIC__BOOLEAN__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -390,7 +337,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Move___STATIC__BOOLEA
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Length___STATIC__I8__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileCreate___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -398,7 +346,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Length___STATIC__I8__
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Read___STATIC__I4__STRING__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileDelete___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -406,7 +355,45 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Read___STATIC__I4__ST
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Write___STATIC__I4__STRING__SZARRAY_U1__I4__I4__BOOLEAN(
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileExists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileCount___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT
+    Library_NativeCalls_NativeFileSystem::FileMove___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileRename___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileCopy___STATIC__BOOLEAN__STRING__STRING__BOOLEAN(
     CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
@@ -415,7 +402,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::Write___STATIC__I4__S
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::CreateDirectory___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileSetLength___STATIC__BOOLEAN__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -423,7 +411,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::CreateDirectory___STA
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::DeleteDirectory___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileGetLength___STATIC__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -431,7 +420,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::DeleteDirectory___STA
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::DirectoryExists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileGetPosition___STATIC__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -439,7 +429,9 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::DirectoryExists___STA
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::FileCount___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileRead___STATIC__I4__I4__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
+
 {
     NANOCLR_HEADER();
     {
@@ -447,7 +439,9 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::FileCount___STATIC__I
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::GetFileName___STATIC__STRING__STRING__I4(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileWrite___STATIC__I4__I4__SZARRAY_U1__I4__I4(CLR_RT_StackFrame &stack)
+
 {
     NANOCLR_HEADER();
     {
@@ -455,7 +449,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::GetFileName___STATIC_
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::DirectoryCount___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileSeek___STATIC__I4__I4__I4__EmbeddedCLRIOSeekOrigin(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -463,7 +458,8 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::DirectoryCount___STAT
     }
     NANOCLR_NOCLEANUP();
 }
-__nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::GetDirectoryName___STATIC__STRING__STRING__I4(CLR_RT_StackFrame &stack)
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileGetLastWriteTime___STATIC__I8__STRING(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
     {
@@ -471,6 +467,108 @@ __nfweak  HRESULT Library_NativeCalls_NativeStorageSystem::GetDirectoryName___ST
     }
     NANOCLR_NOCLEANUP();
 }
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileGetAttributes___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::FileSetAttributes___STATIC__BOOLEAN__STRING__I4(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryCreate___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryDelete___STATIC__BOOLEAN__STRING__BOOLEAN(
+    CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryExists___STATIC__BOOLEAN__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryMove___STATIC__BOOLEAN__STRING__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryGetFileName___STATIC__STRING__STRING__I4(
+    CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryCount___STATIC__I4__STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DirectoryGetName___STATIC__STRING__STRING__I4(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DriveTotalSize___STATIC__I8_STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
+__nfweak HRESULT Library_NativeCalls_NativeFileSystem::DriveFreeSpace___STATIC__I8_STRING(CLR_RT_StackFrame &stack)
+{
+    NANOCLR_HEADER();
+    {
+        NANOCLR_SET_AND_LEAVE(stack.NotImplementedStub());
+    }
+    NANOCLR_NOCLEANUP();
+}
+
 __nfweak  HRESULT Library_NativeCalls_NativeTouch::Read___STATIC__I4__I4(CLR_RT_StackFrame &stack)
 {
     NANOCLR_HEADER();
